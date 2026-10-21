@@ -73,6 +73,7 @@ for (const viewport of widths) {
         expect(overflow.document, 'horizontal page overflow').toBeLessThanOrEqual(2);
         expect(overflow.body, 'horizontal body overflow').toBeLessThanOrEqual(2);
         expect(errors, 'browser execution must not throw').toEqual([]);
+        await page.screenshot({path: 'test-results/visual-audit/' + viewport.width + '/' + lang + '/' + route + '.png', fullPage: true, animations:'disabled'});
       });
     }
   }
