@@ -1,0 +1,113 @@
+name: eReturn Vite Pages Build and Deployment
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: ereturn-pages
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install
+        run: npm install --no-audit --no-fund
+      - name: Typecheck
+        run: npm run lint
+      - name: Unit tests
+        run: npm run test
+      - name: Compile Pages release
+        env:
+          GITHUB_PAGES: 'true'
+        run: npm run build
+      - name: Validate generated assets and reject source-only publication
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from html.parser import HTMLParser
+          from urllib.parse import urlsplit,unquote
+          class Assets(HTMLParser):
+              def __init__(self): super().__init__(); self.paths=[]
+              def handle_starttag(self,tag,attrs):
+                  a=dict(attrs)
+                  if tag=='script' and a.get('src'): self.paths.append(a['src'])
+                  if tag=='link' and a.get('rel')=='stylesheet' and a.get('href'): self.paths.append(a['href'])
+          html=Path('dist/index.html').read_text()
+          assert '/src/main.tsx' not in html, 'Uncompiled source referenced by deployment'
+          parser=Assets(); parser.feed(html)
+          assert any(x.endswith('.js') for x in parser.paths), 'No compiled JS'
+          assert any(x.endswith('.css') for x in parser.paths), 'No compiled CSS'
+          prefix='/eReturn-V2/'
+          for url in parser.paths:
+              path=urlsplit(url).path
+              assert path.startswith(prefix), f'Asset escaped repository base: {path}'
+              asset=Path('dist')/unquote(path.removeprefix(prefix))
+              assert asset.is_file(), f'Missing asset: {asset}'
+          assert not any(p.suffix=='.tsx' for p in Path('dist').rglob('*')), 'Source TSX shipped'
+          print('PASS compiled Pages assets:',parser.paths)
+          PY
+          cp dist/index.html dist/404.html
+          touch dist/.nojekyll
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment
+      - name: Verify public Vite HTML and asset responses
+        env:
+          SITE_URL: https://shihab-tech04.github.io/eReturn-V2/
+        run: |
+          python3 - <<'PY'
+          import os,time
+          from html.parser import HTMLParser
+          from urllib.request import Request,urlopen
+          from urllib.parse import urljoin,urlsplit
+          class Assets(HTMLParser):
+              def __init__(self): super().__init__(); self.paths=[]
+              def handle_starttag(self,tag,attrs):
+                  a=dict(attrs)
+                  if tag=='script' and a.get('src'): self.paths.append(a['src'])
+                  if tag=='link' and a.get('rel')=='stylesheet' and a.get('href'): self.paths.append(a['href'])
+          site=os.environ['SITE_URL']
+          def fetch(u):
+              with urlopen(Request(u,headers={'User-Agent':'eReturn-V2-release-smoke/1.0','Cache-Control':'no-cache'}),timeout=20) as r:
+                  return r.status,r.headers.get_content_type(),r.read()
+          for attempt in range(12):
+              try:
+                  status,typ,body=fetch(site+'?release='+os.environ['GITHUB_SHA'])
+                  assert status==200 and typ=='text/html',f'bad HTML {status} {typ}'
+                  assert b'/src/main.tsx' not in body,'Pages still serving uncompiled source'
+                  p=Assets();p.feed(body.decode())
+                  assert any(z.endswith('.js') for z in p.paths),'compiled JS missing'
+                  assert any(z.endswith('.css') for z in p.paths),'compiled CSS missing'
+                  for a in p.paths:
+                      assert urlsplit(a).path.startswith('/eReturn-V2/'),f'wrong base: {a}'
+                      u=urljoin(site,a);code,mime,data=fetch(u)
+                      assert code==200 and len(data)>50,f'missing live asset {u}'
+                      assert mime in ('text/javascript','application/javascript','text/css'),f'bad MIME {u} {mime}'
+                  print('PASS live Vite Pages assets:',p.paths)
+                  break
+              except Exception as err:
+                  if attempt==11: raise
+                  print('Pages propagation pending:',err)
+                  time.sleep(10)
+          PY
