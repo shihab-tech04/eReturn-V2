@@ -93,9 +93,11 @@ test('mobile primary navigation remains operable from taxpayer pages', async ({p
   await page.setViewportSize({width:375,height:812});
   await page.goto('/#/user-panel/assessment');
   await expect(page.locator('main').first()).toBeVisible();
+  await page.getByRole('button',{name:'Open navigation'}).click();
   const link = page.getByRole('link',{name:/Tax.*Payment|Tax & Payment/i}).first();
   await expect(link).toBeVisible();
   await link.click();
+  await expect(page.getByRole('button',{name:'Open navigation'})).toBeVisible();
   await expect(page).toHaveURL(/\/#\/user-panel\/tax-payment$/);
   await expect(page.getByText('Statutory calculation is blocked')).toBeVisible();
 });
