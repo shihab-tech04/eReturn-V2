@@ -17,7 +17,6 @@ export const TaxPaymentPage: React.FC = () => {
     }));
   };
 
-  const isRefundable = RULES_ENGINE_GATE.hasApprovedCalculation && taxPayment.netPayableOrRefundable < 0;
   const notCalculated = language === 'bn' ? 'রুলস ইঞ্জিন যাচাই বাকি' : 'Pending verified Rules Engine';
 
   return (
@@ -56,7 +55,7 @@ export const TaxPaymentPage: React.FC = () => {
             1. {t('taxLiabilitySummary')}
           </h3>
           <span className="text-xs font-mono text-gray-500">
-            Rules Engine: NOT CERTIFIED
+            Rules Engine: {RULES_ENGINE_GATE.status}
           </span>
         </div>
 
