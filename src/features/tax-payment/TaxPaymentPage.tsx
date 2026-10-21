@@ -3,6 +3,8 @@ import { useApp } from '../../context/AppContext';
 import { AmountInput } from '../../components/common/AmountInput';
 import { StepNavigationButtons } from '../../components/common/StepNavigationButtons';
 import { formatBDT } from '../../i18n/formatters';
+import { RULES_ENGINE_GATE } from '../../adapters/calculationAdapter';
+
 import { CreditCard, AlertTriangle, ShieldCheck, Receipt, Building, CheckCircle2 } from 'lucide-react';
 
 export const TaxPaymentPage: React.FC = () => {
@@ -15,7 +17,8 @@ export const TaxPaymentPage: React.FC = () => {
     }));
   };
 
-  const isRefundable = taxPayment.netPayableOrRefundable < 0;
+  const isRefundable = RULES_ENGINE_GATE.hasApprovedCalculation && taxPayment.netPayableOrRefundable < 0;
+  const notCalculated = language === 'bn' ? 'রুলস ইঞ্জিন যাচাই বাকি' : 'Pending verified Rules Engine';
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
@@ -39,6 +42,13 @@ export const TaxPaymentPage: React.FC = () => {
         </div>
       </div>
 
+      <div role="status" className="bg-amber-50 border border-amber-300 text-amber-950 rounded-lg p-4 text-xs">
+        <strong>{language === 'bn' ? 'আইনসম্মত করের হিসাব এখনো অনুমোদিত নয়' : 'Statutory calculation is blocked'}</strong>
+        <p className="mt-1">{language === 'bn'
+          ? 'হালনাগাদ ও অনুমোদিত করবর্ষভিত্তিক রুলস ইঞ্জিনের ফল ছাড়া কর, রেয়াত, ন্যূনতম কর, পরিশোধযোগ্য বা ফেরতযোগ্য টাকা নির্ধারণ করা যাবে না।'
+          : 'Rates, rebate, minimum tax, credit entitlement and payable/refundable amounts are unavailable until a verified, year-specific central Rules Engine result is supplied. Entered withholding amounts are not approved credits.'}</p>
+      </div>
+
       {/* 1. Tax Computation Summary */}
       <div className="bg-white rounded-xl border border-gray-200 shadow-xs p-6 space-y-4">
         <div className="flex items-center justify-between border-b border-gray-100 pb-2">
@@ -46,7 +56,7 @@ export const TaxPaymentPage: React.FC = () => {
             1. {t('taxLiabilitySummary')}
           </h3>
           <span className="text-xs font-mono text-gray-500">
-            Rules Engine: Final 2026-09-30 (R-002 / T-004 Boundary)
+            Rules Engine: NOT CERTIFIED
           </span>
         </div>
 
@@ -61,33 +71,33 @@ export const TaxPaymentPage: React.FC = () => {
           <div className="flex items-center justify-between py-1.5 border-b border-gray-50">
             <span className="text-gray-600">{t('grossTax')}</span>
             <span className="font-semibold text-gray-900">
-              {formatBDT(taxPayment.grossTaxCalculated, language)}
+              {notCalculated}
             </span>
           </div>
 
           <div className="flex items-center justify-between py-1.5 border-b border-gray-50 text-emerald-700">
             <span>{t('rebateDeduction')} (Schedule 24D)</span>
-            <span>- {formatBDT(taxPayment.taxRebateDeducted, language)}</span>
+            <span>- {notCalculated}</span>
           </div>
 
           <div className="flex items-center justify-between py-1.5 border-b border-gray-50">
             <span className="text-gray-600">{t('minimumTax')} (Zone 04 Dhaka)</span>
-            <span className="text-gray-700">Min. {formatBDT(taxPayment.minimumTaxRateApplied, language)}</span>
+            <span className="text-gray-700">Min. {notCalculated}</span>
           </div>
 
           <div className="flex items-center justify-between py-1.5 border-b border-gray-50">
             <span className="text-gray-600">{t('surcharge')}</span>
-            <span className="text-gray-700">{formatBDT(taxPayment.surchargeAmount, language)}</span>
+            <span className="text-gray-700">{notCalculated}</span>
           </div>
 
           <div className="flex items-center justify-between py-1.5 border-b border-gray-50">
             <span className="text-gray-600">{t('penaltyDelay')}</span>
-            <span className="text-gray-700">{formatBDT(taxPayment.delayInterestOrPenalty, language)}</span>
+            <span className="text-gray-700">{notCalculated}</span>
           </div>
 
           <div className="flex items-center justify-between py-2 bg-emerald-50 px-3 rounded-lg font-bold text-emerald-950 text-sm">
-            <span>{t('totalPayable')}</span>
-            <span>{formatBDT(taxPayment.totalTaxPayable, language)}</span>
+            <span>{t('totalPayable')} · {language === 'bn' ? 'অনুমোদিত নয়' : 'not calculated'}</span>
+            <span>{notCalculated}</span>
           </div>
         </div>
       </div>
@@ -204,44 +214,12 @@ export const TaxPaymentPage: React.FC = () => {
         </div>
       </div>
 
-      {/* 4. Final Settlement Summary */}
-      <div
-        className={`rounded-xl p-6 border shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${
-          isRefundable
-            ? 'bg-blue-50 border-blue-300 text-blue-950'
-            : taxPayment.netPayableOrRefundable === 0
-            ? 'bg-emerald-50 border-emerald-300 text-emerald-950'
-            : 'bg-red-50 border-red-300 text-red-950'
-        }`}
-      >
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <Receipt className="w-5 h-5 text-gray-700" />
-            <h4 className="text-base font-bold">{t('netTaxPayableOrRefund')}</h4>
-          </div>
-          <p className="text-xs opacity-80">
-            {isRefundable
-              ? language === 'bn'
-                ? 'আপনার অতিরিক্ত কর পরিশোধিত থাকায় এটি ফেরত (Refund) হিসেবে দাবি করা যাইবে।'
-                : 'Tax paid exceeds statutory liability; claimable as a tax refund in assessment.'
-              : taxPayment.netPayableOrRefundable === 0
-              ? language === 'bn'
-                ? 'সকল কর পরিশোধ ও সমন্বয় সুষম (কোনো বকেয়া নেই)।'
-                : 'All tax liabilities have been fully discharged and reconciled.'
-              : language === 'bn'
-              ? 'অবশিষ্ট কর পরিশোধ না করা পর্যন্ত রিটার্ন স্বনির্ধারণী হিসেবে চূড়ান্ত গণ্য হইবে না।'
-              : 'Outstanding tax payable must be settled via treasury challan prior to submission.'}
-          </p>
-        </div>
-
-        <div className="text-right">
-          <span className="text-2xl font-bold font-mono">
-            {formatBDT(Math.abs(taxPayment.netPayableOrRefundable), language)}
-          </span>
-          <span className="block text-xs font-semibold mt-0.5">
-            {isRefundable ? '(Refund Due)' : taxPayment.netPayableOrRefundable === 0 ? '(Nil Balance)' : '(Payable Balance)'}
-          </span>
-        </div>
+      {/* Pending settlement: no implied nil balance or refund without certified rules. */}
+      <div className="rounded-xl border border-amber-300 bg-amber-50 p-5 text-xs text-amber-950" role="status">
+        <h3 className="font-semibold text-sm">{t('netTaxPayableOrRefund')}</h3>
+        <p className="mt-2">{notCalculated}. {language === 'bn'
+          ? 'এখানে শূন্য টাকা মানে করমুক্ত বা নিষ্পত্তি সম্পন্ন নয়।'
+          : 'No nil balance, refund or payable amount can be inferred from an unapproved ruleset.'}</p>
       </div>
 
       <StepNavigationButtons
