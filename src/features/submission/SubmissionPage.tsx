@@ -137,7 +137,7 @@ export const SubmissionPage: React.FC = () => {
             </div>
             <div className="flex justify-between">
               <span className="text-gray-500">Tax Payable / Paid:</span>
-              <span className="font-bold text-emerald-800">{formatBDT(taxPayment.totalTaxPayable, language)}</span>
+              <span className="font-bold text-emerald-800">{(language === 'bn' ? 'রুলস ইঞ্জিন অনুমোদন বাকি' : 'Pending Rules Engine')}</span>
             </div>
           </div>
 
@@ -211,7 +211,7 @@ export const SubmissionPage: React.FC = () => {
           {/* Submission Summary Box */}
           <div className="bg-white rounded-xl border border-gray-200 shadow-xs p-6 space-y-4">
             <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wide border-b border-gray-100 pb-2">
-              Summary Figures for Assessment Year {assessment.assessmentYear}
+              Entered Draft Summary for Assessment Year {assessment.assessmentYear}
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs font-mono">
@@ -220,8 +220,8 @@ export const SubmissionPage: React.FC = () => {
                 <span className="text-sm font-bold text-gray-900">{formatBDT(incAgg.totalTaxableIncome, language)}</span>
               </div>
               <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
-                <span className="text-gray-500 block text-[11px]">Total Tax Liability:</span>
-                <span className="text-sm font-bold text-gray-900">{formatBDT(taxPayment.totalTaxPayable, language)}</span>
+                <span className="text-gray-500 block text-[11px]">Statutory Tax Liability (not calculated):</span>
+                <span className="text-sm font-bold text-gray-900">{(language === 'bn' ? 'রুলস ইঞ্জিন অনুমোদন বাকি' : 'Pending Rules Engine')}</span>
               </div>
               <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
                 <span className="text-gray-500 block text-[11px]">TDS + Advance Tax:</span>
