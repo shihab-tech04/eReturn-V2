@@ -68,11 +68,47 @@ export function aggregateIncomeHeads(income: IncomeState) {
   };
 }
 
-// Rebate calculation adapter boundary (Section 10 & 22)
-// Note: Statutory rebate formula AY 2026-27 R-002 is gated by the verified Rules Engine.
+/**
+ * Executable statutory amounts are unavailable until an independently certified,
+ * year/taxpayer/fact-scoped central Rules Engine contract has been approved.
+ * An identity-registry hash alone is NOT calculation authorization.
+ */
+export const RULES_ENGINE_GATE = Object.freeze({
+  status: 'BLOCKED_UNCERTIFIED' as const,
+  reason: 'No verified version-pinned Rules Engine calculation response for this taxpayer, income year and assessment year.',
+  contract: 'NBR_ERETURN_RULES_V1_PROPOSED',
+  hasApprovedCalculation: false,
+});
+
+export interface RulesCalculationRequest {
+  contractVersion: 'NBR_ERETURN_RULES_V1_PROPOSED';
+  assessmentYear: string;
+  incomeYear: string;
+  taxpayerClass: string;
+  residenceStatus: string;
+  eventDates: Record<string, string>;
+  facts: Record<string, unknown>;
+}
+
+export interface ApprovedRulesCalculation {
+  status: 'APPROVED';
+  approvalEvidenceId: string;
+  versionHash: string;
+  selectedRuleVersions: string[];
+  taxAmountDecimal: string;
+  rebateAmountDecimal: string;
+  payableDecimal: string;
+  calculationTrace: Record<string, unknown>[];
+}
+
+/** Adapter intentionally returns no approved amount until a verified backend is connected. */
+export function getApprovedRulesCalculation(_request: RulesCalculationRequest): ApprovedRulesCalculation {
+  throw new Error('RULES_ENGINE_NOT_CERTIFIED: ' + RULES_ENGINE_GATE.reason);
+}
+
 export function computeRebateAdapter(
   rebate: RebateState,
-  totalTaxableIncome: number
+  _totalTaxableIncome: number
 ): {
   totalEligibleInvestment: number;
   estimatedRebateAmount: number;
@@ -80,30 +116,13 @@ export function computeRebateAdapter(
   isStatutoryVerified: boolean;
   statusNote: string;
 } {
-  const totalEligibleInvestment = rebate.entries.reduce((sum, e) => sum + (e.investmentAmount || 0), 0);
-  
-  // Under Bangladesh tax conventions, allowable rebate is lesser of:
-  // (a) 15% of eligible investment, or
-  // (b) 3% of taxable income, or
-  // (c) statutory ceiling ৳ 10,00,000.
-  // We represent this transparently through the adapter contract:
-  const ceilingA = totalEligibleInvestment * 0.15;
-  const ceilingB = totalTaxableIncome > 0 ? totalTaxableIncome * 0.03 : 0;
-  const statutoryCap = 1000000;
-  
-  let provisionalAmount = 0;
-  if (totalEligibleInvestment > 0 && totalTaxableIncome > 0) {
-    provisionalAmount = Math.min(ceilingA, ceilingB, statutoryCap);
-  } else if (totalEligibleInvestment > 0) {
-    provisionalAmount = Math.min(ceilingA, statutoryCap);
-  }
-
+  const totalEligibleInvestment = rebate.entries.reduce((sum, entry) => sum + (entry.investmentAmount || 0), 0);
   return {
     totalEligibleInvestment,
-    estimatedRebateAmount: Math.round(provisionalAmount),
+    estimatedRebateAmount: 0, // Placeholder only; UI must show unavailable, NEVER a zero rebate finding.
     ruleCode: 'R-002',
     isStatutoryVerified: false,
-    statusNote: 'Adapter active: Provisional ceiling applied (15% investment / 3% taxable income limit). Final approval subject to Rules Engine certified dispatch.',
+    statusNote: RULES_ENGINE_GATE.reason,
   };
 }
 
@@ -176,58 +195,7 @@ export function computeAssetsLiabilitiesReconciliation(
   };
 }
 
-// Standard Individual Slab Tax Calculation Adapter (AY 2026-27 / 2025-26)
-// First ৳ 3,50,000 = 0%
-// Next  ৳ 1,00,000 = 5%
-// Next  ৳ 4,00,000 = 10%
-// Next  ৳ 5,00,000 = 15%
-// Next  ৳ 5,00,000 = 20%
-// Rest             = 25%
-export function computeStandardSlabTax(taxableIncome: number, residentStatus: string = 'Resident'): number {
-  if (taxableIncome <= 0) return 0;
-  if (residentStatus === 'Non-Resident') {
-    return Math.round(taxableIncome * 0.25);
-  }
-
-  let remaining = taxableIncome;
-  let tax = 0;
-
-  // Slab 1: 350,000 at 0%
-  const slab1 = Math.min(remaining, 350000);
-  remaining -= slab1;
-
-  // Slab 2: 100,000 at 5%
-  if (remaining > 0) {
-    const slab2 = Math.min(remaining, 100000);
-    tax += slab2 * 0.05;
-    remaining -= slab2;
-  }
-
-  // Slab 3: 400,000 at 10%
-  if (remaining > 0) {
-    const slab3 = Math.min(remaining, 400000);
-    tax += slab3 * 0.10;
-    remaining -= slab3;
-  }
-
-  // Slab 4: 500,000 at 15%
-  if (remaining > 0) {
-    const slab4 = Math.min(remaining, 500000);
-    tax += slab4 * 0.15;
-    remaining -= slab4;
-  }
-
-  // Slab 5: 500,000 at 20%
-  if (remaining > 0) {
-    const slab5 = Math.min(remaining, 500000);
-    tax += slab5 * 0.20;
-    remaining -= slab5;
-  }
-
-  // Remaining at 25%
-  if (remaining > 0) {
-    tax += remaining * 0.25;
-  }
-
-  return Math.round(tax);
+/** Do not reintroduce client-authored statutory slabs or minimum-tax defaults. */
+export function computeStandardSlabTax(_taxableIncome: number, _residentStatus = 'Resident'): number {
+  throw new Error('RULES_ENGINE_NOT_CERTIFIED: ' + RULES_ENGINE_GATE.reason);
 }

@@ -8,6 +8,8 @@ import {
   aggregateExpenditure,
   computeAssetsLiabilitiesReconciliation,
   CANONICAL_METADATA,
+  RULES_ENGINE_GATE,
+  getApprovedRulesCalculation,
 } from '../adapters/calculationAdapter';
 
 import { GAP_REGISTER_ITEMS, GAP_REGISTER_SUMMARY } from '../data/gapRegisterData';
@@ -57,6 +59,20 @@ test('2. Canonical Rules Engine Metadata Contract', () => {
   );
 });
 
+test('2a. Central calculation dispatch is blocked and traceable by contract', () => {
+  assert.equal(RULES_ENGINE_GATE.status, 'BLOCKED_UNCERTIFIED');
+  assert.equal(RULES_ENGINE_GATE.hasApprovedCalculation, false);
+  assert.throws(
+    () => getApprovedRulesCalculation({
+      contractVersion: 'NBR_ERETURN_RULES_V1_PROPOSED',
+      assessmentYear: '2026-27', incomeYear: '2025-26',
+      taxpayerClass: 'INDIVIDUAL', residenceStatus: 'RESIDENT',
+      eventDates: {}, facts: {},
+    }),
+    /RULES_ENGINE_NOT_CERTIFIED/
+  );
+});
+
 test('3. Income Aggregation Logic', () => {
   const result = aggregateIncomeHeads(INITIAL_INCOME);
   assert.equal(result.employmentNet, 1370000);
@@ -69,29 +85,20 @@ test('3. Income Aggregation Logic', () => {
   assert.equal(result.totalTaxableIncome, expectedTaxable);
 });
 
-test('4. Standard Individual Slab Tax Calculation', () => {
-  // Income 0 = 0 tax
-  assert.equal(computeStandardSlabTax(0), 0);
-  // Income 350,000 (first slab at 0%) = 0
-  assert.equal(computeStandardSlabTax(350000), 0);
-  // Income 450,000 (first 350k free, next 100k @ 5%) = 5,000
-  assert.equal(computeStandardSlabTax(450000), 5000);
-  // Income 850,000 (350k @ 0%, 100k @ 5% = 5000, 400k @ 10% = 40000) = 45,000
-  assert.equal(computeStandardSlabTax(850000), 45000);
-
-  // Non-resident flat 25%
-  assert.equal(computeStandardSlabTax(1000000, 'Non-Resident'), 250000);
+test('4. Statutory slab calculation fails closed without an approved Rules Engine', () => {
+  for (const taxableIncome of [0, 350000, 450000, 850000, 1000000]) {
+    assert.throws(() => computeStandardSlabTax(taxableIncome), /RULES_ENGINE_NOT_CERTIFIED/);
+    assert.throws(() => computeStandardSlabTax(taxableIncome, 'Non-Resident'), /RULES_ENGINE_NOT_CERTIFIED/);
+  }
 });
 
-test('5. Rebate Adapter (R-002 boundary)', () => {
+test('5. Rebate adapter reports entered investment only, never a verified entitlement', () => {
   const rebateCalc = computeRebateAdapter(INITIAL_REBATE, 1951300);
   assert.equal(rebateCalc.totalEligibleInvestment, 180000);
-  // 15% of 180,000 = 27,000
-  // 3% of 1,951,300 = 58,539
-  // Lesser of 27,000 and 58,539 = 27,000
-  assert.equal(rebateCalc.estimatedRebateAmount, 27000);
+  assert.equal(rebateCalc.estimatedRebateAmount, 0);
   assert.equal(rebateCalc.ruleCode, 'R-002');
   assert.equal(rebateCalc.isStatutoryVerified, false);
+  assert.match(rebateCalc.statusNote, /No verified version-pinned Rules Engine/);
 });
 
 test('6. Expenditure Aggregation (IT-10BB)', () => {

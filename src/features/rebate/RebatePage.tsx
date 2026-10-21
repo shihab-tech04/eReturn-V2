@@ -39,6 +39,7 @@ export const RebatePage: React.FC = () => {
 
   const incAgg = aggregateIncomeHeads(income);
   const rebateCalc = computeRebateAdapter(rebate, incAgg.totalTaxableIncome);
+  // Investment totals are user-entered sums; eligible statutory rebates are not approved yet.
 
   const handleOpenAdd = () => {
     setCurrentEntry({
@@ -130,7 +131,7 @@ export const RebatePage: React.FC = () => {
           <p className="text-emerald-800 leading-relaxed">{t('ruleNoticeDesc')}</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 font-mono text-[11px] text-emerald-950">
             <div>Total Eligible Investment: {formatBDT(rebateCalc.totalEligibleInvestment, language)}</div>
-            <div>Estimated Allowable Rebate: {formatBDT(rebateCalc.estimatedRebateAmount, language)}</div>
+            <div>Estimated Allowable Rebate: {(language === 'bn' ? 'রুলস ইঞ্জিন যাচাই বাকি' : 'Pending verified Rules Engine')}</div>
           </div>
         </div>
       </div>
@@ -223,7 +224,7 @@ export const RebatePage: React.FC = () => {
               Total Invested: {formatBDT(rebateCalc.totalEligibleInvestment, language)}
             </span>
             <span className="font-mono font-bold text-emerald-800">
-              Rebate: {formatBDT(rebateCalc.estimatedRebateAmount, language)}
+              Rebate: {(language === 'bn' ? 'রুলস ইঞ্জিন যাচাই বাকি' : 'Pending verified Rules Engine')}
             </span>
           </div>
         </div>

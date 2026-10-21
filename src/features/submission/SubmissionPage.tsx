@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { RULES_ENGINE_GATE } from '../../adapters/calculationAdapter';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
 import { formatBDT } from '../../i18n/formatters';
@@ -35,7 +36,6 @@ export const SubmissionPage: React.FC = () => {
   } = useApp();
 
   const navigate = useNavigate();
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const incAgg = aggregateIncomeHeads(income);
 
@@ -43,7 +43,7 @@ export const SubmissionPage: React.FC = () => {
   const checks = [
     {
       id: 'assessment',
-      title: 'Assessment Parameters Verified',
+      title: 'Assessment Parameters Entered (not legally verified)',
       isPassed: Boolean(assessment.returnScheme && assessment.assessmentYear && assessment.residentStatus),
       path: '/user-panel/assessment',
     },
@@ -67,32 +67,18 @@ export const SubmissionPage: React.FC = () => {
     },
     {
       id: 'tax',
-      title: 'Tax & Payment Reconciliation Reviewed',
-      isPassed: taxPayment.totalTaxPayable >= 0,
+      title: 'Tax & Payment Calculation — blocked pending certified Rules Engine',
+      isPassed: RULES_ENGINE_GATE.hasApprovedCalculation,
       path: '/user-panel/tax-payment',
     },
   ];
 
-  const allPassed = checks.every((c) => c.isPassed);
-
   const handleLocalSubmit = () => {
-    if (!submission.declarationAccepted) {
-      alert('Please check the statutory taxpayer declaration affirmation box to proceed.');
-      return;
-    }
-
-    setIsSubmitting(true);
-    setTimeout(() => {
-      const token = `LOCAL-VERIFIED-${Date.now().toString(36).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`;
-      const timeStr = new Date().toLocaleString();
-      setSubmission({
-        ...submission,
-        isSubmittedLocally: true,
-        localSubmissionId: token,
-        localSubmissionTimestamp: timeStr,
-      });
-      setIsSubmitting(false);
-    }, 700);
+    // Fail closed, including when invoked programmatically. Do not create local
+    // filing serial numbers or imitate acknowledgement of an actual tax return.
+    window.alert(language === 'bn'
+      ? 'অনুমোদিত কর রুলস ইঞ্জিন ছাড়া রিটার্ন জমা দেওয়া যাবে না।'
+      : 'Submission blocked: no approved Rules Engine calculation or authorized filing integration.');
   };
 
   return (
@@ -115,8 +101,14 @@ export const SubmissionPage: React.FC = () => {
         </div>
       </div>
 
+      <div role="alert" className="bg-amber-50 border border-amber-300 text-amber-950 rounded-xl p-4 text-xs">
+        <strong>{language === 'bn' ? 'রিটার্ন জমা দেওয়া বন্ধ' : 'Filing is not available'}</strong>
+        <p className="mt-1">{language === 'bn'
+          ? 'অনুমোদিত করবর্ষ ও করদাতাভিত্তিক রুলস ইঞ্জিনের ফল এবং নিরাপদ জমা দেওয়ার সংযোগ যাচাই না হওয়া পর্যন্ত কোনো রিটার্ন জমা বা প্রাপ্তিস্বীকার তৈরি হবে না।'
+          : 'No filing or acknowledgement can be generated until certified year- and taxpayer-scoped tax calculations and an authorized submission API are verified. You may continue reviewing your entered draft.'}</p>
+      </div>
       {/* If already submitted locally */}
-      {submission.isSubmittedLocally ? (
+      {RULES_ENGINE_GATE.hasApprovedCalculation && submission.isSubmittedLocally ? (
         <div className="bg-white rounded-xl border border-emerald-300 shadow-lg p-8 text-center space-y-6 animate-in zoom-in-95">
           <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto">
             <CheckCircle2 className="w-10 h-10" />
@@ -145,7 +137,7 @@ export const SubmissionPage: React.FC = () => {
             </div>
             <div className="flex justify-between">
               <span className="text-gray-500">Tax Payable / Paid:</span>
-              <span className="font-bold text-emerald-800">{formatBDT(taxPayment.totalTaxPayable, language)}</span>
+              <span className="font-bold text-emerald-800">{(language === 'bn' ? 'রুলস ইঞ্জিন অনুমোদন বাকি' : 'Pending Rules Engine')}</span>
             </div>
           </div>
 
@@ -219,7 +211,7 @@ export const SubmissionPage: React.FC = () => {
           {/* Submission Summary Box */}
           <div className="bg-white rounded-xl border border-gray-200 shadow-xs p-6 space-y-4">
             <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wide border-b border-gray-100 pb-2">
-              Summary Figures for Assessment Year {assessment.assessmentYear}
+              Entered Draft Summary for Assessment Year {assessment.assessmentYear}
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs font-mono">
@@ -228,8 +220,8 @@ export const SubmissionPage: React.FC = () => {
                 <span className="text-sm font-bold text-gray-900">{formatBDT(incAgg.totalTaxableIncome, language)}</span>
               </div>
               <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
-                <span className="text-gray-500 block text-[11px]">Total Tax Liability:</span>
-                <span className="text-sm font-bold text-gray-900">{formatBDT(taxPayment.totalTaxPayable, language)}</span>
+                <span className="text-gray-500 block text-[11px]">Statutory Tax Liability (not calculated):</span>
+                <span className="text-sm font-bold text-gray-900">{(language === 'bn' ? 'রুলস ইঞ্জিন অনুমোদন বাকি' : 'Pending Rules Engine')}</span>
               </div>
               <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
                 <span className="text-gray-500 block text-[11px]">TDS + Advance Tax:</span>
@@ -323,12 +315,12 @@ export const SubmissionPage: React.FC = () => {
 
               <button
                 type="button"
-                disabled={isSubmitting || !submission.declarationAccepted}
+                disabled={!RULES_ENGINE_GATE.hasApprovedCalculation || !submission.declarationAccepted}
                 onClick={handleLocalSubmit}
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-emerald-700 hover:bg-emerald-800 disabled:bg-gray-300 disabled:cursor-not-allowed text-white text-xs font-bold px-6 py-3 rounded-lg shadow-sm transition-all cursor-pointer"
               >
                 <Send className="w-4 h-4" />
-                <span>{isSubmitting ? 'Verifying & Filing...' : t('submitReturnBtn')}</span>
+                <span>{t('submitReturnBtn')}</span>
               </button>
             </div>
           </div>

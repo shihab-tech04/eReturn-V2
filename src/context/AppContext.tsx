@@ -34,7 +34,6 @@ import {
   computeRebateAdapter,
   aggregateExpenditure,
   computeAssetsLiabilitiesReconciliation,
-  computeStandardSlabTax,
 } from '../adapters/calculationAdapter';
 
 interface ConfirmModalConfig {
@@ -150,14 +149,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const expTotal = aggregateExpenditure(expenditure);
     const rebateCalc = computeRebateAdapter(rebate, incAgg.totalTaxableIncome);
 
-    // Calculate slab tax
-    const slabTax = computeStandardSlabTax(incAgg.totalTaxableIncome, assessment.residentStatus);
-    const netTaxLiab = Math.max(0, slabTax - rebateCalc.estimatedRebateAmount);
-    
-    // Minimum tax: 5000 in Dhaka/Chittagong
-    const minimumTax = assessment.residentStatus === 'Resident' && incAgg.totalTaxableIncome > 350000 ? 5000 : 0;
-    const finalTaxLiab = Math.max(netTaxLiab, minimumTax);
-
+    // Statutory calculation unavailable: never derive official liabilities from
+    // hardcoded slab, rebate, residency, location or minimum-tax assumptions.
+    // A displayed numeric zero must never be interpreted as a legal tax result.
     // Withholding sum
     const totalTDS =
       (taxPayment.tdsSalary || 0) +
@@ -166,20 +160,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       (taxPayment.tdsRentAndOther || 0);
 
     const totalPaid = totalTDS + (taxPayment.advanceTaxPaid || 0) + (taxPayment.taxPaidWithReturn || 0);
-    const netPayable = finalTaxLiab - totalPaid;
 
     // Update TaxPayment
     setTaxPayment((prev) => ({
       ...prev,
       taxableIncome: incAgg.totalTaxableIncome,
-      grossTaxCalculated: slabTax,
-      taxRebateDeducted: rebateCalc.estimatedRebateAmount,
-      netTaxLiability: finalTaxLiab,
-      minimumTaxRateApplied: minimumTax,
-      totalTaxPayable: finalTaxLiab,
+      grossTaxCalculated: 0,
+      taxRebateDeducted: 0,
+      netTaxLiability: 0,
+      minimumTaxRateApplied: 0,
+      totalTaxPayable: 0,
       totalTDS,
       totalTaxPaidAndCredited: totalPaid,
-      netPayableOrRefundable: netPayable,
+      netPayableOrRefundable: 0,
     }));
 
     // Update Expenditure Total
@@ -192,7 +185,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setRebate((prev) => ({
       ...prev,
       totalInvestment: rebateCalc.totalEligibleInvestment,
-      estimatedRebateAmount: rebateCalc.estimatedRebateAmount,
+      estimatedRebateAmount: 0,
     }));
 
     // Update Assets & Liabilities reconciliation
@@ -263,7 +256,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setRebate({
       entries: [],
       totalInvestment: 0,
-      statutoryRebateCeilingRule: 'R-002: Adapter Active',
+      statutoryRebateCeilingRule: 'R-002: RULES_ENGINE_NOT_CERTIFIED',
       estimatedRebateAmount: 0,
     });
     setExpenditure({
