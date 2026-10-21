@@ -13,9 +13,10 @@ import {
   ChevronDown,
   Layers,
   KeyRound,
+  Menu,
 } from 'lucide-react';
 
-export const Header: React.FC = () => {
+export const Header: React.FC<{onOpenMobileNav?: () => void}> = ({onOpenMobileNav}) => {
   const {
     language,
     toggleLanguage,
@@ -73,7 +74,13 @@ export const Header: React.FC = () => {
   return (
     <header className="bg-emerald-800 text-white shadow-md border-b-2 border-emerald-950 sticky top-0 z-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex flex-wrap lg:flex-nowrap items-center justify-between min-h-16 py-2 lg:py-0 gap-y-2">
+          {/* Mobile navigation uses the same sidebar data and preserves desktop header. */}
+          <div className="flex min-w-0 items-center gap-2">
+            <button type="button" onClick={onOpenMobileNav} aria-label={language === "bn" ? "নেভিগেশন খুলুন" : "Open navigation"}
+              aria-controls="mobile-taxpayer-nav" className="lg:hidden shrink-0 h-10 w-10 flex items-center justify-center rounded-md bg-emerald-900/70 border border-emerald-600">
+              <Menu size={19}/>
+            </button>
           {/* Brand & Emblem */}
           <div
             className="flex items-center gap-3 cursor-pointer group"
@@ -100,8 +107,9 @@ export const Header: React.FC = () => {
             </div>
           </div>
 
-          {/* Right Controls */}
-          <div className="flex items-center gap-2 sm:gap-4">
+          </div>
+          {/* Controls wrap to a second readable row on mobile/tablet, not outside the viewport. */}
+          <div className="flex min-w-0 basis-full lg:basis-auto items-center justify-between lg:justify-end gap-1.5 sm:gap-3">
             {/* Assessment Year Selector */}
             <div className="flex items-center gap-1.5 bg-emerald-900/80 px-2.5 py-1 rounded-md border border-emerald-700">
               <span className="text-xs text-emerald-200 font-medium hidden md:inline">
