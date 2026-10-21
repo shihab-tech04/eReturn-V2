@@ -205,21 +205,21 @@ export const ReturnViewPage: React.FC = () => {
                 <td className="border border-gray-300 px-3 py-1.5 font-mono text-center w-12">19</td>
                 <td className="border border-gray-300 px-3 py-1.5">Gross Tax on Total Taxable Income</td>
                 <td className="border border-gray-300 px-3 py-1.5 text-right font-mono font-medium w-44">
-                  {formatBDT(taxPayment.grossTaxCalculated, language)}
+                  {(language === 'bn' ? 'রুলস ইঞ্জিন অনুমোদন বাকি' : 'Not calculated — Rules Engine pending')}
                 </td>
               </tr>
               <tr>
                 <td className="border border-gray-300 px-3 py-1.5 font-mono text-center">20</td>
                 <td className="border border-gray-300 px-3 py-1.5">Tax Rebate on Eligible Investment (Schedule 24D)</td>
                 <td className="border border-gray-300 px-3 py-1.5 text-right font-mono font-medium text-emerald-700">
-                  - {formatBDT(taxPayment.taxRebateDeducted, language)}
+                  - {(language === 'bn' ? 'রুলস ইঞ্জিন অনুমোদন বাকি' : 'Not calculated — Rules Engine pending')}
                 </td>
               </tr>
               <tr>
                 <td className="border border-gray-300 px-3 py-1.5 font-mono text-center">21</td>
                 <td className="border border-gray-300 px-3 py-1.5">Net Tax Liability (or Minimum Tax applied)</td>
                 <td className="border border-gray-300 px-3 py-1.5 text-right font-mono font-bold">
-                  {formatBDT(taxPayment.netTaxLiability, language)}
+                  {(language === 'bn' ? 'রুলস ইঞ্জিন অনুমোদন বাকি' : 'Not calculated — Rules Engine pending')}
                 </td>
               </tr>
               <tr>
@@ -248,16 +248,20 @@ export const ReturnViewPage: React.FC = () => {
               <tr className="bg-gray-100 font-bold">
                 <td className="border border-gray-300 px-3 py-2 font-mono text-center">25</td>
                 <td className="border border-gray-300 px-3 py-2 uppercase">
-                  {taxPayment.netPayableOrRefundable >= 0 ? 'NET TAX PAYABLE' : 'NET REFUND CLAIMABLE'}
+                  {language === 'bn' ? 'পরিশোধযোগ্য / ফেরতযোগ্য — যাচাই বাকি' : 'TAX PAYABLE / REFUND — NOT CALCULATED'}
                 </td>
                 <td className="border border-gray-300 px-3 py-2 text-right font-mono text-sm text-emerald-950">
-                  {formatBDT(Math.abs(taxPayment.netPayableOrRefundable), language)}
+                  {(language === 'bn' ? 'রুলস ইঞ্জিন অনুমোদন বাকি' : 'Not calculated — Rules Engine pending')}
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
 
+        <p className="mt-3 text-xs text-amber-900 border border-amber-200 bg-amber-50 rounded-md p-3" role="status">
+          {language === 'bn' ? 'এখানে কর, রেয়াত ও নিষ্পত্তির অঙ্ক প্রদর্শিত হয়নি কারণ নিয়ন্ত্রিত রুলস ইঞ্জিন এখনো অনুমোদিত নয়।'
+           : 'Statutory tax, rebate and settlement values are deliberately unavailable until an approved versioned Rules Engine result is connected. Entered withholding is not a verified tax credit.'}
+        </p>
         {/* PART IV: Declaration and Verification */}
         <div className="space-y-4 pt-2">
           <div className="bg-gray-100 font-bold px-3 py-1 text-xs border border-gray-300 uppercase">
