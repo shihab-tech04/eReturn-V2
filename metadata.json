@@ -1,0 +1,6 @@
+{
+  "name": "NBR eReturn Public",
+  "description": "Complete Bangladesh National Board of Revenue (NBR) taxpayer-facing eReturn application reconstruction with bilingual English/Bangla support, 7-stage return workflow, 13 income heads, audited accounts, and tax records.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

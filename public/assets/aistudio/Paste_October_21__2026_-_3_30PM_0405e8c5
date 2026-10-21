@@ -1,0 +1,950 @@
+# MASTER PROJECT PROMPT — NBR eReturn Public
+## Complete Taxpayer-Facing eReturn Application Reconstruction
+
+### 1. ROLE AND MISSION
+
+Act as a senior Bangladesh NBR eReturn Product Architect, UX/UI Engineer, React/TypeScript Developer, Tax Form Systems Analyst and Quality Assurance Engineer.
+
+**Project name:** NBR eReturn Public
+
+**Suggested GitHub repository:** `NBR-eReturn-Public`
+
+**Mission:** Build a complete, functioning, responsive, bilingual taxpayer-facing eReturn application based on the existing Bangladesh NBR eReturn experience and our previously documented reconstruction requirements.
+
+This project is NOT:
+
+- The NBR Rules Engine Admin.
+- The NBR Office Management system.
+- An eLedger application.
+- A tax-payment gateway.
+- A generic tax dashboard or landing-page website.
+- A redesign unrelated to the reference eReturn system.
+
+The user will create this application in Google Gemini, publish the source to a new GitHub repository and provide that repository to ChatGPT for continuing development and verification.
+
+**Start implementing the frontend immediately. Do not stop after producing wireframes, explanations or a roadmap.**
+
+### 2. PROJECT BACKGROUND AND EXISTING BASELINE
+
+A substantial NBR eReturn reconstruction program already exists.
+
+Preserve this work rather than starting its requirements from scratch.
+
+Previously established artifacts include:
+
+- ER-1 through ER-4 research and system mapping.
+- ER-5: 168 mapped fields organized into 22 module groups.
+- ER-6A/ER-6B: functional and dependency mapping, including 64 recorded navigation/flow edges.
+- FS-1 through FS-8: accepted public-system specification work.
+- Workstream B: full-system module gap analysis.
+- A 47-item gap register, last recorded as 16 MATCH, 10 CONFLICT, 10 NOT VERIFIED, 9 PARTIAL and 2 MISSING.
+- Authenticated reference-interface observations.
+- Corporate Audited Accounts requirements.
+- Golden UI and UX conventions.
+- Separate, frozen Rules Engine legal artifacts and regression tests.
+
+These figures are historical coverage records, not claims that every field, calculation or interaction is already independently certified.
+
+When the original field/flow registry becomes accessible, use its exact field identities and dependencies. Never fabricate the missing entries merely to reach the historical totals.
+
+### 3. REFERENCE ERETURN APPLICATION
+
+Historical reference environments:
+
+1. `https://staging.etaxnbr.gov.bd`
+2. `http://103.92.85.227:42001/#/user-panel/home`
+
+The second address was supplied as a taxpayer-facing interface reference and inspected in an authenticated browser session on 20 October 2026. Its identity as an official NBR production domain was NOT independently established.
+
+Use the documented reference observations to reconstruct the UI.
+
+If the reference site is accessible, use strictly authorized, read-only inspection.
+
+Do not attempt to bypass login, CAPTCHA, access restrictions, cross-origin restrictions or protected taxpayer workflows.
+
+Do not submit any actual return, payment, certificate request, refund request, claim or taxpayer data.
+
+If authentication is unavailable, continue development using the documented screen and interaction inventory below. Record missing reference evidence rather than inventing behavior.
+
+Do not connect the new application to the reference system's private APIs.
+
+### 4. PRODUCT OBJECTIVE
+
+Build the complete taxpayer journey:
+
+Home → Assessment → Income → Rebate → Expenditure → Assets & Liabilities → Tax & Payment → Return View → Submission → Tax Record.
+
+Also include the separately evidenced taxpayer-account and corporate features:
+
+- Profile.
+- Change Password.
+- TIN Certificate.
+- Acknowledgement Receipt.
+- Challan History.
+- Certificate Request and Status.
+- Revised Return.
+- Return History.
+- Audited Accounts.
+
+Use the observed reference structure as the functional and visual baseline.
+
+Implement all verified interactions faithfully. Improve usability and accessibility where documented reference defects exist, without changing the meaning of the forms or inventing legal rules.
+
+### 5. TECHNICAL STACK
+
+Create a standalone production-structured frontend using:
+
+- React 18 or later compatible stable version.
+- TypeScript.
+- Vite.
+- React Router.
+- Tailwind CSS.
+- Existing reusable component patterns.
+- Lucide icons.
+- React Hook Form or a similarly robust typed form approach.
+- Zod or an equivalent schema-validation tool for non-statutory input integrity.
+- i18next/react-i18next for English and Bangla.
+- Vitest and React Testing Library.
+- Playwright for browser acceptance tests when available.
+
+Use modular feature folders and reusable components.
+
+The application must build successfully and run independently without requiring the Rules Engine or live Supabase.
+
+Do not create unnecessary infrastructure.
+
+### 6. VISUAL DESIGN REQUIREMENTS
+
+The primary objective is **high-fidelity reconstruction of the existing citizen eReturn UI**, not a new visual theme.
+
+Reference characteristics:
+
+- Citizen-facing eReturn sidebar.
+- Assessment-year selector.
+- Account/profile menu.
+- Clearly structured content areas.
+- Step-based return preparation.
+- Multiple-column desktop forms.
+- Compact cards and sections.
+- Shared form controls.
+- Contextual help.
+- Consistent navigation and action buttons.
+- Return preview and document presentation.
+
+Preserve the approved Golden UI principles.
+
+Do not use the Office Management Admin shell, Rules Engine tables or admin navigation as the public eReturn layout.
+
+Do not add unrelated dashboards, marketing banners, promotional illustrations, gradients or decorative components.
+
+Use consistent typography, visual hierarchy, spacing, inputs, buttons, alerts, tables and drawers.
+
+Reduce unnecessary instructional text by placing secondary explanations in accessible tooltips.
+
+Keep essential legal or form instructions visible.
+
+Desktop reproduction is the first acceptance priority because the latest detailed reference audit focused on desktop. Implement sound responsive layouts, but do not claim exact mobile parity until separately verified.
+
+### 7. APPLICATION SHELL AND NAVIGATION
+
+Create a reusable taxpayer application shell.
+
+Main elements:
+
+- eReturn logo and identity.
+- Sidebar navigation.
+- Assessment-year selector.
+- Profile/account menu.
+- Main page title.
+- Current return preparation step.
+- Form content area.
+- Back, Save Draft and Save & Continue actions where observed.
+- Language switching where supported.
+- Appropriate document/return navigation.
+
+The authenticated reference had a seven-stage top-level preparation flow:
+
+1. Assessment.
+2. Income.
+3. Rebate.
+4. Expenditure.
+5. Assets & Liabilities.
+6. Tax & Payment.
+7. Return View.
+
+Implement step navigation with clear active, completed and unavailable states.
+
+Keep later Submission and Tax Record workflows connected without inventing unobserved step numbers.
+
+When a step is completed, relevant entered form data should remain available during the local session.
+
+Unverified server persistence must not be represented as a successful backend save.
+
+### 8. ASSESSMENT MODULE
+
+Implement Assessment Information and all observed selection controls.
+
+Required visible sections:
+
+**Assessment Information**
+
+- Return Scheme.
+- Assessment Year.
+- Income Year From.
+- Income Year To.
+- Resident Status.
+
+**Tax Exempted Income**
+
+- Any fully tax-exempt income? Yes/No.
+
+**Taxable Income**
+
+- Any taxable income in the income year? Yes/No.
+
+**Heads of Income**
+
+- Income from Employment.
+- Income from Rent.
+- Income from Agriculture.
+- Income from Business or Profession.
+- Capital Gains.
+- Income from Financial Assets.
+- Income from Other Sources.
+
+**Additional Income Categories**
+
+- As a Partner of a Firm.
+- As a Member of an Association of Persons.
+- Income Earned Outside Bangladesh.
+- Income of Spouse or Minor Children Not Assessed Separately.
+
+**Voluntary Disclosure**
+
+- Voluntary Disclosure of Income under the First Schedule.
+
+Implement the selection and dependency state model.
+
+Selected income heads determine which relevant Income subsections appear.
+
+When removing a selected income category containing local entries, display a confirmation and preserve all records if the action is cancelled.
+
+Do not automatically erase user-entered details without confirmation.
+
+The observed reference had a defect where clicking a help icon within a checkbox label could toggle the checkbox and trigger a data-removal warning.
+
+**Correct this:** help controls must be separate accessible buttons, never nested interactive elements inside checkbox labels.
+
+Income Year From and To must have correct accessible labels, not the reference's unrelated `Recipient's username` label.
+
+Do not infer statutory date restrictions solely from the reference date picker's appearance.
+
+### 9. INCOME MODULE — COMPLETE NAVIGATION
+
+Implement all 13 observed income branches.
+
+#### A. Employment
+Reference route: `#/user-panel/employment`
+
+Four observed Employment Type choices:
+
+- Government Pay Scale — Payment through iBAS++.
+- Government Pay Scale — Payment not through iBAS++.
+- Private / Other.
+- The fourth option must be retrieved from source evidence; do not invent its label.
+
+Support add, edit, remove, source selection, line-item details, summary and form progression wherever evidence supports them.
+
+#### B. Financial Assets
+Reference route: `#/user-panel/financial-assets`
+
+The reference exposed seven financial-asset type options.
+
+Retrieve and reproduce their exact labels if the source is available.
+
+Implement category-specific forms and totals only where documented.
+
+#### C. Rent
+Reference route: `#/user-panel/rent`
+
+Support:
+
+- Multiple property entries.
+- Property detail panels.
+- Rent Summary.
+- Property-related income and expenses.
+- Property-type-dependent fields.
+- Add another property.
+- Edit/remove confirmation.
+- Per-property and aggregated summaries.
+
+The observed Other Property schema included land, factory/building, business premises, furniture/fixtures, machinery, personal vehicle and other capital asset categories.
+
+Preserve applicable form differences.
+
+#### D. Agriculture
+Reference route: `#/user-panel/agriculture`
+
+The reference exposed five agriculture type options.
+
+Do not invent hidden subforms, categories or special tax calculations.
+
+#### E. Business or Profession
+Reference route: `#/user-panel/business`
+
+The reference exposed eleven business-category choices.
+
+Implement reusable business-entry panels, details, expenses and summary structures subject to evidence.
+
+#### F. Capital Gains
+Reference route: `#/user-panel/capital-gain`
+
+The reference exposed thirteen gain-type choices.
+
+Provide source-aware fields, asset details and gain-summary structures only when backed by existing mapping or authoritative requirements.
+
+#### G. Income from Other Sources
+Reference route: `#/user-panel/income-from-other-sources`
+
+The reference exposed eleven income-type options.
+
+#### H. Firm Income
+Reference route: `#/user-panel/firm-etc`
+
+Support multiple firm entries, identity, relevant shares and recorded income details.
+
+#### I. Association of Persons
+Reference route: `#/user-panel/aop`
+
+Support multiple AoP entries and relevant member/income fields.
+
+#### J. Foreign Income
+Reference route: `#/user-panel/foreign-income`
+
+Implement country selection, foreign income information and observed foreign-tax fields.
+
+The original selector had a large country list; use a source-controlled standard country dataset rather than fabricating jurisdiction-specific tax treatment.
+
+#### K. Spouse or Minor Children
+Reference route: `#/user-panel/spouse-income`
+
+Observed relationship choices:
+
+- Spouse.
+- Daughter.
+- Son.
+
+Provide the observed source and income detail fields.
+
+#### L. Tax-Exempted Income
+Reference route: `#/user-panel/tax-exempted-income`
+
+The reference exposed eleven exemption-type options.
+
+Do not grant exemption eligibility based only on category selection.
+
+#### M. Voluntary Disclosure
+Reference route: `#/user-panel/voluntary-disclosure-income`
+
+Implement:
+
+- Add-row action.
+- Income head selection.
+- Particulars.
+- Assessment year of earning.
+- Amount fields.
+- Net-income summary.
+- Declaration control.
+
+Never invent voluntary-disclosure rates or legal benefits.
+
+### 10. REBATE MODULE
+
+Build the Rebate step with the twelve observed category groups, to be populated exactly from the recovered field inventory or authorized reference.
+
+Support:
+
+- Category selection.
+- Multiple eligible investment or contribution entries.
+- Amount entry.
+- Evidence/reference fields where documented.
+- Summary table.
+- Total calculation inputs.
+- Rule applicability status.
+- Back, Save Draft and Save & Continue.
+
+Keep investment amount, statutory eligibility and approved rebate amount as separate concepts.
+
+Current AY 2026–27 legal calculation mapping `R-002` remains a known missing integration item.
+
+Do not hardcode a numeric rebate formula based on a screenshot or create an unsupported result.
+
+Provide a typed calculation-adapter boundary for future verified Rules Engine integration.
+
+### 11. EXPENDITURE MODULE
+
+Implement all observed expenditure groups from the prior reference evidence.
+
+The module should support:
+
+- Expandable grouped sections.
+- Line-item input.
+- Subtotals.
+- Total expenditure.
+- Consistent number formatting.
+- Contextual help.
+- Form continuity.
+- Return-flow navigation.
+
+Preserve the exact evidence-backed group names when available.
+
+Do not invent expenses or defaults for a real taxpayer.
+
+### 12. ASSETS & LIABILITIES MODULE
+
+Create the complete citizen statement interface using the source-backed field map.
+
+Major concepts:
+
+- Assets.
+- Liabilities.
+- Net wealth.
+- Prior-year net wealth where relevant.
+- Sources of funds.
+- Uses of funds.
+- Income and expenditure relationships.
+- Reconciliation summary.
+
+Provide side-by-side comparison of relevant statement totals where the original reference supports it.
+
+Make amount columns clearly aligned and totals visually distinguishable.
+
+Link repeated line items through shared components.
+
+Implement local arithmetic for purely mathematical aggregation where the inputs and formulas are expressly defined in the controlled UI model.
+
+Do not invent legally significant source-of-funds formulas, exemptions, thresholds or tax entitlements.
+
+Known gaps in arithmetic, validation, persistence and conditional disclosures remain subject to later acceptance testing.
+
+### 13. TAX & PAYMENT MODULE
+
+Recreate the observed tax-computation and payment-information screens.
+
+This module must include the UI for:
+
+- Tax computation summary.
+- Relevant tax liability components.
+- Withholding tax information.
+- Advance tax information.
+- Tax deducted or collected at source.
+- Creditable amounts where independently established.
+- Payment references.
+- Challan information.
+- Payable/refundable summary.
+- Relevant supporting entries and status.
+
+**Scope restriction:**
+
+Actual payment execution is permanently outside this project.
+
+Do NOT build:
+
+- Real payment-gateway connections.
+- Payment initiation.
+- Bank or card charging.
+- Mobile financial service charging.
+- Live fund transfer.
+- Treasury settlement.
+- Real challan issuance.
+- Payment-retry execution.
+
+A payment reference or challan record must never be generated as though it were an official paid transaction.
+
+This module is about reproducing the **eReturn calculation, tax-payment information and reconciliation interface**.
+
+A recorded tax deduction does not automatically establish entitlement to an eLedger credit.
+
+Existing `T-004` current tax/payment rule mapping remains an unresolved integration requirement.
+
+### 14. RETURN VIEW MODULE
+
+Recreate:
+
+- Return preview.
+- Summary/detailed views where observed.
+- Relevant sections and schedules.
+- Field-to-output traceability.
+- English/Bangla display where supported.
+- Print-friendly document styling.
+- Document navigation.
+- Return-view validations.
+
+The preview must derive from the actual frontend's entered test data.
+
+Do not display fabricated taxpayer values as if they came from NBR.
+
+Build deterministic rendering for known structures.
+
+Do not claim that a locally generated preview is an official filed return.
+
+Preserve established form labels and document organization where source-backed.
+
+### 15. SUBMISSION MODULE
+
+Build the full visible submission-preparation interface.
+
+Support:
+
+- Return completeness review.
+- Missing-information validation.
+- Summary before submission.
+- User declarations and confirmations where evidenced.
+- Error presentation.
+- Submission readiness.
+- Navigation back to incomplete sections.
+- Separate local confirmation state for frontend testing.
+
+Do not submit a return to an actual NBR endpoint.
+
+Do not manufacture official submission IDs, acknowledgements or receipt timestamps.
+
+Do not create a functioning production Submit action until the authorized backend, user identity, legal and integration conditions are satisfied.
+
+### 16. TAX RECORD MODULE
+
+Build taxpayer-accessible record screens for:
+
+- TIN Certificate.
+- Acknowledgement Receipt.
+- Return View/Final Return.
+- Challan History.
+- Certificate Request.
+- Certificate Status.
+- Return History.
+
+Observed Certificate Status headings:
+
+- TIN No.
+- Assessment Year.
+- Submission Date.
+- Submission Section.
+- Return Register Serial.
+- Zone Name.
+- Circle Name.
+- Total Income.
+- Net Wealth.
+- Total Tax Paid.
+- Request Type.
+- Request Status.
+- Reject Reason.
+
+Observed Challan columns:
+
+- SL.
+- Challan No.
+- Challan Date.
+- Section.
+- Taxes Zone.
+- Taxes Circle.
+- Bank Name.
+- Challan Amount.
+- View Challan.
+
+Support correct empty states, search and relevant record details.
+
+Do not fabricate official certificates, registered submissions, challans or taxpayer records.
+
+The earlier reference session showed an unresolved `Loading Return View` state and an inaccessible cross-origin History redirect. These remain evidence gaps, not authority to invent server behavior.
+
+### 17. REVISED RETURN
+
+Implement the Revised Return UI structure as a conditional taxpayer workflow.
+
+Required conceptual support:
+
+- Previous-return association.
+- Assessment year.
+- Revised-return route/eligibility.
+- Required reason and relevant differences where the controlling route requires them.
+- Linked changed fields.
+- Review and confirmation.
+- Version/filing lineage.
+- Readiness and validation states.
+
+Do not apply the restrictions of one statutory revised-return route indiscriminately to every other legal route.
+
+The observed reference showed a blank revised-return body for one account state; this does not prove how the module behaves for eligible taxpayers.
+
+Mark unavailable legal/business conditions explicitly and prevent unsupported submission.
+
+### 18. AUDITED ACCOUNTS AND CORPORATE SUPPORT
+
+Create the Audited Accounts taxpayer interface as a distinct feature.
+
+Reference empty state:
+
+`Add a business to get started`
+
+Observed controls:
+
+- Manage Business.
+- Add New Business.
+
+Observed modal fields:
+
+- Business Name.
+- Business Type.
+
+Observed business-type choices:
+
+- Trading.
+- Service.
+- Bank and Finance.
+- Insurance.
+- Manufacturing and Trading.
+
+Use the same business creation form across both observed entry points.
+
+Develop source-backed financial statement structures and manual-entry experiences.
+
+An earlier corporate workstream specified:
+
+- Financial statements with reusable items.
+- Current and previous year columns.
+- Notes.
+- Up to three note nesting levels.
+- Parent note → child breakdown → sub-note calculations.
+- Linked derived amounts.
+- Source/reference mapping.
+- Audited report preview.
+- Independent Income Computation Sheet relationship.
+
+Manual entry is the primary required functional path.
+
+An uploaded audited financial report may later be extracted into canonical fields, but OCR, PDF parsing and AI extraction must not silently become verified accounts or tax calculations.
+
+Do not invent official auditor attestation, signature authenticity or company-tax computations.
+
+### 19. PROFILE AND ACCOUNT SCREENS
+
+Recreate the observed citizen Profile screen using synthetic development-only account data.
+
+Reference field groups included:
+
+- Personal identity summary.
+- NID information.
+- TIN information.
+- Tax zone and circle.
+- Contact and correspondence information.
+- Spouse information.
+
+Observed actions included:
+
+- Edit eligible fields.
+- Save Changes.
+- Sync with eTIN.
+
+Do not perform real eTIN synchronization in the initial frontend.
+
+Also recreate Change Password UI with:
+
+- Old Password.
+- New Password.
+- Confirm New Password.
+- Visibility controls.
+- Matching/validation feedback.
+
+Do not collect actual credentials or represent frontend-only changes as a successful password update.
+
+The initial build should use an isolated development-session abstraction. Do not invent or bypass real NBR authentication.
+
+### 20. SHARED FORMS AND INTERACTION RULES
+
+Build reusable components for:
+
+- Input.
+- Numeric input.
+- Currency/amount display.
+- Date picker.
+- Searchable select.
+- Radio group.
+- Checkbox.
+- Field help.
+- Form section.
+- Collapsible group.
+- Repeated-entry list.
+- Confirmation modal.
+- Summary card.
+- Validation summary.
+- Table.
+- Mobile card.
+- Detail drawer.
+- Return step navigation.
+- File/document preview.
+- Attachment/evidence row.
+
+Preserve values when users move between steps during the same local session.
+
+Actions must have real, testable frontend behavior.
+
+Support add, edit, cancel, remove and undo where the controlled design calls for them.
+
+Destructive removal must be confirmed.
+
+Form controls must have visible labels and keyboard support.
+
+Dropdowns with more than five entries require search, with applicable options alphabetically ordered.
+
+Never place an interactive help button inside another clickable input label.
+
+Do not introduce unnecessary non-eReturn functionality.
+
+### 21. BILINGUAL SUPPORT
+
+Implement English and Bangla across:
+
+- Navigation.
+- Form labels.
+- Help.
+- Action buttons.
+- Validation messages.
+- Modal content.
+- Summary information.
+- Record statuses.
+- Return preview labels where authoritative translations are known.
+
+Use consistent font configuration for both languages.
+
+Preserve Bangla typography and digit presentation conventions where source-backed.
+
+Do not invent official translated statutory terminology where the exact official wording has not been verified.
+
+### 22. CALCULATION ARCHITECTURE — IMPORTANT BOUNDARY
+
+The legal calculation system is a separate, ongoing NBR Agent/Rules Engine workstream.
+
+Frozen canonical registry:
+
+`FINAL_2026_09_30`
+
+Rule count: 366.
+
+Registry SHA-256:
+
+`34902bac07a459a4f0c051b90bfe3b4c492f2465d06c661bab18ab7f36252184`
+
+The original 137 archived regressions and 32 Agent extension tests must not be represented as certified current runtime calculations.
+
+The new public frontend needs a calculation adapter architecture, not an invented tax engine.
+
+Separate:
+
+1. Taxpayer input.
+2. Form validation.
+3. Verified legal parameter.
+4. Calculation request.
+5. Calculation result.
+6. Tax-year/provision applicability.
+7. Display and print output.
+
+Use typed interfaces for a future authorized Rules Engine connector.
+
+For a required calculation not yet legally verified, preserve the input UI and show an appropriate pending/unavailable calculation state. Do not insert fabricated amounts or a zero default.
+
+Pure display aggregation may run only when its arithmetic contract is explicitly known.
+
+Do not use a different AI model's generated result as statutory truth.
+
+### 23. DATA AND PRIVACY
+
+Do not use actual taxpayer identities, TINs, NIDs, bank information, contact details, earnings or uploaded personal tax documents.
+
+Use clearly isolated synthetic development fixtures only.
+
+No live production database connection.
+
+No hidden production API calls.
+
+No privileged tokens in browser code.
+
+No backend data modification.
+
+Do not call localStorage shared persistence or equate temporary browser state with a successful server save.
+
+A local draft export/import option may be provided for non-sensitive development fixtures, with clear functional behavior.
+
+Avoid fake success confirmations for return filing, payment, certificates or backend synchronization.
+
+### 24. PROJECT STRUCTURE
+
+Use a feature-based architecture, for example:
+
+- `src/app` — entry, routes and providers.
+- `src/layouts` — citizen eReturn shell.
+- `src/features/home`
+- `src/features/assessment`
+- `src/features/income`
+- `src/features/rebate`
+- `src/features/expenditure`
+- `src/features/assets-liabilities`
+- `src/features/tax-payment`
+- `src/features/return-view`
+- `src/features/submission`
+- `src/features/tax-record`
+- `src/features/revised-return`
+- `src/features/audited-accounts`
+- `src/features/profile`
+- `src/components`
+- `src/contracts`
+- `src/adapters`
+- `src/i18n`
+- `src/styles`
+- `src/tests`
+
+Define all form models, validation schema, conditional display rules and route contracts in reusable modules.
+
+Maintain an evidence-backed field and navigation registry that can later reconcile with the original ER-5/ER-6 data.
+
+### 25. WORK PHASES
+
+Execute the project in this order.
+
+**Phase 1 — Foundation and citizen shell**
+
+Create the actual application, route structure, theme, bilingual support, shared components and base tests.
+
+**Phase 2 — Assessment**
+
+Implement the complete Assessment form, yes/no dependencies and income-source selection.
+
+**Phase 3 — Income**
+
+Implement the 13 income branches and their confirmed subforms, selection menus, repeatable entries and summary structure.
+
+**Phase 4 — Rebate, Expenditure, Assets & Liabilities**
+
+Build these three complete user-facing modules with reusable forms and legally gated calculations.
+
+**Phase 5 — Tax & Payment, Return View**
+
+Implement the calculation-display boundary and the print/preview experience. No real payment execution.
+
+**Phase 6 — Submission, Tax Record and Revised Return**
+
+Implement forms, states, navigation, local readiness validation and record views without claiming official backend transactions.
+
+**Phase 7 — Audited Accounts and Corporate UI**
+
+Implement business selection, statement entry, note hierarchy and report presentation.
+
+**Phase 8 — UI Parity, Accessibility and QA**
+
+Audit every implemented screen against the confirmed reference evidence, repair usability and field-flow defects, and run desktop acceptance tests.
+
+Continue phase by phase without unnecessarily revisiting solved code.
+
+Do not treat a phase as complete merely because its screen renders.
+
+### 26. MANDATORY ACCEPTANCE TESTS
+
+Create executable automated tests for:
+
+- Every top-level route.
+- Seven-stage return stepper.
+- All 13 Income navigation branches.
+- Assessment income-source selection.
+- Conditional forms.
+- Add/edit/remove operations.
+- Remove cancellation.
+- Form field retention.
+- Date and amount input.
+- Searchable dropdowns.
+- Rebate category navigation.
+- Expenditure summaries.
+- Assets/liabilities disclosure.
+- Missing calculation data.
+- Payable/refund display states.
+- Return preview data consistency.
+- Submission readiness validation.
+- Tax Record empty states.
+- Revised-return prerequisite states.
+- Audited Accounts empty state.
+- Business creation form.
+- Three-level note UI.
+- EN/BN labels.
+- Accessible control names.
+- Keyboard navigation.
+- Desktop layout and overflow.
+- No accidental live payment or submission call.
+
+Use the 47-item Workstream B gap register as an acceptance backlog once its exact original rows are available.
+
+Do not change its historical statuses without direct new evidence.
+
+The previously unresolved `R-002`, `T-004` and revised-return findings must remain tracked.
+
+### 27. GITHUB DELIVERY
+
+Prepare this as an independent repository.
+
+Include:
+
+- Complete source code.
+- Correct `package.json`.
+- Lockfile.
+- Vite configuration.
+- TypeScript configuration.
+- Router configuration.
+- CSS/theme files.
+- Bilingual locale files.
+- Unit tests.
+- Browser tests where supported.
+- README.
+- `.gitignore`.
+- `.env.example` without secrets.
+- Feature coverage matrix.
+- Field/route evidence mapping.
+- Known gap register.
+- Build and deployment instructions.
+
+Ensure production builds work with a GitHub Pages repository base path if that deployment method is selected.
+
+Do not modify existing NBR Office Management, TaxPay, eLedger, Rules Engine or original legal-repository sources.
+
+### 28. COMPLETION REQUIREMENTS
+
+Before reporting the Gemini frontend work as finished:
+
+1. Start the application successfully.
+2. Run its build.
+3. Run TypeScript and configured tests.
+4. Verify route navigation.
+5. Verify meaningful interactions.
+6. Verify core desktop pages.
+7. Verify bilingual display.
+8. Confirm no real payments or submissions were triggered.
+9. Document every missing reference field or unsupported behavior.
+10. Produce a GitHub-ready source tree.
+
+A complete frontend implementation is not the same as verified 1:1 reference equivalence, legal correctness or production readiness.
+
+Report these dimensions separately.
+
+### 29. FINAL DELIVERABLE
+
+Deliver a fully functioning taxpayer-facing NBR eReturn frontend ready to publish into a new GitHub repository.
+
+Use the actual existing eReturn user journeys and the controlled information above.
+
+Do not substitute an Office Admin interface or generic financial dashboard.
+
+Do not block UI development waiting for complete legal or backend certification.
+
+Do not invent missing information to conceal research gaps.
+
+Build and test the real frontend in progressively complete modules.
+
+The project will later be continued directly from its GitHub source by ChatGPT, where further UI comparison, corrections, legal integration and release testing can be performed.
+
+**START IMPLEMENTATION NOW. CREATE THE ACTUAL NBR eReturn PUBLIC APPLICATION.**

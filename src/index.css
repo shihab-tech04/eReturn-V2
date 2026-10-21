@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    @apply antialiased text-gray-900 bg-slate-50 selection:bg-emerald-200 selection:text-emerald-950;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Hind Siliguri", "Noto Sans Bengali", sans-serif;
+  }
+}
+
+@media print {
+  /* Hide application shell elements during printing */
+  header,
+  aside,
+  footer,
+  nav,
+  button,
+  .print\:hidden {
+    display: none !important;
+  }
+
+  body,
+  main {
+    background-color: #ffffff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Prevent page breaks inside cards or tables */
+  table, tr, td, th {
+    page-break-inside: avoid;
+  }
+}
