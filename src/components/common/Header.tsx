@@ -109,7 +109,7 @@ export const Header: React.FC<{onOpenMobileNav?: () => void}> = ({onOpenMobileNa
 
           </div>
           {/* Controls wrap to a second readable row on mobile/tablet, not outside the viewport. */}
-          <div className="flex min-w-0 basis-full lg:basis-auto items-center justify-between lg:justify-end gap-1.5 sm:gap-3">
+          <div className="flex flex-wrap lg:flex-nowrap min-w-0 basis-full lg:basis-auto items-center justify-between lg:justify-end gap-x-1.5 gap-y-2 sm:gap-3">
             {/* Assessment Year Selector */}
             <div className="flex items-center gap-1.5 bg-emerald-900/80 px-2.5 py-1 rounded-md border border-emerald-700">
               <span className="text-xs text-emerald-200 font-medium hidden md:inline">
