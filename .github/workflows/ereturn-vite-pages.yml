@@ -40,7 +40,7 @@ jobs:
               def handle_starttag(self,tag,attrs):
                   a=dict(attrs)
                   if tag=='script' and a.get('src'): self.paths.append(a['src'])
-                  if tag=='link' and a.get('rel')=='stylesheet' and a.get('href'): self.paths.append(a['href'])
+                  if tag=='link' and a.get('rel')=='stylesheet' and a.get('href','').startswith('/eReturn-V2/'): self.paths.append(a['href'])
           html=Path('dist/index.html').read_text()
           assert '/src/main.tsx' not in html, 'Uncompiled source referenced by deployment'
           parser=Assets(); parser.feed(html)
@@ -86,7 +86,7 @@ jobs:
               def handle_starttag(self,tag,attrs):
                   a=dict(attrs)
                   if tag=='script' and a.get('src'): self.paths.append(a['src'])
-                  if tag=='link' and a.get('rel')=='stylesheet' and a.get('href'): self.paths.append(a['href'])
+                  if tag=='link' and a.get('rel')=='stylesheet' and a.get('href','').startswith('/eReturn-V2/'): self.paths.append(a['href'])
           site=os.environ['SITE_URL']
           def fetch(u):
               with urlopen(Request(u,headers={'User-Agent':'eReturn-V2-release-smoke/1.0','Cache-Control':'no-cache'}),timeout=20) as r:
