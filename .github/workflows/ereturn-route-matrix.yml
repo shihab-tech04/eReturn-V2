@@ -1,0 +1,31 @@
+name: eReturn Every-Route Responsive and Bilingual Browser QA
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  route-matrix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - name: All registered routes EN/BN at four widths plus calculation/filer guard
+        run: npx playwright test --config playwright.config.ts
+      - name: Preserve fail evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ereturn-route-matrix
+          path: |
+            test-results/
+            playwright-report/
+          retention-days: 30
