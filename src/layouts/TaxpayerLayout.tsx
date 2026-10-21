@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Header } from '../components/common/Header';
 import { Sidebar } from '../components/common/Sidebar';
@@ -9,14 +9,25 @@ import { useApp } from '../context/AppContext';
 
 export const TaxpayerLayout: React.FC = () => {
   const { language } = useApp();
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  useEffect(() => {
+    if (!mobileNavOpen) return;
+    const handleEscape = (event: KeyboardEvent) => { if (event.key === 'Escape') setMobileNavOpen(false); };
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleEscape);
+    return () => { document.body.style.overflow = originalOverflow; window.removeEventListener('keydown', handleEscape); };
+  }, [mobileNavOpen]);
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans antialiased text-gray-900">
-      <Header />
+      <Header onOpenMobileNav={() => setMobileNavOpen(true)} />
       <ReturnStepper />
 
-      <div className="flex-1 flex max-w-7xl w-full mx-auto">
-        <Sidebar />
+      <div className="flex-1 flex max-w-7xl w-full min-w-0 mx-auto">
+        {mobileNavOpen && <button type="button" aria-label={language === "bn" ? "নেভিগেশন বন্ধ করুন" : "Close navigation"}
+          onClick={() => setMobileNavOpen(false)} className="fixed inset-0 z-50 bg-black/40 lg:hidden" />}
+        <Sidebar mobileOpen={mobileNavOpen} onClose={() => setMobileNavOpen(false)} />
         <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 bg-slate-50">
           <Outlet />
         </main>
