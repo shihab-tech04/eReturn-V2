@@ -54,7 +54,7 @@ function reply() {
       legalSourceRefs: ['SOURCE-ISOLATED-NOT-LEGAL'],
       receiptHash: RECEIPT,
     },
-    outputs: { 'tax.gross': '10.0000000001', 'tax.payable': '9.00' },
+    outputs: { 'tax.gross': '10.0000000001', 'tax.payable': '9.00' } as Record<string, string>,
     trace: [
       {
         sourceFieldId: 'field.employment.salary',
