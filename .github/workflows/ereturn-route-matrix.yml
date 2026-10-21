@@ -24,7 +24,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: ereturn-route-matrix
+          name: ereturn-all-route-visual-evidence
           path: |
             test-results/
             playwright-report/
