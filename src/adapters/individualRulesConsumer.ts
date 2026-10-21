@@ -180,9 +180,10 @@ function candidateResponse(
       !Array.isArray(raw.trace) || raw.trace.length === 0) {
     return BLOCKED('OUTPUT_TRACE_MISSING', 'Amounts must have explicit per-output source and rule traces.');
   }
-  const outputIds = Object.keys(raw.outputs);
+  const outputs = raw.outputs as Record<string, unknown>;
+  const outputIds = Object.keys(outputs);
   if (outputIds.some((id) => !FIELD.test(id) ||
-      typeof raw.outputs[id] !== 'string' || !DECIMAL.test(raw.outputs[id]))) {
+      typeof outputs[id] !== 'string' || !DECIMAL.test(outputs[id]))) {
     return BLOCKED('DECIMAL_PRECISION_INVALID', 'Only exact bounded decimal strings are acceptable.');
   }
   const traced = new Set<string>();
