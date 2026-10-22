@@ -1,0 +1,31 @@
+name: eReturn TaxPay Shell Browser QA
+on:
+  push:
+    branches:
+      - feature/taxpay-shell-navigation-20261022
+  pull_request:
+    branches:
+      - main
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-audit --no-fund
+      - run: npm install --no-save --no-audit --no-fund @playwright/test@1.56.1
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test --config playwright.taxpay-shell.config.ts
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ereturn-taxpay-shell-browser
+          path: |
+            test-results/
+            playwright-report/
+          retention-days: 14
