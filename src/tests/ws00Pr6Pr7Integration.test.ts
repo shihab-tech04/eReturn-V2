@@ -55,6 +55,13 @@ test('WS00: deleting a note removes descendants, not unrelated notes or source s
   const withSibling = [...notes, sibling];
   const originalSerialized = JSON.stringify(withSibling);
   const retained = removeAccountNoteAndDescendants(withSibling, root.id);
-  assert.deepEqual(retained.map(note => note.id), [sibling.id]);
+  const directlyRemoved = notes.filter(note => note.parentId === root.id).map(note => note.id);
+  const grandchildren = notes.filter(note => note.parentId && directlyRemoved.includes(note.parentId)).map(note => note.id);
+  const removed = new Set([root.id, ...directlyRemoved, ...grandchildren]);
+  assert.deepEqual(
+    retained.map(note => note.id),
+    withSibling.filter(note => !removed.has(note.id)).map(note => note.id),
+    'remove only the selected root and its descendants; retain independent roots',
+  );
   assert.equal(JSON.stringify(withSibling), originalSerialized, 'helper must not mutate the input');
 });
