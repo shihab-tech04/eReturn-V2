@@ -51,3 +51,19 @@ test('WS05 tax-payment form does not convert source-tax entries into approved li
   await page.evaluate(() => { window.location.hash = '#/user-panel/submission'; });
   await expect(page.getByRole('button', {name:/submit return/i})).toBeDisabled();
 });
+
+
+test('WS05 year selector and income-period dates remain synchronized on both routes', async ({page}) => {
+  await page.goto('/#/user-panel/assessment');
+  await expect(page.locator('#assessmentYearInput')).toHaveValue('2026-2027');
+  await page.locator('header select').first().selectOption('2025-2026');
+  await expect(page.locator('#assessmentYearInput')).toHaveValue('2025-2026');
+  await expect(page.locator('#incomeYearFrom')).toHaveValue('');
+  await expect(page.locator('#incomeYearTo')).toHaveValue('');
+  await page.evaluate(() => { window.location.hash = '#/user-panel/return-view'; });
+  await expect(page.getByText('2025-2026', {exact:true}).first()).toBeVisible();
+  await page.evaluate(() => { window.location.hash = '#/user-panel/assessment'; });
+  await expect(page.locator('#assessmentYearInput')).toHaveValue('2025-2026');
+  await page.locator('header select').first().selectOption('2026-2027');
+  await expect(page.locator('#assessmentYearInput')).toHaveValue('2026-2027');
+});
