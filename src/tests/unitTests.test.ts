@@ -192,7 +192,7 @@ test('12. WS06 reviewed arithmetic remains evidence-only, deterministic and fail
     'Statement of Financial Position\nTotal assets 1,000.00 900.00\nTotal equity and liabilities 1,000.00 899.00'}]);
   const draft = {
     schema: 'WS06_CORPORATE_INTAKE_V1' as const,
-    source: {name:'synthetic.pdf',sha256:'synthetic-only',bytes:100,pageCount:1,digitalPages:1,scanPages:0,parser:'PDFJS_TEXT_V1' as const},
+    source: {name:'synthetic.pdf',sha256:'synthetic-only',bytes:100,pageCount:2,digitalPages:2,scanPages:0,parser:'PDFJS_TEXT_V1' as const},
     context: {companyName:'Synthetic Corporation',financialPeriodEnd:'2026-06-30',comparativePeriodEnd:'2025-06-30',currency:'BDT',scale:'UNITS' as const},
     lines: lines.map(x => ({...x,status:'REVIEWED' as const})),
     stage: 'REVIEW_ONLY' as const,
