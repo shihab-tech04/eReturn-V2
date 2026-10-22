@@ -11,12 +11,12 @@ export const TaxpayerLayout: React.FC = () => {
   const isWorkspace = useLocation().pathname === '/user-panel/home';
 
   return (
-    <div className="min-h-screen flex flex-col font-sans antialiased" style={{ background: "var(--er-background, #F7F8FC)", color: "var(--er-text-primary, #202338)" }}>
+    <div className="er-app-shell min-h-screen flex flex-col font-sans antialiased">
       <Header />
       <div className={"flex-1 flex w-full mx-auto " + (isWorkspace ? "max-w-[1500px]" : "max-w-7xl")}>
         {!isWorkspace && <Sidebar />}
         <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8">
-          {!isWorkspace && <Link to="/user-panel/home" className="inline-flex items-center gap-2 text-sm font-semibold mb-4 underline" style={{ color: "var(--er-primary, #4B5694)" }}>{language === "bn" ? "← রিটার্ন সারসংক্ষেপে ফিরুন" : "← Back to return workspace"}</Link>}
+          {!isWorkspace && <Link to="/user-panel/home" className="er-back-link inline-flex items-center gap-2 text-sm font-semibold mb-4 underline">{language === "bn" ? "← রিটার্ন সারসংক্ষেপে ফিরুন" : "← Back to return workspace"}</Link>}
           <Outlet />
         </main>
       </div>

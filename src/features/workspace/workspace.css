@@ -74,3 +74,13 @@ html[data-er-theme] .er-workspace {accent-color:var(--er-primary);}
  .er-preferences label{width:100%;justify-content:space-between;}.er-preferences select{min-width:160px;}
 }
 @media(prefers-reduced-motion:reduce){.er-workspace *{transition:none!important;}}
+
+/* App shell tokens come from the exact Office Management appearance palette. */
+.er-app-shell { background:var(--er-background,#F7F8FC); color:var(--er-text-primary,#202338); }
+.er-back-link { color:var(--er-primary,#4B5694); }
+.er-app-shell footer { background:var(--er-surface,#FFFFFF); border-color:var(--er-border,#E2E5F0); }
+html[data-er-theme="dark-mode"] .er-app-shell footer,
+html[data-er-theme="dark-mode"] .er-app-shell footer p,
+html[data-er-theme="dark-mode"] .er-app-shell footer span {
+  color:var(--er-text-secondary,#BDC1C6);
+}
