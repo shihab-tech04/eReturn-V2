@@ -3,6 +3,7 @@ import { Outlet, useLocation, useNavigate, useParams, Link } from 'react-router-
 import { ArrowLeft, ArrowRight, CheckCircle2, Download, Edit3, FileCheck2, FileText, Info, LockKeyhole, ShieldAlert } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { ConfirmationModal } from '../../components/common/ConfirmationModal';
+import { ContextHelpButton } from '../../components/help/ContextualHelp';
 import { GapRegisterModal } from '../../components/common/GapRegisterModal';
 import { RULES_ENGINE_GATE, aggregateIncomeHeads, aggregateExpenditure } from '../../adapters/calculationAdapter';
 import { formatBDT } from '../../i18n/formatters';
@@ -120,7 +121,7 @@ export const SubmissionPage: React.FC = () => {
       {step===1 && <div className="er-guided-checklist">
         {lines.map(item=><div key={item.id} className="er-guided-review-row" data-section={item.id}>
           <div className="er-guided-row-symbol"><FileText size={20} aria-hidden="true"/></div>
-          <div className="er-guided-row-content"><h3>{item.title}</h3><p>{item.description}</p></div>
+          <div className="er-guided-row-content"><h3>{item.title} <ContextHelpButton topic={item.title} hint={item.description} compact/></h3><p>{item.description}</p></div>
           <span className={'er-guided-status '+(item.entered?'is-entered':'is-pending')}>{item.entered?c.entered:item.id==='other'?c.unknown:c.missing}</span>
           <div className="er-guided-row-actions">{item.actions.map(action=><button key={action.section} type="button" onClick={()=>edit(action.section,1)} aria-label={action.label+' — '+item.title}>{action.label}<Edit3 size={15} aria-hidden="true"/></button>)}</div>
         </div>)}
@@ -134,16 +135,16 @@ export const SubmissionPage: React.FC = () => {
           <div><span>{bn?'প্রবেশকৃত অগ্রিম ও অন্যান্য পরিশোধ':'Entered advance and other payments'}</span><strong>{formatBDT(taxPayment.advanceTaxPaid+taxPayment.taxPaidWithReturn,language)}</strong></div>
           <div className="er-guided-amount-emphasis"><span>{bn?'প্রদেয় / ফেরতযোগ্য কর':'Payable / Refundable'}</span><strong>{bn?'যাচাই বাকি':'Unavailable'}</strong></div>
         </div>
-        <div className="er-guided-inline-action"><p>{bn?'পরিশোধ ও উৎসে করের তথ্য পরিবর্তন করতে নিচের বোতাম ব্যবহার করুন।':'Need to correct payment or withholding details?'}</p><button onClick={()=>edit('tax-payment',2)} type="button"><Edit3 size={16}/>{bn?'পরিশোধের তথ্য সম্পাদনা':'Edit Tax & Payment'}</button></div>
+        <div className="er-guided-inline-action"><ContextHelpButton topic={bn?'কর ও পরিশোধ':'Tax and payment review'} compact/><p>{bn?'পরিশোধ ও উৎসে করের তথ্য পরিবর্তন করতে নিচের বোতাম ব্যবহার করুন।':'Need to correct payment or withholding details?'}</p><button onClick={()=>edit('tax-payment',2)} type="button"><Edit3 size={16}/>{bn?'পরিশোধের তথ্য সম্পাদনা':'Edit Tax & Payment'}</button></div>
         <p role="status" className="er-guided-info"><ShieldAlert size={18}/>{bn?'রুলস ইঞ্জিন প্রত্যয়িত না হওয়ায় কর, রেয়াত এবং ক্রেডিট নির্ধারণ করা যাচ্ছে না।':'Official calculation and credit eligibility are blocked until verified, year-scoped Rules Engine results are available.'}</p>
       </div>}
       {step===3 && <div className="er-guided-stage">
         <div className="er-guided-preview-trigger">
-          <div><h3>{bn?'রিটার্নের খসড়া দেখুন':'Review your draft return'}</h3><p>{bn?'এটি দাখিলকৃত বা আইনগতভাবে প্রত্যয়িত রিটার্ন নয়।':'This preview is neither filed nor a certified statutory calculation.'}</p></div>
+          <div><h3>{bn?'রিটার্নের খসড়া দেখুন':'Review your draft return'} <ContextHelpButton topic={bn?'রিটার্নের খসড়া':'Draft return preview'} compact/></h3><p>{bn?'এটি দাখিলকৃত বা আইনগতভাবে প্রত্যয়িত রিটার্ন নয়।':'This preview is neither filed nor a certified statutory calculation.'}</p></div>
           <button type="button" onClick={()=>setShowPreview(v=>!v)} aria-expanded={showPreview}><FileText size={17}/>{showPreview?c.close:c.full}</button>
         </div>
         {showPreview && <div className="er-guided-preview" aria-label={bn?'রিটার্নের খসড়া':'Draft return preview'}><ReturnViewPage/></div>}
-        <fieldset className="er-guided-declaration"><legend>{bn?'করদাতার ঘোষণা':'Taxpayer Declaration'}</legend>
+        <fieldset className="er-guided-declaration"><legend>{bn?'করদাতার ঘোষণা':'Taxpayer Declaration'} <ContextHelpButton topic={bn?'করদাতার ঘোষণা':'Taxpayer Declaration'} compact/></legend>
           <label className="er-guided-declaration-check"><input type="checkbox" checked={submission.declarationAccepted} onChange={e=>setSubmission(prev=>({...prev,declarationAccepted:e.target.checked}))}/><span>{t('declarationBody')}</span></label>
           <div className="er-guided-declaration-fields">
             <label>{t('taxpayerNameAffirm')}<input value={submission.taxpayerNameAffirmed} onChange={e=>setSubmission(prev=>({...prev,taxpayerNameAffirmed:e.target.value}))}/></label>
