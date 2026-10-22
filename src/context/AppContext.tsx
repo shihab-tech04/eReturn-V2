@@ -160,7 +160,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       (taxPayment.tdsContractAndSupplies || 0) +
       (taxPayment.tdsRentAndOther || 0);
 
-    const totalPaid = totalTDS + (taxPayment.advanceTaxPaid || 0) + (taxPayment.taxPaidWithReturn || 0);
+    // Entered withholding/advance payments are claims, not confirmed credits.
 
     // Update TaxPayment
     setTaxPayment((prev) => ({
@@ -172,7 +172,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       minimumTaxRateApplied: 0,
       totalTaxPayable: 0,
       totalTDS,
-      totalTaxPaidAndCredited: totalPaid,
+      totalTaxPaidAndCredited: 0, // No authenticated payment/ownership/duplicate-credit verification.
       netPayableOrRefundable: 0,
     }));
 
