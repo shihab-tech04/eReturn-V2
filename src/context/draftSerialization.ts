@@ -1,4 +1,4 @@
-import type { AuditedBusiness } from '../types';
+import type { AuditedBusiness, AccountNote } from '../types';
 
 /** Local draft interchange only. This does not certify a rule or submit a return. */
 export const AUDITED_DRAFT_VERSION = 'NBR-ERETURN-2026-V2';
@@ -52,6 +52,37 @@ export function parseAuditedBusinessesDraft(payload: unknown): AuditedBusiness[]
       if (note.parentId !== undefined && typeof note.parentId !== 'string') return null;
       if (!isFiniteAmount(note.currentYearAmount) || !isFiniteAmount(note.previousYearAmount)) return null;
     }
+    // Imported notes must form a valid three-level tree within this business.
+    // Reject orphaned and structurally invalid notes before any state mutation.
+    const notesById = new Map(business.notes.map((note) => [note.id, note]));
+    for (const note of business.notes) {
+      if (note.level === 1) {
+        if (note.parentId !== undefined) return null;
+      } else {
+        if (typeof note.parentId !== 'string' || !note.parentId) return null;
+        const parent = notesById.get(note.parentId);
+        if (!parent || parent.level !== note.level - 1) return null;
+      }
+    }
   }
   return businesses as AuditedBusiness[];
+}
+
+/**
+ * Remove a note and every descendant, including grandchildren when a level-1
+ * note is deleted. Never mutate the input; this is local draft/UI state only.
+ */
+export function removeAccountNoteAndDescendants(notes: AccountNote[], noteId: string): AccountNote[] {
+  const removedIds = new Set<string>([noteId]);
+  let foundDescendant = true;
+  while (foundDescendant) {
+    foundDescendant = false;
+    for (const note of notes) {
+      if (note.parentId && removedIds.has(note.parentId) && !removedIds.has(note.id)) {
+        removedIds.add(note.id);
+        foundDescendant = true;
+      }
+    }
+  }
+  return notes.filter((note) => !removedIds.has(note.id));
 }
