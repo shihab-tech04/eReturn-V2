@@ -25,7 +25,7 @@ for (const width of [375,768,1280,1920]) {
           await page.getByRole('button',{name:'Open navigation menu'}).click();
           await page.getByRole('button',{name:'Account & preferences'}).click();
           await page.getByRole('button',{name:'Language: English'}).click();
-          await page.getByRole('button',{name:'Close navigation menu'}).click();
+          await page.getByRole('button',{name:'নেভিগেশন মেনু বন্ধ করুন'}).click();
         }
       }
       const launch=page.locator('[data-er-help-launcher]');
