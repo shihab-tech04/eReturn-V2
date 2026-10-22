@@ -107,8 +107,8 @@ test('in-session draft facts survive workspace/detail/dashboard navigation',asyn
   await page.locator('input[name="residentStatus"][value="Resident"]').check();
   await page.getByRole('link',{name:/Back to My Tax Return/}).click();
   await expect(page.locator('#assessment .er-value')).toContainText('Resident');
-  await page.getByRole('link',{name:'Dashboard'}).click();
-  await expect(page.getByRole('link',{name:'Resume Return'})).toBeVisible();
-  await page.getByRole('link',{name:'Resume Return'}).click();
+  await page.getByRole('link',{name:'Dashboard',exact:true}).click();
+  await expect(page.locator('.er-shell-cta')).toHaveText('Resume Return');
+  await page.locator('.er-shell-cta').click();
   await expect(page.locator('#assessment .er-value')).toContainText('Resident');
 });
