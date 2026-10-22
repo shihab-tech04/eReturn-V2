@@ -29,6 +29,7 @@ import { AssetsLiabilitiesPage } from './features/assets-liabilities/AssetsLiabi
 import { TaxPaymentPage } from './features/tax-payment/TaxPaymentPage';
 import { ReturnViewPage } from './features/return-view/ReturnViewPage';
 import { SubmissionLayout, SubmissionPage, SubmissionEditPage } from './features/submission/GuidedSubmission';
+import { SubmissionPage as OriginalSubmissionPage } from './features/submission/SubmissionPage';
 
 import { TinCertificatePage } from './features/tax-record/TinCertificatePage';
 import { AcknowledgementPage } from './features/tax-record/AcknowledgementPage';
@@ -78,6 +79,8 @@ export default function App() {
             <Route path="assets-liabilities" element={<AssetsLiabilitiesPage />} />
             <Route path="tax-payment" element={<TaxPaymentPage />} />
             <Route path="return-view" element={<ReturnViewPage />} />
+            {/* Preserve existing in-system review and its linked route. */}
+            <Route path="submission" element={<OriginalSubmissionPage />} />
 
             {/* Tax Records */}
             <Route path="tin-certificate" element={<TinCertificatePage />} />
@@ -98,7 +101,7 @@ export default function App() {
           </Route>
 
           {/* Full-screen, distraction-free guided filing preparation. No taxpayer navigation shell. */}
-          <Route path="/user-panel/submission" element={<SubmissionLayout />}>
+          <Route path="/user-panel/guided-submission" element={<SubmissionLayout />}>
             <Route index element={<SubmissionPage />} />
             <Route path="edit/:section" element={<SubmissionEditPage />} />
           </Route>

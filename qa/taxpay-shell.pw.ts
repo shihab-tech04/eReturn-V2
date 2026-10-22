@@ -121,7 +121,7 @@ test('deep links and protected return records remain accessible',async ({page})=
   }
   await page.goto('/#/user-panel/overview');
   await expect(page).toHaveURL(/\/#\/user-panel\/home$/);
-  await page.goto('/#/user-panel/submission?step=3');
+  await page.goto('/#/user-panel/submission');
   await expect(page.getByRole('button',{name:/submit return/i})).toBeDisabled();
 });
 

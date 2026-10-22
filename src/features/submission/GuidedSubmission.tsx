@@ -83,8 +83,8 @@ export const SubmissionPage: React.FC = () => {
   const [showPreview,setShowPreview]=useState(false);
   const titleRef=useRef<HTMLHeadingElement>(null);
   useEffect(()=>{titleRef.current?.focus();setShowPreview(false);},[step]);
-  const setStep=(n:number)=>navigate('/user-panel/submission?step='+n);
-  const edit=(section:string,returnStep=step)=>navigate('/user-panel/submission/edit/'+section+'?step='+returnStep);
+  const setStep=(n:number)=>navigate('/user-panel/guided-submission?step='+n);
+  const edit=(section:string,returnStep=step)=>navigate('/user-panel/guided-submission/edit/'+section+'?step='+returnStep);
   const exit=()=>{exportDraftJson();navigate('/user-panel/home');};
   const inc=aggregateIncomeHeads(income);
   const incomeEntries=INCOME_LINKS.reduce((sum,item)=>sum+income[item.key].length,0);
@@ -175,7 +175,7 @@ export const SubmissionEditPage: React.FC = () => {
   const target=Number(new URLSearchParams(location.search).get('step'))===2?2:1;
   const Component=section?allEditors[section]:undefined;
   const label=section?(editorLabels[section]?.[bn?1:0]||INCOME_LINKS.find(x=>x.route===section)?.[bn?'bn':'en']):undefined;
-  const returnToReview=()=>navigate('/user-panel/submission?step='+target);
+  const returnToReview=()=>navigate('/user-panel/guided-submission?step='+target);
   if(section!=='income'&&!Component) return <div className="er-guided-flow"><h1>{bn?'এই বিভাগ পাওয়া যায়নি':'Section not found'}</h1><button className="er-guided-btn er-guided-primary" onClick={returnToReview}>{bn?'পর্যালোচনায় ফিরুন':'Return to Review'}</button></div>;
   return <div className="er-guided-flow er-guided-edit">
     <div className="er-guided-edit-bar">
@@ -183,7 +183,7 @@ export const SubmissionEditPage: React.FC = () => {
       <button type="button" className="er-guided-btn er-guided-primary" onClick={returnToReview}><CheckCircle2 size={17}/>{bn?'সংরক্ষণ ও পর্যালোচনায় ফেরা':'Save & Return to Review'}</button>
     </div>
     <div className="er-submission-edit-form">
-      {section==='income'?<section className="er-guided-panel"><h2>{bn?'আয়ের বিভাগ বেছে নিন':'Choose an income section'}</h2><div className="er-guided-income-grid">{INCOME_LINKS.map(x=><Link key={x.key} to={'/user-panel/submission/edit/'+x.route+'?step=1'}>{bn?x.bn:x.en}<ArrowRight size={17}/></Link>)}</div></section>:Component?<Component/>:null}
+      {section==='income'?<section className="er-guided-panel"><h2>{bn?'আয়ের বিভাগ বেছে নিন':'Choose an income section'}</h2><div className="er-guided-income-grid">{INCOME_LINKS.map(x=><Link key={x.key} to={'/user-panel/guided-submission/edit/'+x.route+'?step=1'}>{bn?x.bn:x.en}<ArrowRight size={17}/></Link>)}</div></section>:Component?<Component/>:null}
     </div>
     <footer className="er-guided-footer"><button type="button" className="er-guided-btn er-guided-outline" onClick={returnToReview}><ArrowLeft size={17}/>{bn?'পর্যালোচনায় ফিরুন':'Back to Review'}</button><button type="button" className="er-guided-btn er-guided-primary" onClick={returnToReview}><CheckCircle2 size={17}/>{bn?'সংরক্ষণ ও পর্যালোচনায় ফেরা':'Save & Return to Review'}</button></footer>
     <p className="er-guided-session-note">{bn?'এটি কেবল চলমান সেশনের তথ্য। সার্ভারে সংরক্ষণ নয়।':'Save & Return retains in-session changes; it does not persist them to a server.'}</p>

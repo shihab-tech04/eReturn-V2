@@ -58,7 +58,10 @@ export const HomeDashboard: React.FC = () => {
           : t('Prepare your first return in a guided workspace', 'নির্দেশনাসহ ওয়ার্কস্পেসে প্রথম রিটার্ন প্রস্তুত করুন')}</p>
       </div>
       <div className="er-page-actions">
-        <Link to="/user-panel/return-workspace" className="er-quick-link er-quick-link-primary">
+        <Link to="/user-panel/guided-submission" className="er-quick-link er-quick-link-primary" data-entry="ereturn-submission">
+          {t('eReturn Submission', 'ই-রিটার্ন দাখিল')} <ArrowRight size={18} aria-hidden={true}/>
+        </Link>
+        <Link to="/user-panel/return-workspace" className="er-quick-link">
           {draft ? t('Resume Return', 'রিটার্ন চালু করুন') : t('Start Return', 'রিটার্ন শুরু করুন')}
           <ArrowRight size={18} aria-hidden={true}/>
         </Link>

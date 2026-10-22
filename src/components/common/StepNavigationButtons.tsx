@@ -29,7 +29,7 @@ export const StepNavigationButtons: React.FC<StepNavigationButtonsProps> = ({
     else if (nextPath) navigate(nextPath);
   };
   // When editing from guided submission, its own focused footer owns navigation.
-  if (location.pathname.startsWith('/user-panel/submission/edit/')) return null;
+  if (location.pathname.startsWith('/user-panel/guided-submission/edit/')) return null;
   return (
     <div className="mt-8 pt-4 border-t border-ui-stroke-subtle flex flex-wrap items-center justify-between gap-3">
       <div>
