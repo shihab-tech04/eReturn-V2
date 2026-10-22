@@ -1,14 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { AmountInput } from '../../components/common/AmountInput';
 import { StepNavigationButtons } from '../../components/common/StepNavigationButtons';
 import { formatBDT } from '../../i18n/formatters';
 import { RULES_ENGINE_GATE } from '../../adapters/calculationAdapter';
+import { readRulesSqlObservation } from '../../adapters/rulesEngineRemoteStatus';
 
 import { CreditCard, AlertTriangle, ShieldCheck, Receipt, Building, CheckCircle2 } from 'lucide-react';
 
 export const TaxPaymentPage: React.FC = () => {
   const { language, t, taxPayment, setTaxPayment } = useApp();
+  const [sqlConnection, setSqlConnection] = useState<'checking' | 'verified' | 'unavailable'>('checking');
+  useEffect(() => {
+    let active = true;
+    readRulesSqlObservation().then(() => {
+      if (active) setSqlConnection('verified');
+    }).catch(() => {
+      if (active) setSqlConnection('unavailable');
+    });
+    return () => { active = false; };
+  }, []);
 
   const handleUpdate = (field: keyof typeof taxPayment, val: any) => {
     setTaxPayment((prev) => ({
@@ -55,7 +66,7 @@ export const TaxPaymentPage: React.FC = () => {
             1. {t('taxLiabilitySummary')}
           </h3>
           <span className="text-xs font-mono text-gray-500">
-            Rules Engine: {RULES_ENGINE_GATE.status}
+            Rules Engine: {RULES_ENGINE_GATE.status} · SQL: {sqlConnection === 'verified' ? 'CONNECTED' : sqlConnection === 'checking' ? 'CHECKING' : 'UNAVAILABLE'}
           </span>
         </div>
 
