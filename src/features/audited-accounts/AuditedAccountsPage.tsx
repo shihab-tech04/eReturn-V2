@@ -154,9 +154,9 @@ export const AuditedAccountsPage: React.FC = () => {
         <div>
           <div className="flex items-center gap-2">
             <Briefcase className="w-5 h-5 text-purple-700" />
-            <h2 className="text-xl font-bold text-gray-900">{t('auditedTitle')}</h2>
+            <h2 className="text-xl font-bold text-ui-content-primary">{t('auditedTitle')}</h2>
           </div>
-          <p className="text-xs text-gray-500 mt-1">{t('auditedSubtitle')}</p>
+          <p className="text-xs text-ui-content-muted mt-1">{t('auditedSubtitle')}</p>
         </div>
 
         <div className="flex items-center gap-2">
@@ -164,9 +164,9 @@ export const AuditedAccountsPage: React.FC = () => {
             <button
               type="button"
               onClick={handleOpenManageModal}
-              className="inline-flex items-center gap-1.5 px-3 py-2 border border-gray-300 rounded-md shadow-xs text-xs font-semibold text-gray-700 bg-white hover:bg-gray-50 cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-2 border border-ui-stroke-default rounded-md shadow-xs text-xs font-semibold text-ui-content-secondary bg-ui-surface hover:bg-ui-surface-subtle cursor-pointer"
             >
-              <Building2 className="w-4 h-4 text-gray-600" />
+              <Building2 className="w-4 h-4 text-ui-content-secondary" />
               <span>{t('manageBusiness')}</span>
             </button>
           )}
@@ -174,7 +174,7 @@ export const AuditedAccountsPage: React.FC = () => {
           <button
             type="button"
             onClick={handleOpenCreateModal}
-            className="inline-flex items-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold px-3 py-2 rounded-md shadow-xs cursor-pointer"
+            className="inline-flex items-center gap-1.5 bg-ui-action-bg hover:bg-ui-action-hover text-white text-xs font-semibold px-3 py-2 rounded-md shadow-xs cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>{t('addNewBusiness')}</span>
@@ -184,13 +184,13 @@ export const AuditedAccountsPage: React.FC = () => {
 
       {/* Observed Empty State */}
       {auditedBusinesses.length === 0 ? (
-        <div className="bg-white rounded-xl border border-dashed border-gray-300 p-12 text-center space-y-4">
+        <div className="bg-ui-surface rounded-xl border border-dashed border-ui-stroke-default p-12 text-center space-y-4">
           <div className="w-14 h-14 rounded-full bg-purple-50 text-purple-700 flex items-center justify-center mx-auto">
             <Briefcase className="w-7 h-7" />
           </div>
           <div className="space-y-1">
-            <h3 className="text-base font-bold text-gray-900">{t('addBusinessToStart')}</h3>
-            <p className="text-xs text-gray-500 max-w-sm mx-auto">
+            <h3 className="text-base font-bold text-ui-content-primary">{t('addBusinessToStart')}</h3>
+            <p className="text-xs text-ui-content-muted max-w-sm mx-auto">
               Record audited profit and loss, balance sheets, and multi-level financial disclosure notes.
             </p>
           </div>
@@ -198,7 +198,7 @@ export const AuditedAccountsPage: React.FC = () => {
             <button
               type="button"
               onClick={handleOpenCreateModal}
-              className="inline-flex items-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold px-4 py-2 rounded-md shadow-xs cursor-pointer"
+              className="inline-flex items-center gap-1.5 bg-ui-action-bg hover:bg-ui-action-hover text-white text-xs font-semibold px-4 py-2 rounded-md shadow-xs cursor-pointer"
             >
               <Plus className="w-4 h-4" />
               <span>{t('addNewBusiness')}</span>
@@ -208,15 +208,15 @@ export const AuditedAccountsPage: React.FC = () => {
       ) : activeBusiness ? (
         <div className="space-y-6">
           {/* Active Business Bar */}
-          <div className="bg-white rounded-xl border border-gray-200 shadow-xs p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="bg-ui-surface rounded-xl border border-ui-stroke-subtle shadow-xs p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-sm font-bold text-gray-900">{activeBusiness.businessName}</span>
+                <span className="text-sm font-bold text-ui-content-primary">{activeBusiness.businessName}</span>
                 <span className="bg-purple-100 text-purple-800 text-[10px] font-semibold px-2 py-0.5 rounded-full">
                   {activeBusiness.businessType}
                 </span>
               </div>
-              <p className="text-[11px] text-gray-500 mt-0.5 font-mono">
+              <p className="text-[11px] text-ui-content-muted mt-0.5 font-mono">
                 Reg: {activeBusiness.registrationNo} • Auditor: {activeBusiness.auditorFirmName} (AY {activeBusiness.auditYear})
               </p>
             </div>
@@ -225,7 +225,7 @@ export const AuditedAccountsPage: React.FC = () => {
               <select
                 value={activeBusinessId}
                 onChange={(e) => setActiveBusinessId(e.target.value)}
-                className="rounded-md border border-gray-300 py-1.5 px-3 text-xs focus:border-emerald-600 focus:outline-none"
+                className="rounded-md border border-ui-stroke-default py-1.5 px-3 text-xs focus:border-ui-focus focus:outline-none"
               >
                 {auditedBusinesses.map((b) => (
                   <option key={b.id} value={b.id}>{b.businessName}</option>
@@ -235,68 +235,68 @@ export const AuditedAccountsPage: React.FC = () => {
           </div>
 
           {/* Financial Statements (Current & Previous Year Columns) */}
-          <div className="bg-white rounded-xl border border-gray-200 shadow-xs overflow-hidden text-xs">
-            <div className="p-4 border-b border-gray-100 flex items-center justify-between bg-gray-50">
+          <div className="bg-ui-surface rounded-xl border border-ui-stroke-subtle shadow-xs overflow-hidden text-xs">
+            <div className="p-4 border-b border-ui-stroke-subtle flex items-center justify-between bg-ui-surface-subtle">
               <div className="flex items-center gap-2">
-                <FileSpreadsheet className="w-4 h-4 text-emerald-700" />
-                <h3 className="font-bold text-gray-900 uppercase tracking-wide">
+                <FileSpreadsheet className="w-4 h-4 text-ui-accent" />
+                <h3 className="font-bold text-ui-content-primary uppercase tracking-wide">
                   Summary Financial Statement & Balance Sheet
                 </h3>
               </div>
-              <span className="text-gray-500 font-mono text-[11px]">Columns: Current vs Preceding Year</span>
+              <span className="text-ui-content-muted font-mono text-[11px]">Columns: Current vs Preceding Year</span>
             </div>
 
             <table className="min-w-full divide-y divide-gray-200 text-xs font-mono">
-              <thead className="bg-gray-100 text-gray-700 font-sans font-semibold uppercase">
+              <thead className="bg-ui-surface-subtle text-ui-content-secondary font-sans font-semibold uppercase">
                 <tr>
                   <th className="px-4 py-2.5 text-left">Statement Line Item</th>
                   <th className="px-4 py-2.5 text-right w-48">{t('currentYearCol')}</th>
                   <th className="px-4 py-2.5 text-right w-48">{t('previousYearCol')}</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100 bg-white">
+              <tbody className="divide-y divide-gray-100 bg-ui-surface">
                 <tr>
-                  <td className="px-4 py-2 font-sans font-medium text-gray-900">Total Turnover / Gross Sales</td>
-                  <td className="px-4 py-2 text-right font-bold text-gray-900">
+                  <td className="px-4 py-2 font-sans font-medium text-ui-content-primary">Total Turnover / Gross Sales</td>
+                  <td className="px-4 py-2 text-right font-bold text-ui-content-primary">
                     {formatBDT(activeBusiness.turnoverCurrent, language)}
                   </td>
-                  <td className="px-4 py-2 text-right text-gray-600">
+                  <td className="px-4 py-2 text-right text-ui-content-secondary">
                     {formatBDT(activeBusiness.turnoverPrevious, language)}
                   </td>
                 </tr>
                 <tr>
-                  <td className="px-4 py-2 font-sans font-medium text-gray-900">Gross Profit (GP)</td>
-                  <td className="px-4 py-2 text-right font-bold text-gray-900">
+                  <td className="px-4 py-2 font-sans font-medium text-ui-content-primary">Gross Profit (GP)</td>
+                  <td className="px-4 py-2 text-right font-bold text-ui-content-primary">
                     {formatBDT(activeBusiness.grossProfitCurrent, language)}
                   </td>
-                  <td className="px-4 py-2 text-right text-gray-600">
+                  <td className="px-4 py-2 text-right text-ui-content-secondary">
                     {formatBDT(activeBusiness.grossProfitPrevious, language)}
                   </td>
                 </tr>
-                <tr className="bg-emerald-50/50">
+                <tr className="bg-ui-accent-soft/50">
                   <td className="px-4 py-2 font-sans font-bold text-emerald-950">Net Profit Before Tax (NPBT)</td>
-                  <td className="px-4 py-2 text-right font-bold text-emerald-900">
+                  <td className="px-4 py-2 text-right font-bold text-ui-content-primary">
                     {formatBDT(activeBusiness.netProfitCurrent, language)}
                   </td>
-                  <td className="px-4 py-2 text-right font-medium text-emerald-800">
+                  <td className="px-4 py-2 text-right font-medium text-ui-accent">
                     {formatBDT(activeBusiness.netProfitPrevious, language)}
                   </td>
                 </tr>
                 <tr>
-                  <td className="px-4 py-2 font-sans font-medium text-gray-900">Total Tangible & Intangible Assets</td>
-                  <td className="px-4 py-2 text-right font-bold text-gray-900">
+                  <td className="px-4 py-2 font-sans font-medium text-ui-content-primary">Total Tangible & Intangible Assets</td>
+                  <td className="px-4 py-2 text-right font-bold text-ui-content-primary">
                     {formatBDT(activeBusiness.totalAssetsCurrent, language)}
                   </td>
-                  <td className="px-4 py-2 text-right text-gray-600">
+                  <td className="px-4 py-2 text-right text-ui-content-secondary">
                     {formatBDT(activeBusiness.totalAssetsPrevious, language)}
                   </td>
                 </tr>
                 <tr>
-                  <td className="px-4 py-2 font-sans font-medium text-gray-900">Total Liabilities & Equity</td>
-                  <td className="px-4 py-2 text-right font-bold text-gray-900">
+                  <td className="px-4 py-2 font-sans font-medium text-ui-content-primary">Total Liabilities & Equity</td>
+                  <td className="px-4 py-2 text-right font-bold text-ui-content-primary">
                     {formatBDT(activeBusiness.totalLiabilitiesCurrent, language)}
                   </td>
-                  <td className="px-4 py-2 text-right text-gray-600">
+                  <td className="px-4 py-2 text-right text-ui-content-secondary">
                     {formatBDT(activeBusiness.totalLiabilitiesPrevious, language)}
                   </td>
                 </tr>
@@ -305,14 +305,14 @@ export const AuditedAccountsPage: React.FC = () => {
           </div>
 
           {/* Three-Level Note Hierarchy Section */}
-          <div className="bg-white rounded-xl border border-gray-200 shadow-xs p-6 space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-3">
+          <div className="bg-ui-surface rounded-xl border border-ui-stroke-subtle shadow-xs p-6 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-ui-stroke-subtle pb-3">
               <div>
                 <div className="flex items-center gap-2">
                   <FolderTree className="w-5 h-5 text-indigo-700" />
-                  <h3 className="text-sm font-bold text-gray-900">{t('threeLevelNotesTitle')}</h3>
+                  <h3 className="text-sm font-bold text-ui-content-primary">{t('threeLevelNotesTitle')}</h3>
                 </div>
-                <p className="text-xs text-gray-500 mt-0.5">
+                <p className="text-xs text-ui-content-muted mt-0.5">
                   Parent Note (Level 1) → Child Breakdown (Level 2) → Sub-Note Calculations (Level 3)
                 </p>
               </div>
@@ -333,7 +333,7 @@ export const AuditedAccountsPage: React.FC = () => {
 
             {/* Note Tree Rendering */}
             {activeBusiness.notes.length === 0 ? (
-              <div className="p-8 text-center text-xs text-gray-500">
+              <div className="p-8 text-center text-xs text-ui-content-muted">
                 No financial notes attached yet. Click "Add Note" to build the 3-level disclosure structure.
               </div>
             ) : (
@@ -346,19 +346,19 @@ export const AuditedAccountsPage: React.FC = () => {
                     );
 
                     return (
-                      <div key={parent.id} className="border border-gray-200 rounded-lg p-3 space-y-2 bg-gray-50/50">
+                      <div key={parent.id} className="border border-ui-stroke-subtle rounded-lg p-3 space-y-2 bg-ui-surface-subtle/50">
                         {/* Level 1 Parent Note */}
                         <div className="flex items-center justify-between text-xs">
                           <div className="flex items-center gap-2">
-                            <span className="font-mono font-bold bg-gray-200 px-1.5 py-0.5 rounded text-gray-800">
+                            <span className="font-mono font-bold bg-gray-200 px-1.5 py-0.5 rounded text-ui-content-primary">
                               {parent.noteNumber}
                             </span>
-                            <span className="font-bold text-gray-900">{parent.title}</span>
-                            <span className="text-[10px] text-gray-400">({t('parentNote')})</span>
+                            <span className="font-bold text-ui-content-primary">{parent.title}</span>
+                            <span className="text-[10px] text-ui-content-muted">({t('parentNote')})</span>
                           </div>
 
                           <div className="flex items-center gap-4">
-                            <span className="font-mono font-bold text-gray-900">
+                            <span className="font-mono font-bold text-ui-content-primary">
                               {formatBDT(parent.currentYearAmount, language)}
                             </span>
                             <div className="flex items-center gap-1">
@@ -377,7 +377,7 @@ export const AuditedAccountsPage: React.FC = () => {
                               <button
                                 type="button"
                                 onClick={() => handleDeleteNote(parent.id)}
-                                className="p-1 text-gray-400 hover:text-red-700"
+                                className="p-1 text-ui-content-muted hover:text-red-700"
                               >
                                 <Trash2 className="w-3.5 h-3.5" />
                               </button>
@@ -395,17 +395,17 @@ export const AuditedAccountsPage: React.FC = () => {
 
                               return (
                                 <div key={child.id} className="space-y-1.5">
-                                  <div className="flex items-center justify-between text-xs bg-white p-2 rounded border border-gray-200">
+                                  <div className="flex items-center justify-between text-xs bg-ui-surface p-2 rounded border border-ui-stroke-subtle">
                                     <div className="flex items-center gap-2">
                                       <span className="font-mono font-semibold text-indigo-800">
                                         {child.noteNumber}
                                       </span>
-                                      <span className="font-medium text-gray-800">{child.title}</span>
-                                      <span className="text-[10px] text-gray-400">({t('childBreakdown')})</span>
+                                      <span className="font-medium text-ui-content-primary">{child.title}</span>
+                                      <span className="text-[10px] text-ui-content-muted">({t('childBreakdown')})</span>
                                     </div>
 
                                     <div className="flex items-center gap-3">
-                                      <span className="font-mono text-gray-800">
+                                      <span className="font-mono text-ui-content-primary">
                                         {formatBDT(child.currentYearAmount, language)}
                                       </span>
                                       <button
@@ -423,7 +423,7 @@ export const AuditedAccountsPage: React.FC = () => {
                                       <button
                                         type="button"
                                         onClick={() => handleDeleteNote(child.id)}
-                                        className="p-1 text-gray-400 hover:text-red-700"
+                                        className="p-1 text-ui-content-muted hover:text-red-700"
                                       >
                                         <Trash2 className="w-3.5 h-3.5" />
                                       </button>
@@ -440,7 +440,7 @@ export const AuditedAccountsPage: React.FC = () => {
                                         >
                                           <div className="flex items-center gap-2">
                                             <span className="font-mono text-purple-900 font-semibold">{sub.noteNumber}</span>
-                                            <span className="text-gray-700">{sub.title}</span>
+                                            <span className="text-ui-content-secondary">{sub.title}</span>
                                             <span className="text-[9px] text-purple-600">({t('subNote')})</span>
                                           </div>
                                           <div className="flex items-center gap-2">
@@ -450,7 +450,7 @@ export const AuditedAccountsPage: React.FC = () => {
                                             <button
                                               type="button"
                                               onClick={() => handleDeleteNote(sub.id)}
-                                              className="p-0.5 text-gray-400 hover:text-red-700"
+                                              className="p-0.5 text-ui-content-muted hover:text-red-700"
                                             >
                                               <Trash2 className="w-3 h-3" />
                                             </button>
@@ -476,25 +476,25 @@ export const AuditedAccountsPage: React.FC = () => {
       {/* Business Modal (Observed Fields: Business Name, Business Type) */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 flex items-center justify-center p-4">
-          <div className="relative w-full max-w-md rounded-xl bg-white shadow-2xl p-6 border border-gray-200 animate-in fade-in space-y-4">
-            <div className="flex items-center justify-between border-b border-gray-100 pb-2">
-              <h3 className="text-sm font-bold text-gray-900">
+          <div className="relative w-full max-w-md rounded-xl bg-ui-surface shadow-2xl p-6 border border-ui-stroke-subtle animate-in fade-in space-y-4">
+            <div className="flex items-center justify-between border-b border-ui-stroke-subtle pb-2">
+              <h3 className="text-sm font-bold text-ui-content-primary">
                 {modalMode === 'create' ? t('addNewBusiness') : t('manageBusiness')}
               </h3>
-              <button type="button" onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-gray-600">
+              <button type="button" onClick={() => setIsModalOpen(false)} className="text-ui-content-muted hover:text-ui-content-secondary">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {modalMode === 'manage' ? (
               <div className="space-y-3 text-xs">
-                <p className="text-gray-500">Registered Corporate Businesses:</p>
+                <p className="text-ui-content-muted">Registered Corporate Businesses:</p>
                 <div className="divide-y divide-gray-100 max-h-60 overflow-y-auto">
                   {auditedBusinesses.map((b) => (
                     <div key={b.id} className="py-2 flex items-center justify-between">
                       <div>
-                        <div className="font-bold text-gray-900">{b.businessName}</div>
-                        <div className="text-[11px] text-gray-500">{b.businessType}</div>
+                        <div className="font-bold text-ui-content-primary">{b.businessName}</div>
+                        <div className="text-[11px] text-ui-content-muted">{b.businessType}</div>
                       </div>
                       <div className="flex items-center gap-2">
                         <button
@@ -503,7 +503,7 @@ export const AuditedAccountsPage: React.FC = () => {
                             setActiveBusinessId(b.id);
                             setIsModalOpen(false);
                           }}
-                          className="px-2.5 py-1 bg-emerald-100 text-emerald-800 rounded font-semibold text-[11px]"
+                          className="px-2.5 py-1 bg-ui-accent-soft text-ui-accent rounded font-semibold text-[11px]"
                         >
                           Select
                         </button>
@@ -522,23 +522,23 @@ export const AuditedAccountsPage: React.FC = () => {
             ) : (
               <div className="space-y-4 text-xs">
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">{t('businessNameModal')} *</label>
+                  <label className="block font-semibold text-ui-content-secondary mb-1">{t('businessNameModal')} *</label>
                   <input
                     type="text"
                     value={businessName}
                     onChange={(e) => setBusinessName(e.target.value)}
                     placeholder="e.g. Apex Precision Logistics Ltd."
-                    className="w-full rounded-md border border-gray-300 py-1.5 px-3 focus:border-emerald-600 focus:outline-none"
+                    className="w-full rounded-md border border-ui-stroke-default py-1.5 px-3 focus:border-ui-focus focus:outline-none"
                   />
                 </div>
 
                 {/* Observed 5 Business Type choices */}
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">{t('businessTypeModal')} *</label>
+                  <label className="block font-semibold text-ui-content-secondary mb-1">{t('businessTypeModal')} *</label>
                   <select
                     value={businessType}
                     onChange={(e) => setBusinessType(e.target.value as any)}
-                    className="w-full rounded-md border border-gray-300 py-2 px-3 focus:border-emerald-600 focus:outline-none"
+                    className="w-full rounded-md border border-ui-stroke-default py-2 px-3 focus:border-ui-focus focus:outline-none"
                   >
                     <option value="Trading">Trading</option>
                     <option value="Service">Service</option>
@@ -549,39 +549,39 @@ export const AuditedAccountsPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Company Registration / RJSC No.</label>
+                  <label className="block font-semibold text-ui-content-secondary mb-1">Company Registration / RJSC No.</label>
                   <input
                     type="text"
                     value={registrationNo}
                     onChange={(e) => setRegistrationNo(e.target.value)}
                     placeholder="e.g. C-149201/2018"
-                    className="w-full rounded-md border border-gray-300 py-1.5 px-3 focus:border-emerald-600 focus:outline-none"
+                    className="w-full rounded-md border border-ui-stroke-default py-1.5 px-3 focus:border-ui-focus focus:outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Auditor Firm (ICAB Registered)</label>
+                  <label className="block font-semibold text-ui-content-secondary mb-1">Auditor Firm (ICAB Registered)</label>
                   <input
                     type="text"
                     value={auditorFirm}
                     onChange={(e) => setAuditorFirm(e.target.value)}
                     placeholder="e.g. Rahman & Associates Chartered Accountants"
-                    className="w-full rounded-md border border-gray-300 py-1.5 px-3 focus:border-emerald-600 focus:outline-none"
+                    className="w-full rounded-md border border-ui-stroke-default py-1.5 px-3 focus:border-ui-focus focus:outline-none"
                   />
                 </div>
 
-                <div className="flex justify-end gap-2 pt-3 border-t border-gray-100">
+                <div className="flex justify-end gap-2 pt-3 border-t border-ui-stroke-subtle">
                   <button
                     type="button"
                     onClick={() => setIsModalOpen(false)}
-                    className="px-3 py-1.5 border border-gray-300 rounded-md font-medium text-gray-700 hover:bg-gray-50"
+                    className="px-3 py-1.5 border border-ui-stroke-default rounded-md font-medium text-ui-content-secondary hover:bg-ui-surface-subtle"
                   >
                     {t('cancel')}
                   </button>
                   <button
                     type="button"
                     onClick={handleSaveBusiness}
-                    className="inline-flex items-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-1.5 rounded-md font-medium"
+                    className="inline-flex items-center gap-1.5 bg-ui-action-bg hover:bg-ui-action-hover text-white px-4 py-1.5 rounded-md font-medium"
                   >
                     <Check className="w-3.5 h-3.5" />
                     <span>Create Business</span>
@@ -596,12 +596,12 @@ export const AuditedAccountsPage: React.FC = () => {
       {/* Note Creation Modal (3-Level) */}
       {isNoteModalOpen && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 flex items-center justify-center p-4">
-          <div className="relative w-full max-w-md rounded-xl bg-white shadow-2xl p-6 border border-gray-200 animate-in fade-in space-y-4">
-            <div className="flex items-center justify-between border-b border-gray-100 pb-2">
-              <h3 className="text-sm font-bold text-gray-900">
+          <div className="relative w-full max-w-md rounded-xl bg-ui-surface shadow-2xl p-6 border border-ui-stroke-subtle animate-in fade-in space-y-4">
+            <div className="flex items-center justify-between border-b border-ui-stroke-subtle pb-2">
+              <h3 className="text-sm font-bold text-ui-content-primary">
                 Add Note (Level {noteLevel})
               </h3>
-              <button type="button" onClick={() => setIsNoteModalOpen(false)} className="text-gray-400 hover:text-gray-600">
+              <button type="button" onClick={() => setIsNoteModalOpen(false)} className="text-ui-content-muted hover:text-ui-content-secondary">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -609,37 +609,37 @@ export const AuditedAccountsPage: React.FC = () => {
             <div className="space-y-4 text-xs">
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Note No.</label>
+                  <label className="block font-semibold text-ui-content-secondary mb-1">Note No.</label>
                   <input
                     type="text"
                     value={noteNumber}
                     onChange={(e) => setNoteNumber(e.target.value)}
                     placeholder="e.g. 1.1"
-                    className="w-full rounded-md border border-gray-300 py-1.5 px-3 font-mono focus:border-emerald-600 focus:outline-none"
+                    className="w-full rounded-md border border-ui-stroke-default py-1.5 px-3 font-mono focus:border-ui-focus focus:outline-none"
                   />
                 </div>
                 <div className="col-span-2">
-                  <label className="block font-semibold text-gray-700 mb-1">Note Title *</label>
+                  <label className="block font-semibold text-ui-content-secondary mb-1">Note Title *</label>
                   <input
                     type="text"
                     value={noteTitle}
                     onChange={(e) => setNoteTitle(e.target.value)}
                     placeholder="e.g. Plant & Industrial Machinery"
-                    className="w-full rounded-md border border-gray-300 py-1.5 px-3 focus:border-emerald-600 focus:outline-none"
+                    className="w-full rounded-md border border-ui-stroke-default py-1.5 px-3 focus:border-ui-focus focus:outline-none"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-gray-600 mb-1">{t('currentYearCol')}</label>
+                  <label className="block text-ui-content-secondary mb-1">{t('currentYearCol')}</label>
                   <AmountInput
                     value={noteCurrentAmount}
                     onChange={setNoteCurrentAmount}
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-600 mb-1">{t('previousYearCol')}</label>
+                  <label className="block text-ui-content-secondary mb-1">{t('previousYearCol')}</label>
                   <AmountInput
                     value={notePreviousAmount}
                     onChange={setNotePreviousAmount}
@@ -648,21 +648,21 @@ export const AuditedAccountsPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-gray-600 mb-1">Accounting Disclosure / Description</label>
+                <label className="block text-ui-content-secondary mb-1">Accounting Disclosure / Description</label>
                 <textarea
                   rows={2}
                   value={noteDesc}
                   onChange={(e) => setNoteDesc(e.target.value)}
                   placeholder="Policy, valuation basis, depreciation rate..."
-                  className="w-full rounded-md border border-gray-300 py-1.5 px-3 focus:border-emerald-600 focus:outline-none"
+                  className="w-full rounded-md border border-ui-stroke-default py-1.5 px-3 focus:border-ui-focus focus:outline-none"
                 />
               </div>
 
-              <div className="flex justify-end gap-2 pt-3 border-t border-gray-100">
+              <div className="flex justify-end gap-2 pt-3 border-t border-ui-stroke-subtle">
                 <button
                   type="button"
                   onClick={() => setIsNoteModalOpen(false)}
-                  className="px-3 py-1.5 border border-gray-300 rounded-md font-medium text-gray-700 hover:bg-gray-50"
+                  className="px-3 py-1.5 border border-ui-stroke-default rounded-md font-medium text-ui-content-secondary hover:bg-ui-surface-subtle"
                 >
                   {t('cancel')}
                 </button>
