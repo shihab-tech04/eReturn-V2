@@ -110,3 +110,22 @@ html[data-er-theme="dark-mode"] .er-app-shell footer span {
 }
 @media(min-width:1280px) and (max-width:1370px){.er-income-list{grid-template-columns:minmax(0,1fr);}}
 @media(max-width:1279px){.er-workspace{grid-template-columns:minmax(0,1fr);}.er-calculation-panel{grid-row:auto;grid-column:1;}}
+
+/* Grouped left/right work surfaces: real 70:30 proportions, no phantom grid rows. */
+.er-workspace{grid-template-columns:minmax(0,1fr)!important;}
+.er-workspace-grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,3fr);gap:16px;align-items:start;}
+.er-workspace-left,.er-workspace-right{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-content:start;min-width:0;}
+.er-workspace-grid :is(.er-income,.er-metrics,.er-sections,.er-readiness,.er-calculation-panel){grid-column:auto;grid-row:auto;min-width:0;}
+.er-assessment-summary .er-section{width:100%;}
+.er-workspace-left .er-sections{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;}
+.er-workspace-right .er-metrics{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;}
+.er-workspace .er-jump-calculation{display:none;}
+@media(max-width:1279px){
+ .er-workspace-grid{grid-template-columns:minmax(0,1fr);}
+ .er-workspace .er-jump-calculation{display:inline-flex;}
+ .er-workspace-left .er-sections{grid-template-columns:repeat(2,minmax(0,1fr));}
+ .er-workspace-right .er-metrics{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media(max-width:680px){
+ .er-workspace-left .er-sections,.er-workspace-right .er-metrics{grid-template-columns:minmax(0,1fr);}
+}

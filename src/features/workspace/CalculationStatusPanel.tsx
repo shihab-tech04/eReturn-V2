@@ -14,7 +14,7 @@ export function CalculationStatusPanel() {
       t('Select applicable income heads', 'প্রযোজ্য আয়ের খাত নির্বাচন করুন'),
   ].filter((fact): fact is string => typeof fact === 'string' && Boolean(fact));
   return <section className="er-calculation-panel" aria-labelledby="er-calculation-panel-title">
-    <h2 id="er-calculation-panel-title">{t('Calculation & verification', 'হিসাব ও যাচাইকরণ')}</h2>
+    <h2 id="er-calculation-panel-title" tabIndex={-1}>{t('Calculation & verification', 'হিসাব ও যাচাইকরণ')}</h2>
     <p className="er-calculation-state" role="status">{t('Awaiting certified Rules Engine', 'প্রত্যয়িত রুলস ইঞ্জিন অপেক্ষমাণ')}</p>
     <dl>
       {[
