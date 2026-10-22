@@ -29,9 +29,9 @@ export async function readRulesSqlObservation(fetcher: typeof fetch = fetch): Pr
   if (!record(body) || body.ok !== true ||
       typeof body.engineVersion !== 'string' ||
       typeof body.activeYear !== 'string' ||
-      !Number.isInteger(body.ruleCount) ||
-      !Number.isInteger(body.runtimeBindingCount) ||
-      !Number.isInteger(body.unhandledRuleCount) ||
+      (typeof body.ruleCount !== 'number' || !Number.isInteger(body.ruleCount)) ||
+      (typeof body.runtimeBindingCount !== 'number' || !Number.isInteger(body.runtimeBindingCount)) ||
+      (typeof body.unhandledRuleCount !== 'number' || !Number.isInteger(body.unhandledRuleCount)) ||
       body.ruleCount !== 366 || body.unhandledRuleCount !== 0) {
     throw new Error('NBR_SQL_STATUS_CONTRACT_MISMATCH');
   }
