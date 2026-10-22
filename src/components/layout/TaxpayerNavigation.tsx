@@ -16,7 +16,7 @@ const returnDetailPaths = new Set([
   'business', 'capital-gain', 'income-from-other-sources', 'firm-etc', 'aop',
   'foreign-income', 'spouse-income', 'tax-exempted-income',
   'voluntary-disclosure-income', 'rebate', 'expenditure', 'assets-liabilities',
-  'tax-payment', 'return-view', 'submission',
+  'tax-payment', 'return-view', 'submission', 'audited-accounts',
 ]);
 const recordPaths = new Set([
   'tin-certificate', 'acknowledgement', 'challan-history',
@@ -29,7 +29,7 @@ export const isReturnDetailPath = (pathname: string) =>
 export const isTaxRecordPath = (pathname: string) =>
   recordPaths.has(pathname.split('/').pop() || '');
 
-const navigationActive = (pathname: string, to: string) =>
+export const navigationActive = (pathname: string, to: string) =>
   pathname === to
   || (to.endsWith('/return-workspace') && isReturnDetailPath(pathname))
   || (to.endsWith('/tax-records') && isTaxRecordPath(pathname));
@@ -167,10 +167,10 @@ export function TaxpayerNavigation() {
       <button type="button" className="er-nav-link" aria-label={t('Open menu', 'মেনু খুলুন')} aria-expanded={menuOpen} onClick={() => setMenuOpen(true)}>
         <Menu size={20} aria-hidden={true}/><span>{t('Menu','মেনু')}</span>
       </button>
-      <NavLink to="/user-panel/tax-records" className={({isActive}) => 'er-nav-link' + (isActive ? ' er-nav-selected' : '')}>
+      <NavLink to="/user-panel/tax-records" className={() => 'er-nav-link' + (navigationActive(location.pathname, '/user-panel/tax-records') ? ' er-nav-selected' : '')}>
         <ClipboardList size={20} aria-hidden={true}/><span>{t('Records','রেকর্ড')}</span>
       </NavLink>
-      <NavLink to="/user-panel/return-workspace" className={({isActive}) => 'er-nav-link' + (isActive ? ' er-nav-selected' : '')}>
+      <NavLink to="/user-panel/return-workspace" className={() => 'er-nav-link' + (navigationActive(location.pathname, '/user-panel/return-workspace') ? ' er-nav-selected' : '')}>
         <FileText size={20} aria-hidden={true}/><span>{t('Return','রিটার্ন')}</span>
       </NavLink>
       <NavLink to="/user-panel/home" className={({isActive}) => 'er-nav-link' + (isActive ? ' er-nav-selected' : '')}>

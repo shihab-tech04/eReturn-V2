@@ -94,3 +94,14 @@ test('System button enters focused steps and Download Draft & Exit restores Syst
   await expect(page).toHaveURL(/user-panel\/home$/);
   await expect(page.locator('.er-compact-header')).toBeVisible();
 });
+
+
+test('account password change fails closed without authenticated backend', async ({ page }) => {
+  await page.setViewportSize({width:375,height:812});
+  await page.goto('/#/user-panel/change-password');
+  await expect(page.getByText('Password changes require a verified account service. This page does not save or change passwords.')).toBeVisible();
+  await expect(page.locator('form input')).toHaveCount(3);
+  for (const input of await page.locator('form input').all()) await expect(input).toBeDisabled();
+  await expect(page.locator('form button[type="submit"]')).toBeDisabled();
+  await expect(page.getByText('Password updated successfully in development session!')).toHaveCount(0);
+});

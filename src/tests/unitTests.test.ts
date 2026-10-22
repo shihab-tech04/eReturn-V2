@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { isReturnDetailPath, isTaxRecordPath, navigationActive } from '../components/layout/TaxpayerNavigation';
 
 import {
   aggregateIncomeHeads,
@@ -202,4 +203,20 @@ test('Replacement SQL reader fails closed on errors and incomplete rule coverage
   }), {status: 200})) as typeof fetch;
   await assert.rejects(readRulesSqlObservation(incomplete), /NBR_SQL_STATUS_CONTRACT_MISMATCH/);
   assert.equal(RULES_ENGINE_GATE.status, 'BLOCKED_UNCERTIFIED');
+});
+
+
+test('return and tax-record detail navigation preserves parent context on desktop and mobile', () => {
+  for (const path of ['/user-panel/assessment', '/user-panel/business', '/user-panel/return-view', '/user-panel/submission', '/user-panel/audited-accounts']) {
+    assert.equal(isReturnDetailPath(path), true, path);
+    assert.equal(navigationActive(path, '/user-panel/return-workspace'), true, path);
+    assert.equal(navigationActive(path, '/user-panel/tax-records'), false, path);
+  }
+  for (const path of ['/user-panel/tin-certificate', '/user-panel/acknowledgement', '/user-panel/challan-history', '/user-panel/revised-return']) {
+    assert.equal(isTaxRecordPath(path), true, path);
+    assert.equal(navigationActive(path, '/user-panel/tax-records'), true, path);
+    assert.equal(navigationActive(path, '/user-panel/return-workspace'), false, path);
+  }
+  assert.equal(navigationActive('/user-panel/home', '/user-panel/home'), true);
+  assert.equal(navigationActive('/user-panel/profile', '/user-panel/return-workspace'), false);
 });
