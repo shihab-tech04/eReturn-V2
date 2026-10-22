@@ -177,7 +177,7 @@ test('10. Audited Accounts 3-Level Note Hierarchy', () => {
 test('Replacement SQL status: exact endpoint and read-only contract', async () => {
   const fetcher = (async (url: string, init?: RequestInit) => {
     assert.equal(url, NBR_ENGINE_STATUS_URL);
-    assert.match(url, /gtorruuhvohafapctxym\\.supabase\\.co/);
+    assert.ok(url.includes('gtorruuhvohafapctxym.supabase.co'));
     assert.equal(init?.method, 'GET');
     assert.equal(init?.cache, 'no-store');
     assert.equal(init?.headers && (init.headers as Record<string, string>).accept, 'application/json');
