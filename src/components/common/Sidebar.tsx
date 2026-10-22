@@ -22,9 +22,10 @@ import {
   Briefcase,
   UserCheck,
   Lock,
+  X,
 } from 'lucide-react';
 
-export const Sidebar: React.FC = () => {
+export const Sidebar: React.FC<{mobileOpen?: boolean; onClose?: () => void}> = ({mobileOpen=false, onClose}) => {
   const { t, income, rebate, assetsLiabilities } = useApp();
   const location = useLocation();
 
@@ -52,8 +53,15 @@ export const Sidebar: React.FC = () => {
     }`;
 
   return (
-    <aside className="w-64 bg-white border-r border-gray-200 flex flex-col shrink-0 min-h-[calc(100vh-4rem)]">
-      <div className="p-3 space-y-5 overflow-y-auto max-h-[calc(100vh-4rem)] scrollbar-thin">
+    <aside id="mobile-taxpayer-nav" aria-label={t("menuReturnPreparation")}
+      className={(mobileOpen ? "fixed z-[60] inset-y-0 left-0 flex shadow-2xl " : "hidden ") +
+        "w-64 max-w-[85vw] bg-white border-r border-gray-200 flex-col shrink-0 h-screen lg:h-auto lg:min-h-[calc(100vh-4rem)] lg:static lg:z-auto lg:flex lg:shadow-none"}
+      onClickCapture={(event) => { if ((event.target as HTMLElement).closest("a")) onClose?.(); }}>
+      <div className="flex lg:hidden items-center justify-between border-b border-gray-200 px-3 py-2.5">
+        <span className="text-xs font-semibold text-gray-700">{t("menuReturnPreparation")}</span>
+        <button type="button" onClick={onClose} aria-label="Close menu" className="h-10 w-10 flex items-center justify-center rounded-md text-gray-700 hover:bg-gray-100"><X size={19}/></button>
+      </div>
+      <div className="p-3 space-y-5 overflow-y-auto flex-1 min-h-0 lg:max-h-[calc(100vh-4rem)] scrollbar-thin">
         {/* Home */}
         <div>
           <NavLink to="/user-panel/home" className={navClass}>

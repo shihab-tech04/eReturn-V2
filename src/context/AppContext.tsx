@@ -16,6 +16,7 @@ import {
   AuditedBusiness,
 } from '../types';
 import { translations } from '../i18n/translations';
+import { AUDITED_DRAFT_VERSION, parseAuditedBusinessesDraft } from './draftSerialization';
 import {
   INITIAL_USER_PROFILE,
   INITIAL_ASSESSMENT,
@@ -326,6 +327,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       isSubmittedLocally: false,
       localSubmissionId: '',
     }));
+    setAuditedBusinesses([]);
   };
 
   const loadDemoFixture = () => {
@@ -336,11 +338,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setExpenditure(INITIAL_EXPENDITURE);
     setAssetsLiabilities(INITIAL_ASSETS_LIABILITIES);
     setTaxPayment(INITIAL_TAX_PAYMENT);
+    setAuditedBusinesses(INITIAL_AUDITED_BUSINESSES);
   };
 
   const exportDraftJson = () => {
     const draftPayload = {
-      version: 'NBR-ERETURN-2026-V1',
+      version: AUDITED_DRAFT_VERSION,
       exportedAt: new Date().toISOString(),
       profile,
       assessment,
@@ -349,6 +352,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       expenditure,
       assetsLiabilities,
       taxPayment,
+      auditedBusinesses,
     };
     const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(draftPayload, null, 2));
     const downloadAnchor = document.createElement('a');
@@ -362,7 +366,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const importDraftJson = (jsonString: string): boolean => {
     try {
       const data = JSON.parse(jsonString);
-      if (data.assessment && data.income) {
+      const restoredAuditedBusinesses = parseAuditedBusinessesDraft(data);
+      const importedYear = data?.assessment?.assessmentYear;
+      const supportedYear = importedYear === '2024-2025' || importedYear === '2025-2026' || importedYear === '2026-2027';
+      if (data.assessment && data.income && restoredAuditedBusinesses !== null && supportedYear) {
+        setAssessmentYear(importedYear);
+        setAuditedBusinesses(restoredAuditedBusinesses);
         if (data.profile) setProfile(data.profile);
         if (data.assessment) setAssessment(data.assessment);
         if (data.income) setIncome(data.income);

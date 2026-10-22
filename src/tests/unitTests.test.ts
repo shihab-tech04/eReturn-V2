@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { AUDITED_DRAFT_VERSION, parseAuditedBusinessesDraft } from '../context/draftSerialization';
 import assert from 'node:assert/strict';
 
 import {
@@ -171,4 +172,27 @@ test('10. Audited Accounts 3-Level Note Hierarchy', () => {
   // Verify sub-note references child
   const sub = level3[0];
   assert.equal(sub.parentId, child.id);
+});
+
+
+test('Audited Accounts V2 draft preserves nested notes and rejects malformed input', () => {
+  const business = {
+    id: 'biz-1', businessName: 'Synthetic Test Business', businessType: 'Trading',
+    registrationNo: 'SYN-1', auditorFirmName: 'Synthetic Audit Firm', auditYear: '2025-2026',
+    turnoverCurrent: 0, turnoverPrevious: 0, grossProfitCurrent: 0, grossProfitPrevious: 0,
+    netProfitCurrent: 0, netProfitPrevious: 0, totalAssetsCurrent: 0, totalAssetsPrevious: 0,
+    totalLiabilitiesCurrent: 0, totalLiabilitiesPrevious: 0,
+    notes: [{
+      id: 'note-1', noteNumber: '1', title: 'Synthetic note', level: 1,
+      currentYearAmount: 100, previousYearAmount: 90, description: 'Test only',
+    }],
+  };
+  const draft = { version: AUDITED_DRAFT_VERSION, auditedBusinesses: [business] };
+  assert.deepEqual(parseAuditedBusinessesDraft(JSON.parse(JSON.stringify(draft))), [business]);
+  assert.deepEqual(parseAuditedBusinessesDraft({ version: 'NBR-ERETURN-2026-V1' }), []);
+  assert.equal(parseAuditedBusinessesDraft({ version: AUDITED_DRAFT_VERSION }), null);
+  assert.equal(parseAuditedBusinessesDraft({ ...draft, auditedBusinesses: 'invalid' }), null);
+  assert.equal(parseAuditedBusinessesDraft({ ...draft, auditedBusinesses: [{ ...business, notes: [{ ...business.notes[0], currentYearAmount: '100' }] }] }), null);
+  assert.equal(parseAuditedBusinessesDraft({ ...draft, auditedBusinesses: [business, business] }), null);
+  assert.equal(parseAuditedBusinessesDraft({ version: 'UNSUPPORTED', auditedBusinesses: [] }), null);
 });
