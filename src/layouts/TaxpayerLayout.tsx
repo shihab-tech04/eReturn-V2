@@ -16,6 +16,7 @@ export const TaxpayerLayout: React.FC = () => {
   const recordDetail = isTaxRecordPath(pathname);
 
   return <div className="er-app-shell">
+    <a className="er-skip-link" href="#er-main">{language === 'bn' ? 'মূল বিষয়বস্তুতে যান' : 'Skip to main content'}</a>
     <TaxpayerNavigation />
     <div className="er-main-region">
       <main id="er-main" className={'er-main-content' + (wide ? ' er-main-content--wide' : '')}>
