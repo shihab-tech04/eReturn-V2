@@ -63,7 +63,7 @@ export const TaxPaymentPage: React.FC = () => {
           <div className="flex items-center justify-between py-1.5 border-b border-gray-50">
             <span className="text-gray-600">{t('taxableIncomeSummary')}</span>
             <span className="font-bold text-gray-900 text-sm">
-              {formatBDT(taxPayment.taxableIncome, language)}
+              {notCalculated}
             </span>
           </div>
 
@@ -108,7 +108,7 @@ export const TaxPaymentPage: React.FC = () => {
             2. {t('withholdingSection')}
           </h3>
           <span className="text-xs font-mono font-bold text-blue-700">
-            Total TDS: {formatBDT(taxPayment.totalTDS, language)}
+            {language === 'bn' ? 'দাখিলকৃত উৎসে কর (ক্রেডিট নয়): ' : 'Entered TDS (not verified credit): '}{formatBDT(taxPayment.totalTDS, language)}
           </span>
         </div>
 

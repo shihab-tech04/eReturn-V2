@@ -122,7 +122,7 @@ export const ReturnViewPage: React.FC = () => {
               <tr className="bg-gray-50 text-gray-800 font-semibold border-b border-gray-300">
                 <th className="border border-gray-300 px-3 py-2 text-left w-12">SL</th>
                 <th className="border border-gray-300 px-3 py-2 text-left">Heads of Income</th>
-                <th className="border border-gray-300 px-3 py-2 text-right w-44">Net Amount (BDT)</th>
+                <th className="border border-gray-300 px-3 py-2 text-right w-44">Entered Amount (BDT) — tax verification pending</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
@@ -130,21 +130,21 @@ export const ReturnViewPage: React.FC = () => {
                 <td className="border border-gray-300 px-3 py-1.5 font-mono text-center">10</td>
                 <td className="border border-gray-300 px-3 py-1.5">{t('headEmployment')}</td>
                 <td className="border border-gray-300 px-3 py-1.5 text-right font-mono font-medium">
-                  {formatBDT(incAgg.employmentNet, language)}
+                  {language === 'bn' ? 'যাচাই বাকি' : 'Pending verified rules'}
                 </td>
               </tr>
               <tr>
                 <td className="border border-gray-300 px-3 py-1.5 font-mono text-center">11</td>
                 <td className="border border-gray-300 px-3 py-1.5">{t('headRent')}</td>
                 <td className="border border-gray-300 px-3 py-1.5 text-right font-mono font-medium">
-                  {formatBDT(incAgg.rentNet, language)}
+                  {language === 'bn' ? 'যাচাই বাকি' : 'Pending verified rules'}
                 </td>
               </tr>
               <tr>
                 <td className="border border-gray-300 px-3 py-1.5 font-mono text-center">12</td>
                 <td className="border border-gray-300 px-3 py-1.5">{t('headAgriculture')}</td>
                 <td className="border border-gray-300 px-3 py-1.5 text-right font-mono font-medium">
-                  {formatBDT(incAgg.agriNet, language)}
+                  {language === 'bn' ? 'যাচাই বাকি' : 'Pending verified rules'}
                 </td>
               </tr>
               <tr>
@@ -186,7 +186,7 @@ export const ReturnViewPage: React.FC = () => {
                 <td className="border border-gray-300 px-3 py-2 font-mono text-center">18</td>
                 <td className="border border-gray-300 px-3 py-2 uppercase">TOTAL TAXABLE INCOME (Items 10 to 17)</td>
                 <td className="border border-gray-300 px-3 py-2 text-right font-mono text-emerald-950">
-                  {formatBDT(incAgg.totalTaxableIncome, language)}
+                  {language === 'bn' ? 'করযোগ্য আয় যাচাই বাকি' : 'Pending verified taxable-income calculation'}
                 </td>
               </tr>
             </tbody>
@@ -224,14 +224,14 @@ export const ReturnViewPage: React.FC = () => {
               </tr>
               <tr>
                 <td className="border border-gray-300 px-3 py-1.5 font-mono text-center">22</td>
-                <td className="border border-gray-300 px-3 py-1.5">Tax Deducted / Collected at Source (TDS/AIT)</td>
+                <td className="border border-gray-300 px-3 py-1.5">Entered Tax Deducted / Collected at Source (not verified credit)</td>
                 <td className="border border-gray-300 px-3 py-1.5 text-right font-mono font-medium">
                   {formatBDT(taxPayment.totalTDS, language)}
                 </td>
               </tr>
               <tr>
                 <td className="border border-gray-300 px-3 py-1.5 font-mono text-center">23</td>
-                <td className="border border-gray-300 px-3 py-1.5">Advance Tax Paid (Section 64)</td>
+                <td className="border border-gray-300 px-3 py-1.5">Advance Tax Entered (payment unverified)</td>
                 <td className="border border-gray-300 px-3 py-1.5 text-right font-mono font-medium">
                   {formatBDT(taxPayment.advanceTaxPaid, language)}
                 </td>
@@ -239,7 +239,7 @@ export const ReturnViewPage: React.FC = () => {
               <tr>
                 <td className="border border-gray-300 px-3 py-1.5 font-mono text-center">24</td>
                 <td className="border border-gray-300 px-3 py-1.5">
-                  Tax Paid with this Return (Challan: {taxPayment.challanNumber || 'N/A'}, Date: {taxPayment.challanDate || 'N/A'})
+                  Tax Payment Entered (unverified challan: {taxPayment.challanNumber || 'N/A'}, Date: {taxPayment.challanDate || 'N/A'})
                 </td>
                 <td className="border border-gray-300 px-3 py-1.5 text-right font-mono font-medium">
                   {formatBDT(taxPayment.taxPaidWithReturn, language)}

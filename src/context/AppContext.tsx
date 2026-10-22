@@ -92,7 +92,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState<Language>('en');
-  const [assessmentYear, setAssessmentYear] = useState<AssessmentYear>('2026-2027');
+  const [assessmentYear, setAssessmentYearState] = useState<AssessmentYear>('2026-2027');
   const [profile, setProfile] = useState<UserProfile>(INITIAL_USER_PROFILE);
   const [assessment, setAssessment] = useState<AssessmentData>(INITIAL_ASSESSMENT);
   const [income, setIncome] = useState<IncomeState>(INITIAL_INCOME);
@@ -100,6 +100,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [expenditure, setExpenditure] = useState<ExpenditureState>(INITIAL_EXPENDITURE);
   const [assetsLiabilities, setAssetsLiabilities] = useState<AssetsLiabilitiesState>(INITIAL_ASSETS_LIABILITIES);
   const [taxPayment, setTaxPayment] = useState<TaxPaymentState>(INITIAL_TAX_PAYMENT);
+  // The global selector and saved Assessment must never disagree. Preserve
+  // taxpayer-entered facts; clear the old year's dates for explicit review.
+  const setAssessmentYear = (nextYear: AssessmentYear) => {
+    setAssessmentYearState(nextYear);
+    setAssessment((prev) => prev.assessmentYear === nextYear
+      ? prev
+      : { ...prev, assessmentYear: nextYear, incomeYearFrom: '', incomeYearTo: '' });
+  };
+
   const [submission, setSubmission] = useState<SubmissionState>({
     declarationAccepted: false,
     taxpayerNameAffirmed: INITIAL_USER_PROFILE.name,
@@ -160,19 +169,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       (taxPayment.tdsContractAndSupplies || 0) +
       (taxPayment.tdsRentAndOther || 0);
 
-    const totalPaid = totalTDS + (taxPayment.advanceTaxPaid || 0) + (taxPayment.taxPaidWithReturn || 0);
+    // Entered withholding/advance payments are claims, not confirmed credits.
 
     // Update TaxPayment
     setTaxPayment((prev) => ({
       ...prev,
-      taxableIncome: incAgg.totalTaxableIncome,
+      taxableIncome: 0, // No approved statutory taxable-income amount; UI remains pending.
       grossTaxCalculated: 0,
       taxRebateDeducted: 0,
       netTaxLiability: 0,
       minimumTaxRateApplied: 0,
       totalTaxPayable: 0,
       totalTDS,
-      totalTaxPaidAndCredited: totalPaid,
+      totalTaxPaidAndCredited: 0, // No authenticated payment/ownership/duplicate-credit verification.
       netPayableOrRefundable: 0,
     }));
 
@@ -210,14 +219,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       totalUsesOfFunds: recon.totalUsesOfFunds,
       reconciliationDifference: recon.reconciliationDifference,
     }));
-  }, [income, rebate.entries, expenditure.personalAndFood, expenditure.housingRentAndMaintenance, expenditure.autoAndTransport, expenditure.utilityBills, expenditure.educationExpenses, expenditure.eventsAndHospitality, expenditure.foreignTravel, expenditure.donationsAndGiftsNonRebate, expenditure.otherLivingExpenses, assetsLiabilities.nonAgriculturalProperty, assetsLiabilities.agriculturalProperty, assetsLiabilities.financialAssetsValue, assetsLiabilities.motorVehicles, assetsLiabilities.goldAndJewelry, assetsLiabilities.furnitureAndElectronics, assetsLiabilities.otherAssets, assetsLiabilities.mortgagesOnProperty, assetsLiabilities.bankLoans, assetsLiabilities.unsecuredLoans, assetsLiabilities.otherDebts, assetsLiabilities.netWealthPreviousYear, assetsLiabilities.otherReceiptsAndGifts, taxPayment.tdsSalary, taxPayment.tdsBankAndFinancial, taxPayment.tdsContractAndSupplies, taxPayment.tdsRentAndOther, taxPayment.advanceTaxPaid, taxPayment.taxPaidWithReturn, assessment.residentStatus]);
+  }, [income, rebate.entries, expenditure.personalAndFood, expenditure.housingRentAndMaintenance, expenditure.autoAndTransport, expenditure.utilityBills, expenditure.educationExpenses, expenditure.eventsAndHospitality, expenditure.foreignTravel, expenditure.donationsAndGiftsNonRebate, expenditure.otherLivingExpenses, assetsLiabilities.businessCapital, assetsLiabilities.directorsShareholdings, assetsLiabilities.nonAgriculturalProperty, assetsLiabilities.agriculturalProperty, assetsLiabilities.financialAssetsValue, assetsLiabilities.motorVehicles, assetsLiabilities.goldAndJewelry, assetsLiabilities.furnitureAndElectronics, assetsLiabilities.otherAssets, assetsLiabilities.mortgagesOnProperty, assetsLiabilities.bankLoans, assetsLiabilities.unsecuredLoans, assetsLiabilities.otherDebts, assetsLiabilities.netWealthPreviousYear, assetsLiabilities.otherReceiptsAndGifts, taxPayment.tdsSalary, taxPayment.tdsBankAndFinancial, taxPayment.tdsContractAndSupplies, taxPayment.tdsRentAndOther, taxPayment.advanceTaxPaid, taxPayment.taxPaidWithReturn, assessment.residentStatus]);
 
   const resetToBlank = () => {
     setAssessment({
       returnScheme: 'Universal Self',
       assessmentYear,
-      incomeYearFrom: '2025-07-01',
-      incomeYearTo: '2026-06-30',
+      incomeYearFrom: '',
+      incomeYearTo: '',
       residentStatus: 'Resident',
       hasTaxExemptedIncome: false,
       hasTaxableIncome: false,

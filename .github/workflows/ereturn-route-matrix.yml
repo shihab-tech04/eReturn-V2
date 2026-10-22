@@ -1,7 +1,7 @@
 name: eReturn Every-Route Responsive and Bilingual Browser QA
 on:
   pull_request:
-    branches: [main]
+    branches: [main, 'audit/ereturn-all-routes-responsive-bilingual-20261021']
   push:
     branches: [main]
   workflow_dispatch:
@@ -19,12 +19,34 @@ jobs:
       - run: npm install --no-audit --no-fund
       - run: npx playwright install --with-deps chromium
       - name: All registered routes EN/BN at four widths plus calculation/filer guard
-        run: npx playwright test --config playwright.config.ts
+        run: npx playwright test --config playwright.config.ts qa/ereturn-route-matrix.pw.ts
       - name: Preserve fail evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ereturn-all-route-visual-evidence
+          path: |
+            test-results/
+            playwright-report/
+          retention-days: 30
+
+  ws05-focused-interactions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - name: Individual draft edit, year switching, pending outputs and credit blocking
+        run: npx playwright test --config playwright.config.ts qa/individual-input-safety.pw.ts
+      - name: Preserve WS05 browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ws05-focused-interaction-evidence
           path: |
             test-results/
             playwright-report/

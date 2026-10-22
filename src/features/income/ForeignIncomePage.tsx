@@ -1,3 +1,4 @@
+import { preserveEnteredForeign } from '../../adapters/individualEnteredFacts';
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { ForeignIncomeEntry } from '../../types';
@@ -38,7 +39,7 @@ export const ForeignIncomePage: React.FC = () => {
     country: 'United States (USA)',
     natureOfIncome: '',
     amountForeignCurrency: 0,
-    exchangeRate: 120,
+    exchangeRate: 0,
     amountInBDT: 0,
     taxPaidAbroadBDT: 0,
     creditClaimed: 0,
@@ -50,7 +51,7 @@ export const ForeignIncomePage: React.FC = () => {
       country: 'United States (USA)',
       natureOfIncome: '',
       amountForeignCurrency: 0,
-      exchangeRate: 120,
+      exchangeRate: 0,
       amountInBDT: 0,
       taxPaidAbroadBDT: 0,
       creditClaimed: 0,
@@ -68,12 +69,18 @@ export const ForeignIncomePage: React.FC = () => {
       alert('Please specify nature of foreign income.');
       return;
     }
-    const bdt =
-      currentEntry.amountInBDT > 0
+    let finalized: ForeignIncomeEntry;
+    try {
+      const bdt = currentEntry.amountInBDT > 0
         ? currentEntry.amountInBDT
-        : Math.round((currentEntry.amountForeignCurrency || 0) * (currentEntry.exchangeRate || 1));
-
-    const finalized = { ...currentEntry, amountInBDT: bdt };
+        : currentEntry.exchangeRate > 0
+          ? Math.round(currentEntry.amountForeignCurrency * currentEntry.exchangeRate)
+          : 0;
+      finalized = preserveEnteredForeign({ ...currentEntry, amountInBDT: bdt });
+    } catch {
+      alert(language === 'bn' ? 'বিদেশি আয়ের অঙ্ক এবং লিখিত বিনিময় হার যাচাই করুন।' : 'Check foreign income amounts and enter an explicit valid exchange rate.');
+      return;
+    }
 
     setIncome((prev) => {
       const exists = prev.foreignIncomeEntries.some((e) => e.id === finalized.id);
@@ -171,7 +178,7 @@ export const ForeignIncomePage: React.FC = () => {
                     setCurrentEntry((p) => ({
                       ...p,
                       amountForeignCurrency: v,
-                      amountInBDT: Math.round(v * p.exchangeRate),
+                      amountInBDT: p.exchangeRate > 0 ? Math.round(v * p.exchangeRate) : 0,
                     }))
                   }
                   placeholder="0.00"
@@ -184,11 +191,11 @@ export const ForeignIncomePage: React.FC = () => {
                   type="number"
                   value={currentEntry.exchangeRate}
                   onChange={(e) => {
-                    const rate = parseFloat(e.target.value) || 1;
+                    const rate = e.target.value === '' ? 0 : Number(e.target.value);
                     setCurrentEntry((p) => ({
                       ...p,
                       exchangeRate: rate,
-                      amountInBDT: Math.round(p.amountForeignCurrency * rate),
+                      amountInBDT: Number.isFinite(rate) && rate > 0 ? Math.round(p.amountForeignCurrency * rate) : 0,
                     }));
                   }}
                   className="w-full rounded-md border border-gray-300 py-1.5 px-3 text-xs focus:border-emerald-600 focus:outline-none"
@@ -196,7 +203,7 @@ export const ForeignIncomePage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs text-gray-600 mb-1">Converted Amount in BDT</label>
+                <label className="block text-xs text-gray-600 mb-1">Entered BDT conversion (unverified rate)</label>
                 <AmountInput
                   value={currentEntry.amountInBDT}
                   onChange={(v) => setCurrentEntry((p) => ({ ...p, amountInBDT: v }))}

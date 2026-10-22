@@ -1,3 +1,4 @@
+import { preserveEnteredAgriculture } from '../../adapters/individualEnteredFacts';
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { AgricultureEntry, AgricultureType } from '../../types';
@@ -52,17 +53,9 @@ export const AgriculturePage: React.FC = () => {
       alert('Please enter land description / location.');
       return;
     }
-    // Standard 60% production cost default if zero
-    const prodCost = currentEntry.costOfProduction > 0
-      ? currentEntry.costOfProduction
-      : (currentEntry.grossSaleProceeds * 0.6);
-
-    const net = Math.max(0, currentEntry.grossSaleProceeds - prodCost - (currentEntry.statutoryExemptionClaimed || 0));
-    const finalized = {
-      ...currentEntry,
-      costOfProduction: prodCost,
-      netAgriculturalIncome: Math.round(net),
-    };
+    let finalized: AgricultureEntry;
+    try { finalized = preserveEnteredAgriculture(currentEntry); }
+    catch { alert(language === 'bn' ? 'কৃষি আয়ের তথ্য যাচাই করুন; ঋণাত্মক বা অবৈধ অঙ্ক গ্রহণযোগ্য নয়।' : 'Check the agricultural amounts; invalid or negative amounts cannot be saved.'); return; }
 
     setIncome((prev) => {
       const exists = prev.agricultureEntries.some((e) => e.id === finalized.id);
@@ -90,7 +83,7 @@ export const AgriculturePage: React.FC = () => {
     });
   };
 
-  const totalNet = income.agricultureEntries.reduce((s, e) => s + e.netAgriculturalIncome, 0);
+  const netPending = language === 'bn' ? 'অনুমোদিত হিসাব বাকি' : 'Pending verified Rules Engine';
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
@@ -164,7 +157,7 @@ export const AgriculturePage: React.FC = () => {
                 <AmountInput
                   value={currentEntry.costOfProduction}
                   onChange={(v) => setCurrentEntry((p) => ({ ...p, costOfProduction: v }))}
-                  placeholder="Defaults to 60%"
+                  placeholder={language === 'bn' ? 'প্রদত্ত প্রকৃত ব্যয় লিখুন' : 'Enter documented production cost'}
                 />
               </div>
               <div>
@@ -204,7 +197,7 @@ export const AgriculturePage: React.FC = () => {
             {language === 'bn' ? 'কৃষি আয়ের বিবরণী' : 'Declared Agricultural Income'}
           </h3>
           <span className="font-mono font-bold text-xs text-emerald-800">
-            {t('total')}: {formatBDT(totalNet, language)}
+            {t('total')}: {netPending}
           </span>
         </div>
 
@@ -228,7 +221,7 @@ export const AgriculturePage: React.FC = () => {
                   <div className="text-right">
                     <span className="text-xs text-gray-500 block">Net Income:</span>
                     <span className="text-sm font-bold font-mono text-gray-900">
-                      {formatBDT(entry.netAgriculturalIncome, language)}
+                      {netPending}
                     </span>
                   </div>
 

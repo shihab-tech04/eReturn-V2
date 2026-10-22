@@ -177,7 +177,7 @@ export const IncomeHubPage: React.FC = () => {
             {t('incomeSummary')}
           </span>
           <div className="text-2xl font-bold text-gray-900 font-mono mt-1">
-            {formatBDT(agg.totalTaxableIncome, language)}
+            {language === 'bn' ? 'অনুমোদিত করযোগ্য আয় নির্ধারণ বাকি' : 'Pending verified taxable-income calculation'}
           </div>
           <p className="text-[11px] text-gray-500">
             {language === 'bn'
@@ -246,10 +246,10 @@ export const IncomeHubPage: React.FC = () => {
 
                 <div className="my-3 flex items-baseline justify-between border-t border-gray-100 pt-3">
                   <span className="text-xs text-gray-500">
-                    {language === 'bn' ? 'নিট হিসাবভুক্ত আয়:' : 'Net Taxable Value:'}
+                    {language === 'bn' ? 'দাখিলকৃত খাতের অঙ্ক (কর যাচাই হয়নি):' : 'Entered draft amount (not tax-verified):'}
                   </span>
                   <span className="text-sm font-bold font-mono text-gray-900">
-                    {formatBDT(head.netAmount, language)}
+                    {['employment', 'rent', 'agriculture'].includes(head.id) && head.entryCount > 0 ? (language === 'bn' ? 'অনুমোদিত হিসাব বাকি' : 'Pending verified Rules Engine') : formatBDT(head.netAmount, language)}
                   </span>
                 </div>
               </div>

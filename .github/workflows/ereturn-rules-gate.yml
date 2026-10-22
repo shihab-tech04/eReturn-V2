@@ -1,7 +1,7 @@
 name: eReturn Rules Engine fail-closed QA
 on:
   pull_request:
-    branches: [main]
+    branches: [main, 'audit/ereturn-all-routes-responsive-bilingual-20261021']
   push:
     branches: [main]
   workflow_dispatch:
