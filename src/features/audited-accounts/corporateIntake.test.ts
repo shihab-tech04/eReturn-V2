@@ -1,4 +1,5 @@
-import { describe, expect, it } from 'vitest';
+import { describe, it } from 'node:test';
+import assert from 'node:assert/strict';
 import { AuditIntake, Candidate, parseSignedAmount, reconcile, createBlockedHandoff } from './corporateIntake';
 const mk = (key: string, current: string, previous: string): Candidate => ({
  id:key, statement:'position', label:key, canonicalKey:key, current, previous,
@@ -14,22 +15,22 @@ const fixture = (): AuditIntake => ({
 });
 describe('corporate intake fail-closed controls',()=>{
  it('handles signed amounts without floating point rounding',()=>{
-   expect(parseSignedAmount('(1,250.50)',100)).toBe(-125050n);
-   expect(parseSignedAmount('12.005',100)).toBeNull();
-   expect(parseSignedAmount('-',1)).toBeNull();
+   assert.equal(parseSignedAmount('(1,250.50)',100), -125050n);
+   assert.equal(parseSignedAmount('12.005',100), null);
+   assert.equal(parseSignedAmount('-',1), null);
  });
  it('allows a reviewed arithmetically balanced synthetic example',()=>{
-   expect(reconcile(fixture()).readyForTaxReview).toBe(true);
+   assert.equal(reconcile(fixture()).readyForTaxReview, true);
  });
  it('rejects the original illustrative report balance sheet mismatches, never endorses its amounts',()=>{
    const d=fixture();d.candidates.find(x=>x.canonicalKey==='assets')!.current='11421770';
    d.candidates.find(x=>x.canonicalKey==='equity')!.current='16000000';
    d.candidates.find(x=>x.canonicalKey==='liabilities')!.current='12203667';
-   expect(reconcile(d).issues.some(x=>x.code==='POSITION_MISMATCH')).toBe(true);
+   assert.equal(reconcile(d).issues.some(x=>x.code==='POSITION_MISMATCH'), true);
  });
  it('rejects contradictory cash statement values',()=>{
    const d=fixture();d.candidates.find(x=>x.canonicalKey==='cash_flow_closing')!.current='67716475';
-   expect(reconcile(d).issues.some(x=>x.code==='CASH_MISMATCH')).toBe(true);
+   assert.equal(reconcile(d).issues.some(x=>x.code==='CASH_MISMATCH'), true);
  });
  it('blocks scan, missing provenance, unreviewed amounts, duplicate mappings and malformed notes',()=>{
    const d=fixture();d.extractMethod='scan_requires_review';d.sourceSha256='';
@@ -37,11 +38,11 @@ describe('corporate intake fail-closed controls',()=>{
    d.candidates.push({...mk('assets','7','7'),id:'duplicate-assets',level:3,parentId:'missing'});
    const codes=reconcile(d).issues.map(x=>x.code);
    for(const code of ['SCAN_REVIEW','SOURCE_HASH','UNREVIEWED','DUPLICATE_MAPPING','NOTE_HIERARCHY'])
-     expect(codes).toContain(code);
+     assert.ok(codes.includes(code));
  });
  it('never issues approved tax even after account reconciliation',()=>{
    const handoff=createBlockedHandoff(fixture(),'2025-2026');
-   expect(handoff.status).toBe('BLOCKED_PENDING_LEGAL_RULE_AND_ENGINE');
-   expect(handoff.legalRuleVersionId).toBeNull();
+   assert.equal(handoff.status, 'BLOCKED_PENDING_LEGAL_RULE_AND_ENGINE');
+   assert.equal(handoff.legalRuleVersionId, null);
  });
 });
