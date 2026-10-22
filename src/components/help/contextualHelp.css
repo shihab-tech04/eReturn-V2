@@ -37,3 +37,7 @@
 @media(max-width:767px){.er-help-launcher{right:14px;bottom:calc(75px + env(safe-area-inset-bottom))}.er-submission-shell~.er-help-launcher{bottom:18px}.er-help-drawer{width:100%;max-width:none}.er-help-scroll{padding:12px}.er-help-topic,.er-help-chat{padding:14px}}
 @media print{.er-help-launcher,.er-help-inline,.er-help-backdrop{display:none!important}}
 @media(prefers-reduced-motion:reduce){.er-help-drawer *{scroll-behavior:auto!important;transition:none!important}}
+
+.er-help-select-row{display:flex;align-items:flex-end;gap:5px;min-width:0;width:100%}
+.er-help-select-control{flex:1;min-width:0}
+.er-help-select-row>.er-help-inline{margin-bottom:3px}
