@@ -12,6 +12,7 @@ import {
   getApprovedRulesCalculation,
 } from '../adapters/calculationAdapter';
 
+import { NBR_ENGINE_STATUS_URL, readRulesSqlObservation } from '../adapters/rulesEngineRemoteStatus';
 import { GAP_REGISTER_ITEMS, GAP_REGISTER_SUMMARY } from '../data/gapRegisterData';
 import { toBanglaDigits, formatBDT, parseNumber } from '../i18n/formatters';
 import {
@@ -171,4 +172,34 @@ test('10. Audited Accounts 3-Level Note Hierarchy', () => {
   // Verify sub-note references child
   const sub = level3[0];
   assert.equal(sub.parentId, child.id);
+});
+
+test('Replacement SQL status: exact endpoint and read-only contract', async () => {
+  const fetcher = (async (url: string, init?: RequestInit) => {
+    assert.equal(url, NBR_ENGINE_STATUS_URL);
+    assert.ok(url.includes('gtorruuhvohafapctxym.supabase.co'));
+    assert.equal(init?.method, 'GET');
+    assert.equal(init?.cache, 'no-store');
+    assert.equal(init?.headers && (init.headers as Record<string, string>).accept, 'application/json');
+    return new Response(JSON.stringify({
+      ok: true, engineVersion: 'NBR-TAX-ENGINE-1.5.0',
+      activeYear: '2026-27', ruleCount: 366,
+      runtimeBindingCount: 366, unhandledRuleCount: 0,
+    }), { status: 200 });
+  }) as typeof fetch;
+  const status = await readRulesSqlObservation(fetcher);
+  assert.equal(status.ruleCount, 366);
+  assert.equal(status.activeYear, '2026-27');
+  assert.equal(RULES_ENGINE_GATE.hasApprovedCalculation, false);
+});
+
+test('Replacement SQL reader fails closed on errors and incomplete rule coverage', async () => {
+  const unavailable = (async () => new Response('service down', {status: 503})) as typeof fetch;
+  await assert.rejects(readRulesSqlObservation(unavailable), /NBR_SQL_UNAVAILABLE/);
+  const incomplete = (async () => new Response(JSON.stringify({
+    ok: true, engineVersion: 'NBR-TAX-ENGINE-1.5.0', activeYear: '2026-27',
+    ruleCount: 366, runtimeBindingCount: 365, unhandledRuleCount: 1,
+  }), {status: 200})) as typeof fetch;
+  await assert.rejects(readRulesSqlObservation(incomplete), /NBR_SQL_STATUS_CONTRACT_MISMATCH/);
+  assert.equal(RULES_ENGINE_GATE.status, 'BLOCKED_UNCERTIFIED');
 });

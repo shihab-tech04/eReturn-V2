@@ -24,3 +24,48 @@ jobs:
         run: npm run test
       - name: Production build
         run: npm run build
+      - name: Verify live replacement NBR SQL engine and CORS
+        run: |
+          python3 - <<'PY'
+          import json
+          from urllib.request import Request, urlopen
+          url = 'https://gtorruuhvohafapctxym.supabase.co/functions/v1/nbr-tax-engine/status'
+          request = Request(url, headers={'Origin': 'https://shihab-tech04.github.io', 'Accept': 'application/json'})
+          with urlopen(request, timeout=25) as response:
+              assert response.status == 200
+              assert response.headers.get('access-control-allow-origin') in ('*', 'https://shihab-tech04.github.io')
+              payload = json.load(response)
+          assert payload.get('ok') is True
+          assert payload.get('ruleCount') == 366
+          assert payload.get('unhandledRuleCount') == 0
+          assert payload.get('runtimeBindingCount') == 366
+          assert payload.get('activeYear') == '2026-27'
+          print('PASS replacement SQL read-only runtime contract and CORS')
+          PY
+
+  off-github-backup-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Create and independently test repository history bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p backup
+          git fetch --all --tags --prune
+          git bundle create backup/full-history.bundle --all
+          git bundle verify backup/full-history.bundle
+          git clone --quiet --mirror backup/full-history.bundle /tmp/restored-nbr-ereturn.git
+          git --git-dir=/tmp/restored-nbr-ereturn.git fsck --full --no-reflogs
+          git --git-dir=/tmp/restored-nbr-ereturn.git cat-file -e "${GITHUB_SHA}^{commit}"
+          printf '%s\n' "source_repository=${GITHUB_REPOSITORY}" "source_commit=${GITHUB_SHA}" "mirror_restore=PASS" > backup/manifest.txt
+          sha256sum backup/full-history.bundle > backup/SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nbr-ereturn-full-history-cutover-backup
+          path: backup/
+          retention-days: 7
