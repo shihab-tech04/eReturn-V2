@@ -138,11 +138,11 @@ export const RentPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <div className="flex items-center gap-2">
-            <Home className="w-5 h-5 text-emerald-700" />
-            <h2 className="text-xl font-bold text-gray-900">{t('rentTitle')}</h2>
+            <Home className="w-5 h-5 text-ui-accent" />
+            <h2 className="text-xl font-bold text-ui-content-primary">{t('rentTitle')}</h2>
           </div>
-          <p className="text-xs text-gray-500 mt-1">
-            Reference route: <code className="font-mono bg-gray-100 px-1 py-0.5 rounded">#/user-panel/rent</code>
+          <p className="text-xs text-ui-content-muted mt-1">
+            Reference route: <code className="font-mono bg-ui-surface-subtle px-1 py-0.5 rounded">#/user-panel/rent</code>
           </p>
         </div>
 
@@ -150,7 +150,7 @@ export const RentPage: React.FC = () => {
           <button
             type="button"
             onClick={handleOpenAdd}
-            className="inline-flex items-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold px-3 py-2 rounded-md shadow-xs cursor-pointer"
+            className="inline-flex items-center gap-1.5 bg-ui-action-bg hover:bg-ui-action-hover text-white text-xs font-semibold px-3 py-2 rounded-md shadow-xs cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             {language === 'bn' ? 'আরেকটি সম্পত্তি যুক্ত করুন' : 'Add Another Property'}
@@ -159,12 +159,12 @@ export const RentPage: React.FC = () => {
       </div>
 
       {isEditing && (
-        <div className="bg-white rounded-xl border border-emerald-300 shadow-md p-6 space-y-4 animate-in fade-in">
-          <div className="flex items-center justify-between border-b border-gray-100 pb-2">
-            <h3 className="text-sm font-bold text-gray-900">
+        <div className="bg-ui-surface rounded-xl border border-emerald-300 shadow-md p-6 space-y-4 animate-in fade-in">
+          <div className="flex items-center justify-between border-b border-ui-stroke-subtle pb-2">
+            <h3 className="text-sm font-bold text-ui-content-primary">
               {currentEntry.id ? 'Edit Rental Property' : 'Add Rental Property'}
             </h3>
-            <button type="button" onClick={() => setIsEditing(false)} className="text-gray-400 hover:text-gray-600">
+            <button type="button" onClick={() => setIsEditing(false)} className="text-ui-content-muted hover:text-ui-content-secondary">
               <X className="w-5 h-5" />
             </button>
           </div>
@@ -172,7 +172,7 @@ export const RentPage: React.FC = () => {
           <div className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">{t('propertyType')}</label>
+                <label className="block text-xs font-semibold text-ui-content-secondary mb-1">{t('propertyType')}</label>
                 <SearchableSelect
                   options={PROPERTY_TYPES}
                   value={currentEntry.propertyType}
@@ -181,7 +181,7 @@ export const RentPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">{t('ownershipShare')}</label>
+                <label className="block text-xs font-semibold text-ui-content-secondary mb-1">{t('ownershipShare')}</label>
                 <input
                   type="number"
                   min="1"
@@ -190,37 +190,37 @@ export const RentPage: React.FC = () => {
                   onChange={(e) =>
                     setCurrentEntry((p) => ({ ...p, ownershipSharePercentage: parseFloat(e.target.value) || 100 }))
                   }
-                  className="w-full rounded-md border border-gray-300 py-1.5 px-3 text-xs focus:border-emerald-600 focus:outline-none"
+                  className="w-full rounded-md border border-ui-stroke-default py-1.5 px-3 text-xs focus:border-ui-focus focus:outline-none"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">{t('propertyAddress')} *</label>
+              <label className="block text-xs font-semibold text-ui-content-secondary mb-1">{t('propertyAddress')} *</label>
               <input
                 type="text"
                 value={currentEntry.propertyAddress}
                 onChange={(e) => setCurrentEntry((p) => ({ ...p, propertyAddress: e.target.value }))}
                 placeholder="e.g. Flat 4A, Road 12, Sector 3, Uttara, Dhaka"
-                className="w-full rounded-md border border-gray-300 py-1.5 px-3 text-xs focus:border-emerald-600 focus:outline-none"
+                className="w-full rounded-md border border-ui-stroke-default py-1.5 px-3 text-xs focus:border-ui-focus focus:outline-none"
               />
             </div>
 
             {/* Income Received */}
             <div className="pt-2">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2 border-b border-gray-100 pb-1">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-ui-content-muted mb-2 border-b border-ui-stroke-subtle pb-1">
                 Rental Receipts
               </h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs text-gray-600 mb-1">{t('annualRent')}</label>
+                  <label className="block text-xs text-ui-content-secondary mb-1">{t('annualRent')}</label>
                   <AmountInput
                     value={currentEntry.annualRentReceived}
                     onChange={(v) => setCurrentEntry((p) => ({ ...p, annualRentReceived: v }))}
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-gray-600 mb-1">{t('advanceRent')}</label>
+                  <label className="block text-xs text-ui-content-secondary mb-1">{t('advanceRent')}</label>
                   <AmountInput
                     value={currentEntry.advanceRentReceived}
                     onChange={(v) => setCurrentEntry((p) => ({ ...p, advanceRentReceived: v }))}
@@ -231,40 +231,40 @@ export const RentPage: React.FC = () => {
 
             {/* Deductions */}
             <div className="pt-2">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2 border-b border-gray-100 pb-1">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-ui-content-muted mb-2 border-b border-ui-stroke-subtle pb-1">
                 Allowable Statutory Deductions & Expenses
               </h4>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-xs text-gray-600 mb-1">{t('municipalTax')}</label>
+                  <label className="block text-xs text-ui-content-secondary mb-1">{t('municipalTax')}</label>
                   <AmountInput
                     value={currentEntry.municipalTaxPaid}
                     onChange={(v) => setCurrentEntry((p) => ({ ...p, municipalTaxPaid: v }))}
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-gray-600 mb-1">{t('landRevenue')}</label>
+                  <label className="block text-xs text-ui-content-secondary mb-1">{t('landRevenue')}</label>
                   <AmountInput
                     value={currentEntry.landRevenuePaid}
                     onChange={(v) => setCurrentEntry((p) => ({ ...p, landRevenuePaid: v }))}
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-gray-600 mb-1">{t('loanInterest')}</label>
+                  <label className="block text-xs text-ui-content-secondary mb-1">{t('loanInterest')}</label>
                   <AmountInput
                     value={currentEntry.interestOnLoanPaid}
                     onChange={(v) => setCurrentEntry((p) => ({ ...p, interestOnLoanPaid: v }))}
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-gray-600 mb-1">{t('insurancePremium')}</label>
+                  <label className="block text-xs text-ui-content-secondary mb-1">{t('insurancePremium')}</label>
                   <AmountInput
                     value={currentEntry.insurancePremiumPaid}
                     onChange={(v) => setCurrentEntry((p) => ({ ...p, insurancePremiumPaid: v }))}
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-gray-600 mb-1">{t('vacancyAllowance')}</label>
+                  <label className="block text-xs text-ui-content-secondary mb-1">{t('vacancyAllowance')}</label>
                   <AmountInput
                     value={currentEntry.vacancyAllowance}
                     onChange={(v) => setCurrentEntry((p) => ({ ...p, vacancyAllowance: v }))}
@@ -273,18 +273,18 @@ export const RentPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex justify-end gap-2 pt-3 border-t border-gray-100">
+            <div className="flex justify-end gap-2 pt-3 border-t border-ui-stroke-subtle">
               <button
                 type="button"
                 onClick={() => setIsEditing(false)}
-                className="px-3 py-1.5 border border-gray-300 rounded-md text-xs font-medium text-gray-700 hover:bg-gray-50"
+                className="px-3 py-1.5 border border-ui-stroke-default rounded-md text-xs font-medium text-ui-content-secondary hover:bg-ui-surface-subtle"
               >
                 {t('cancel')}
               </button>
               <button
                 type="button"
                 onClick={handleSave}
-                className="inline-flex items-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-1.5 rounded-md text-xs font-medium"
+                className="inline-flex items-center gap-1.5 bg-ui-action-bg hover:bg-ui-action-hover text-white px-4 py-1.5 rounded-md text-xs font-medium"
               >
                 <Check className="w-3.5 h-3.5" />
                 {t('confirm')}
@@ -295,42 +295,42 @@ export const RentPage: React.FC = () => {
       )}
 
       {/* Property Cards & Summary */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-xs overflow-hidden">
-        <div className="p-4 border-b border-gray-100 flex items-center justify-between">
-          <h3 className="text-sm font-bold text-gray-900">
+      <div className="bg-ui-surface rounded-xl border border-ui-stroke-subtle shadow-xs overflow-hidden">
+        <div className="p-4 border-b border-ui-stroke-subtle flex items-center justify-between">
+          <h3 className="text-sm font-bold text-ui-content-primary">
             {language === 'bn' ? 'ভাড়া দেওয়া সম্পত্তির তালিকা ও সারসংক্ষেপ' : 'Rent Summary & Declared Properties'}
           </h3>
           <div className="text-xs space-x-3">
-            <span className="text-gray-500 font-mono">Gross Rent: {formatBDT(totalRentReceived, language)}</span>
-            <span className="font-mono font-bold text-emerald-800">{t('total')}: {formatBDT(totalNet, language)}</span>
+            <span className="text-ui-content-muted font-mono">Gross Rent: {formatBDT(totalRentReceived, language)}</span>
+            <span className="font-mono font-bold text-ui-accent">{t('total')}: {formatBDT(totalNet, language)}</span>
           </div>
         </div>
 
         {income.rentEntries.length === 0 ? (
-          <div className="p-8 text-center text-xs text-gray-500">
+          <div className="p-8 text-center text-xs text-ui-content-muted">
             {t('noRecordsFound')}. Click "Add Another Property" to declare rental properties.
           </div>
         ) : (
           <div className="divide-y divide-gray-100">
             {income.rentEntries.map((entry) => (
-              <div key={entry.id} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-gray-50">
+              <div key={entry.id} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-ui-surface-subtle">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-gray-900">{entry.propertyType}</span>
+                    <span className="text-xs font-bold text-ui-content-primary">{entry.propertyType}</span>
                     <span className="text-[10px] bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded border border-blue-200 font-mono">
                       Share: {entry.ownershipSharePercentage}%
                     </span>
                   </div>
-                  <div className="text-xs text-gray-600">{entry.propertyAddress}</div>
-                  <div className="text-[11px] text-gray-400 font-mono">
+                  <div className="text-xs text-ui-content-secondary">{entry.propertyAddress}</div>
+                  <div className="text-[11px] text-ui-content-muted font-mono">
                     Rent: {formatBDT(entry.annualRentReceived, language)} • Deductions: {formatBDT(entry.totalDeductions, language)} (Repair {entry.repairAllowanceRate}%)
                   </div>
                 </div>
 
                 <div className="flex items-center gap-3">
                   <div className="text-right">
-                    <span className="text-xs text-gray-500 block">Net Rent:</span>
-                    <span className="text-sm font-bold font-mono text-gray-900">
+                    <span className="text-xs text-ui-content-muted block">Net Rent:</span>
+                    <span className="text-sm font-bold font-mono text-ui-content-primary">
                       {formatBDT(entry.netRentalIncome, language)}
                     </span>
                   </div>
@@ -339,14 +339,14 @@ export const RentPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => handleEdit(entry)}
-                      className="p-1.5 text-gray-500 hover:text-emerald-700 hover:bg-emerald-50 rounded"
+                      className="p-1.5 text-ui-content-muted hover:text-ui-accent hover:bg-ui-accent-soft rounded"
                     >
                       <Edit2 className="w-4 h-4" />
                     </button>
                     <button
                       type="button"
                       onClick={() => handleDelete(entry.id)}
-                      className="p-1.5 text-gray-500 hover:text-red-700 hover:bg-red-50 rounded"
+                      className="p-1.5 text-ui-content-muted hover:text-red-700 hover:bg-red-50 rounded"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
