@@ -78,29 +78,31 @@ test('mobile drawer closes via Escape and restores focus',async ({page})=>{
   await expect(trigger).toBeFocused();
 });
 
-test('appearance matches Sobaike Public light/dark/system, Noto Sans and text-scale contract',async ({page})=>{
+test('appearance uses exact Sobaike buttons and source-defined light/dark/system palettes',async ({page})=>{
   await page.setViewportSize({width:1440,height:900});
   await page.goto('/#/user-panel/return-workspace');
   const rail=page.locator('.er-desktop-rail');
   await expect(rail).toBeVisible();
   await rail.getByRole('button',{name:'Appearance'}).click();
-  const selects=rail.locator('.er-nav-appearance select');
-  await expect(selects).toHaveCount(2);
-  const colors: Record<string,string>={light:'rgb(240, 242, 245)',dark:'rgb(24, 25, 26)'};
-  for(const theme of ['light','dark']) {
-    await selects.nth(0).selectOption(theme);
+  const chooser=rail.getByRole('button',{name:'Select theme'});
+  const colors:Record<string,string>={light:'rgb(240, 242, 245)',dark:'rgb(24, 25, 26)'};
+  for(const theme of ['dark','light']) {
+    await chooser.click();
+    await rail.getByRole('option',{name:theme==='dark'?'Dark':'Light'}).click();
     await expect(page.locator('html')).toHaveAttribute('data-er-theme',theme);
     await expect.poll(()=>page.locator('.er-app-shell').evaluate(e=>getComputedStyle(e).backgroundColor)).toBe(colors[theme]);
   }
   await page.emulateMedia({colorScheme:'dark'});
-  await selects.nth(0).selectOption('system');
+  await chooser.click();
+  await rail.getByRole('option',{name:'System'}).click();
   await expect(page.locator('html')).toHaveAttribute('data-er-theme','dark');
   await page.emulateMedia({colorScheme:'light'});
   await expect(page.locator('html')).toHaveAttribute('data-er-theme','light');
-  for(const [name,px] of [['standard','16px'],['large','18px']]) {
-    await selects.nth(1).selectOption(name);
-    await expect.poll(()=>page.locator('.er-app-shell').evaluate(e=>getComputedStyle(e).fontSize)).toBe(px);
-  }
+  const textSize=rail.getByRole('group',{name:'Text size'});
+  await textSize.getByRole('button',{name:'Larger'}).click();
+  await expect.poll(()=>page.locator('.er-app-shell').evaluate(e=>getComputedStyle(e).fontSize)).toBe('18px');
+  await textSize.getByRole('button',{name:'Standard'}).click();
+  await expect.poll(()=>page.locator('.er-app-shell').evaluate(e=>getComputedStyle(e).fontSize)).toBe('16px');
   await expect.poll(()=>page.locator('.er-app-shell').evaluate(e=>getComputedStyle(e).fontFamily)).toContain('Noto Sans');
   const tokens=await page.locator('.er-shell-cta').evaluate(e=>{
     const style=getComputedStyle(e);
