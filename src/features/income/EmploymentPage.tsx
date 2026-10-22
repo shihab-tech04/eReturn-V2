@@ -252,12 +252,12 @@ export const EmploymentPage: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
               <div>
                 <label className="block text-xs text-gray-600 mb-1">
-                  {language === 'bn' ? 'আইনগত অনুমোদিত করমুক্ত অংশ' : 'Statutory Exempted Portion'}
+                  {language === 'bn' ? 'দাবিকৃত করমুক্ত অংশ (অনুমোদিত নয়)' : 'Exemption entered (not yet verified)'}
                 </label>
                 <AmountInput
                   value={currentEntry.exemptedAmount}
                   onChange={(v) => setCurrentEntry((p) => ({ ...p, exemptedAmount: v }))}
-                  placeholder="Computed automatically"
+                  placeholder={language === 'bn' ? 'দাবিকৃত অঙ্ক লিখুন' : 'Enter claimed amount for review'}
                 />
               </div>
             </div>
