@@ -1,3 +1,4 @@
+import { preserveEnteredRent } from '../../adapters/individualEnteredFacts';
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { RentPropertyEntry, RentPropertyType } from '../../types';
@@ -34,41 +35,13 @@ export const RentPage: React.FC = () => {
     landRevenuePaid: 0,
     interestOnLoanPaid: 0,
     insurancePremiumPaid: 0,
-    repairAllowanceRate: 25,
+    repairAllowanceRate: 0,
     repairAllowanceAmount: 0,
     vacancyAllowance: 0,
     otherAllowableDeductions: 0,
     totalDeductions: 0,
     netRentalIncome: 0,
   });
-
-  const calculateRentDeductions = (entry: RentPropertyEntry) => {
-    const grossRent = (entry.annualRentReceived || 0) + (entry.advanceRentReceived || 0);
-    // Standard repair rate: 25% for residential, 30% for commercial
-    const rate = entry.propertyType.includes('Commercial') || entry.propertyType.includes('Business') ? 30 : 25;
-    const repairAmt = (grossRent * rate) / 100;
-
-    const totalDed =
-      (entry.municipalTaxPaid || 0) +
-      (entry.landRevenuePaid || 0) +
-      (entry.interestOnLoanPaid || 0) +
-      (entry.insurancePremiumPaid || 0) +
-      repairAmt +
-      (entry.vacancyAllowance || 0) +
-      (entry.otherAllowableDeductions || 0);
-
-    const netBeforeShare = Math.max(0, grossRent - totalDed);
-    const share = Math.min(100, Math.max(1, entry.ownershipSharePercentage || 100));
-    const netShare = Math.round((netBeforeShare * share) / 100);
-
-    return {
-      ...entry,
-      repairAllowanceRate: rate,
-      repairAllowanceAmount: repairAmt,
-      totalDeductions: totalDed,
-      netRentalIncome: netShare,
-    };
-  };
 
   const handleOpenAdd = () => {
     setCurrentEntry({
@@ -82,7 +55,7 @@ export const RentPage: React.FC = () => {
       landRevenuePaid: 0,
       interestOnLoanPaid: 0,
       insurancePremiumPaid: 0,
-      repairAllowanceRate: 25,
+      repairAllowanceRate: 0,
       repairAllowanceAmount: 0,
       vacancyAllowance: 0,
       otherAllowableDeductions: 0,
@@ -102,7 +75,9 @@ export const RentPage: React.FC = () => {
       alert('Please enter property address.');
       return;
     }
-    const finalized = calculateRentDeductions(currentEntry);
+    let finalized: RentPropertyEntry;
+    try { finalized = preserveEnteredRent(currentEntry); }
+    catch { alert(language === 'bn' ? 'ভাড়ার তথ্য যাচাই করুন; ঋণাত্মক বা অবৈধ অঙ্ক গ্রহণযোগ্য নয়।' : 'Check the rental amounts and ownership share; invalid or negative amounts cannot be saved.'); return; }
     setIncome((prev) => {
       const exists = prev.rentEntries.some((e) => e.id === finalized.id);
       return {
@@ -302,7 +277,7 @@ export const RentPage: React.FC = () => {
           </h3>
           <div className="text-xs space-x-3">
             <span className="text-gray-500 font-mono">Gross Rent: {formatBDT(totalRentReceived, language)}</span>
-            <span className="font-mono font-bold text-emerald-800">{t('total')}: {formatBDT(totalNet, language)}</span>
+            <span className="font-mono font-bold text-emerald-800">{t('total')}: {netPending}</span>
           </div>
         </div>
 
@@ -323,7 +298,7 @@ export const RentPage: React.FC = () => {
                   </div>
                   <div className="text-xs text-gray-600">{entry.propertyAddress}</div>
                   <div className="text-[11px] text-gray-400 font-mono">
-                    Rent: {formatBDT(entry.annualRentReceived, language)} • Deductions: {formatBDT(entry.totalDeductions, language)} (Repair {entry.repairAllowanceRate}%)
+                    Rent: {formatBDT(entry.annualRentReceived, language)} • {language === 'bn' ? 'কর্তন যাচাই বাকি' : 'Deductions pending rule verification'}
                   </div>
                 </div>
 
@@ -331,7 +306,7 @@ export const RentPage: React.FC = () => {
                   <div className="text-right">
                     <span className="text-xs text-gray-500 block">Net Rent:</span>
                     <span className="text-sm font-bold font-mono text-gray-900">
-                      {formatBDT(entry.netRentalIncome, language)}
+                      {netPending}
                     </span>
                   </div>
 
