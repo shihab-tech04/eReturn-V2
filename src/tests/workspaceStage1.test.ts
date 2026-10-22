@@ -8,25 +8,35 @@ import {
 } from '../data/emptyData';
 import { aggregateIncomeHeads, aggregateExpenditure, RULES_ENGINE_GATE } from '../adapters/calculationAdapter';
 
-test('Stage 1 six theme identities and key values match the Office reference', () => {
-  assert.deepEqual(THEME_ORDER, [
-    'indigo-blue', 'gov-blue', 'slate-purple',
-    'plum-executive', 'fresh-teal', 'dark-mode',
-  ]);
-  assert.deepEqual(THEME_ORDER.map((id) => THEMES[id].primary), [
-    '#4B5694', '#2C5EAD', '#4A4466', '#744577', '#3F7F85', '#8AB4F8',
-  ]);
+test('Current visual contract matches pinned Sobaike Public light/dark/system tokens', () => {
+  // Sobaike Janao Public source: cec3cef2a298c64439be25cc3b0018b02bf7c8b9
+  assert.deepEqual(THEME_ORDER, ['light', 'dark', 'system']);
+  assert.equal(THEMES.light.primary, '#1B4D6B');
+  assert.equal(THEMES.light.primaryDark, '#163B52');
+  assert.equal(THEMES.light.background, '#F0F2F5');
+  assert.equal(THEMES.light.surface, '#FFFFFF');
+  assert.equal(THEMES.light.textPrimary, '#050505');
+  assert.equal(THEMES.light.textSecondary, '#65676B');
+  assert.equal(THEMES.dark.background, '#18191A');
+  assert.equal(THEMES.dark.surface, '#242526');
+  assert.equal(THEMES.dark.textPrimary, '#E4E6EB');
+  assert.equal(THEMES.dark.textSecondary, '#B0B3B8');
   for (const id of THEME_ORDER) {
     const t = THEMES[id];
     for (const key of [
       'primary', 'primaryDark', 'primaryLight', 'secondary', 'accent',
       'background', 'surface', 'border', 'textPrimary', 'textSecondary',
       'success', 'warning', 'error',
-    ] as const) {
-      assert.ok(t[key], 'Missing theme field ' + id + '/' + key);
-    }
+    ] as const) assert.ok(t[key], 'Missing visual token ' + id + '/' + key);
+  }
+  const css = readFileSync(new URL('../styles/sobaike-public-parity.css', import.meta.url), 'utf8');
+  for (const token of ['--radius-control:12px', '--radius-card:16px', '--radius-modal:24px',
+    '--type-body-size:14px', '--type-h1-size-desktop:32px', '--ui-primary-action-bg:#1B4D6B',
+    '--ui-page:#18191A', '--ui-text-primary:#E4E6EB']) {
+    assert.ok(css.includes(token), 'Canonical Sobaike visual token absent: ' + token);
   }
 });
+
 test('Stage 1 starts without invented taxpayer identity or filing records', () => {
   for (const key of ['name', 'nameBn', 'tin', 'nid', 'email', 'mobile', 'currentAddress'] as const) {
     assert.equal(EMPTY_PROFILE[key], '');
