@@ -1,0 +1,30 @@
+name: eReturn Full Route Browser Coverage
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser-route-inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-audit --no-fund
+      - run: npm install --no-save --no-audit --no-fund @playwright/test
+      - run: npx playwright install --with-deps chromium
+      - name: Render every declared eReturn route at 375/768/1280/1920px
+        run: npx playwright test --config=playwright.config.ts
+      - name: Preserve screenshot and trace evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ereturn-all-routes-responsive-evidence
+          path: |
+            test-results/
+            playwright-report/
+          retention-days: 30
