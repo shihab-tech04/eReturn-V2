@@ -16,6 +16,7 @@ import {
   AuditedBusiness,
 } from '../types';
 import { translations } from '../i18n/translations';
+import { EMPTY_PROFILE, EMPTY_ASSESSMENT, EMPTY_INCOME, EMPTY_REBATE, EMPTY_EXPENDITURE, EMPTY_ASSETS_LIABILITIES, EMPTY_TAX_PAYMENT } from '../data/emptyData';
 import {
   INITIAL_USER_PROFILE,
   INITIAL_ASSESSMENT,
@@ -92,27 +93,27 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState<Language>('en');
   const [assessmentYear, setAssessmentYear] = useState<AssessmentYear>('2026-2027');
-  const [profile, setProfile] = useState<UserProfile>(INITIAL_USER_PROFILE);
-  const [assessment, setAssessment] = useState<AssessmentData>(INITIAL_ASSESSMENT);
-  const [income, setIncome] = useState<IncomeState>(INITIAL_INCOME);
-  const [rebate, setRebate] = useState<RebateState>(INITIAL_REBATE);
-  const [expenditure, setExpenditure] = useState<ExpenditureState>(INITIAL_EXPENDITURE);
-  const [assetsLiabilities, setAssetsLiabilities] = useState<AssetsLiabilitiesState>(INITIAL_ASSETS_LIABILITIES);
-  const [taxPayment, setTaxPayment] = useState<TaxPaymentState>(INITIAL_TAX_PAYMENT);
+  const [profile, setProfile] = useState<UserProfile>(EMPTY_PROFILE);
+  const [assessment, setAssessment] = useState<AssessmentData>(EMPTY_ASSESSMENT);
+  const [income, setIncome] = useState<IncomeState>(EMPTY_INCOME);
+  const [rebate, setRebate] = useState<RebateState>(EMPTY_REBATE);
+  const [expenditure, setExpenditure] = useState<ExpenditureState>(EMPTY_EXPENDITURE);
+  const [assetsLiabilities, setAssetsLiabilities] = useState<AssetsLiabilitiesState>(EMPTY_ASSETS_LIABILITIES);
+  const [taxPayment, setTaxPayment] = useState<TaxPaymentState>(EMPTY_TAX_PAYMENT);
   const [submission, setSubmission] = useState<SubmissionState>({
     declarationAccepted: false,
-    taxpayerNameAffirmed: INITIAL_USER_PROFILE.name,
+    taxpayerNameAffirmed: '',
     designationOrCapacity: 'Individual Self',
-    dateAffirmed: new Date().toISOString().split('T')[0],
-    placeAffirmed: 'Dhaka',
+    dateAffirmed: '',
+    placeAffirmed: '',
     isSubmittedLocally: false,
     localSubmissionId: '',
     localSubmissionTimestamp: '',
   });
-  const [auditedBusinesses, setAuditedBusinesses] = useState<AuditedBusiness[]>(INITIAL_AUDITED_BUSINESSES);
-  const [challans, setChallans] = useState<ChallanRecord[]>(INITIAL_CHALLANS);
-  const [certStatusRecords] = useState<CertificateStatusRecord[]>(INITIAL_CERTIFICATE_STATUS);
-  const [returnHistory] = useState<ReturnHistoryRecord[]>(INITIAL_RETURN_HISTORY);
+  const [auditedBusinesses, setAuditedBusinesses] = useState<AuditedBusiness[]>([]);
+  const [challans, setChallans] = useState<ChallanRecord[]>([]);
+  const [certStatusRecords, setCertStatusRecords] = useState<CertificateStatusRecord[]>([]);
+  const [returnHistory, setReturnHistory] = useState<ReturnHistoryRecord[]>([]);
 
   const [confirmModal, setConfirmModal] = useState<ConfirmModalConfig>({
     isOpen: false,
@@ -212,120 +213,23 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, [income, rebate.entries, expenditure.personalAndFood, expenditure.housingRentAndMaintenance, expenditure.autoAndTransport, expenditure.utilityBills, expenditure.educationExpenses, expenditure.eventsAndHospitality, expenditure.foreignTravel, expenditure.donationsAndGiftsNonRebate, expenditure.otherLivingExpenses, assetsLiabilities.nonAgriculturalProperty, assetsLiabilities.agriculturalProperty, assetsLiabilities.financialAssetsValue, assetsLiabilities.motorVehicles, assetsLiabilities.goldAndJewelry, assetsLiabilities.furnitureAndElectronics, assetsLiabilities.otherAssets, assetsLiabilities.mortgagesOnProperty, assetsLiabilities.bankLoans, assetsLiabilities.unsecuredLoans, assetsLiabilities.otherDebts, assetsLiabilities.netWealthPreviousYear, assetsLiabilities.otherReceiptsAndGifts, taxPayment.tdsSalary, taxPayment.tdsBankAndFinancial, taxPayment.tdsContractAndSupplies, taxPayment.tdsRentAndOther, taxPayment.advanceTaxPaid, taxPayment.taxPaidWithReturn, assessment.residentStatus]);
 
   const resetToBlank = () => {
-    setAssessment({
-      returnScheme: 'Universal Self',
-      assessmentYear,
-      incomeYearFrom: '2025-07-01',
-      incomeYearTo: '2026-06-30',
-      residentStatus: 'Resident',
-      hasTaxExemptedIncome: false,
-      hasTaxableIncome: false,
-      heads: {
-        employment: false,
-        rent: false,
-        agriculture: false,
-        business: false,
-        capitalGain: false,
-        financialAssets: false,
-        otherSources: false,
-      },
-      additionalCategories: {
-        firmPartner: false,
-        aopMember: false,
-        foreignIncome: false,
-        spouseOrMinor: false,
-      },
-      voluntaryDisclosure: false,
+    setProfile(EMPTY_PROFILE);
+    setAssessment({ ...EMPTY_ASSESSMENT, assessmentYear });
+    setIncome(EMPTY_INCOME);
+    setRebate(EMPTY_REBATE);
+    setExpenditure(EMPTY_EXPENDITURE);
+    setAssetsLiabilities(EMPTY_ASSETS_LIABILITIES);
+    setTaxPayment(EMPTY_TAX_PAYMENT);
+    setAuditedBusinesses([]);
+    setChallans([]);
+    setCertStatusRecords([]);
+    setReturnHistory([]);
+    setSubmission({
+      declarationAccepted: false, taxpayerNameAffirmed: '',
+      designationOrCapacity: 'Individual Self', dateAffirmed: '',
+      placeAffirmed: '', isSubmittedLocally: false,
+      localSubmissionId: '', localSubmissionTimestamp: '',
     });
-    setIncome({
-      employmentEntries: [],
-      financialAssetEntries: [],
-      rentEntries: [],
-      agricultureEntries: [],
-      businessEntries: [],
-      capitalGainEntries: [],
-      otherIncomeEntries: [],
-      firmEntries: [],
-      aopEntries: [],
-      foreignIncomeEntries: [],
-      spouseMinorEntries: [],
-      taxExemptedEntries: [],
-      voluntaryDisclosureEntries: [],
-      voluntaryDisclosureAffirmed: false,
-    });
-    setRebate({
-      entries: [],
-      totalInvestment: 0,
-      statutoryRebateCeilingRule: 'R-002: RULES_ENGINE_NOT_CERTIFIED',
-      estimatedRebateAmount: 0,
-    });
-    setExpenditure({
-      personalAndFood: 0,
-      housingRentAndMaintenance: 0,
-      autoAndTransport: 0,
-      utilityBills: 0,
-      educationExpenses: 0,
-      eventsAndHospitality: 0,
-      foreignTravel: 0,
-      donationsAndGiftsNonRebate: 0,
-      otherLivingExpenses: 0,
-      totalExpenditure: 0,
-    });
-    setAssetsLiabilities({
-      businessCapital: 0,
-      directorsShareholdings: 0,
-      nonAgriculturalProperty: 0,
-      agriculturalProperty: 0,
-      financialAssetsValue: 0,
-      motorVehicles: 0,
-      goldAndJewelry: 0,
-      furnitureAndElectronics: 0,
-      otherAssets: 0,
-      totalAssets: 0,
-      mortgagesOnProperty: 0,
-      bankLoans: 0,
-      unsecuredLoans: 0,
-      otherDebts: 0,
-      totalLiabilities: 0,
-      netWealthCurrentYear: 0,
-      netWealthPreviousYear: 0,
-      changeInNetWealth: 0,
-      incomeShownInReturn: 0,
-      taxExemptedIncomeTotal: 0,
-      otherReceiptsAndGifts: 0,
-      totalSourceOfFunds: 0,
-      outflowExpenditure: 0,
-      totalUsesOfFunds: 0,
-      reconciliationDifference: 0,
-    });
-    setTaxPayment({
-      taxableIncome: 0,
-      grossTaxCalculated: 0,
-      taxRebateDeducted: 0,
-      netTaxLiability: 0,
-      minimumTaxRateApplied: 0,
-      surchargeAmount: 0,
-      delayInterestOrPenalty: 0,
-      totalTaxPayable: 0,
-      tdsSalary: 0,
-      tdsBankAndFinancial: 0,
-      tdsContractAndSupplies: 0,
-      tdsRentAndOther: 0,
-      totalTDS: 0,
-      advanceTaxPaid: 0,
-      taxPaidWithReturn: 0,
-      challanNumber: '',
-      challanDate: '',
-      bankName: '',
-      totalTaxPaidAndCredited: 0,
-      netPayableOrRefundable: 0,
-    });
-    setSubmission((prev) => ({
-      ...prev,
-      declarationAccepted: false,
-      isSubmittedLocally: false,
-      localSubmissionId: '',
-    }));
   };
 
   const loadDemoFixture = () => {
@@ -336,6 +240,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setExpenditure(INITIAL_EXPENDITURE);
     setAssetsLiabilities(INITIAL_ASSETS_LIABILITIES);
     setTaxPayment(INITIAL_TAX_PAYMENT);
+    setAuditedBusinesses(INITIAL_AUDITED_BUSINESSES);
+    setChallans(INITIAL_CHALLANS);
+    setCertStatusRecords(INITIAL_CERTIFICATE_STATUS);
+    setReturnHistory(INITIAL_RETURN_HISTORY);
   };
 
   const exportDraftJson = () => {
