@@ -158,7 +158,7 @@ export function reconcileCorporate(d:CorporateReportDraft): ReconResult[] {
   for(const period of ['current','previous'] as const){
     const o=getSelected(d,'cash_opening',period),n=getSelected(d,'cash_net_change',period),c=getSelected(d,'cash_closing',period);
     const locators=[o?.locator,n?.locator,c?.locator].filter((x):x is EvidenceLocator=>Boolean(x));
-    if(!o||!n||!c||o.value===null||n.value===null||c.value===null||d.context.scale==='UNCONFIRMED'){
+    if(!o||!n||!c||o.value===null||n.value===null||c.value===null||d.context.scale==='UNCONFIRMED'||d.context.currency!=='BDT'){
       out.push({check:'Opening cash + net change = closing cash',period,status:'BLOCKED',explanation:'Opening, movement, closing and unit scale require review.',locators});
     }else{
       const diff=o.value+n.value-c.value;
