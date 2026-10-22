@@ -1,6 +1,7 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
 import { toBanglaDigits } from '../../i18n/formatters';
+import { ContextHelpButton } from '../help/ContextualHelp';
 
 interface AmountInputProps {
   id?: string;
@@ -53,8 +54,11 @@ export const AmountInput: React.FC<AmountInputProps> = ({
         onChange={handleChange}
         disabled={disabled}
         placeholder={placeholder}
-        className={`block w-full min-h-[44px] bg-ui-surface text-ui-content-primary border border-ui-stroke-default ui-radius-control pl-8 pr-3 ui-space-field-y type-body focus:border-ui-accent focus:ring-2 focus:ring-ui-focus focus:outline-none disabled:bg-ui-disabled-bg disabled:text-ui-disabled-text text-right tabular-nums transition-colors ${className}`}
+        className={`block w-full min-h-[44px] bg-ui-surface text-ui-content-primary border border-ui-stroke-default ui-radius-control pl-8 pr-12 ui-space-field-y type-body focus:border-ui-accent focus:ring-2 focus:ring-ui-focus focus:outline-none disabled:bg-ui-disabled-bg disabled:text-ui-disabled-text text-right tabular-nums transition-colors ${className}`}
       />
+      <div className="absolute inset-y-0 right-1 flex items-center">
+        <ContextHelpButton topic={name || id || (language === 'bn' ? 'টাকার অঙ্ক' : 'Amount')} compact/>
+      </div>
     </div>
   );
 };
