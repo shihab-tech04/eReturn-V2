@@ -3,6 +3,13 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # Legacy branch-published Pages currently starts an auto Jekyll deployment on each push.
+  # Once that deploy finishes, re-publish compiled Vite assets so source HTML never wins.
+  # This recovery trigger is harmless after Pages source is switched to GitHub Actions.
+  workflow_run:
+    workflows: ["pages build and deployment"]
+    types: [completed]
+    branches: [main]
 permissions:
   contents: read
   pages: write
@@ -12,6 +19,8 @@ concurrency:
   cancel-in-progress: false
 jobs:
   build:
+    # Do not deploy on failed upstream Jekyll runs; main push/dispatch still work.
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
