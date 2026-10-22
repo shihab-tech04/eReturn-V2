@@ -86,10 +86,10 @@ export const FirmPage: React.FC = () => {
         <div>
           <div className="flex items-center gap-2">
             <Users className="w-5 h-5 text-purple-700" />
-            <h2 className="text-xl font-bold text-gray-900">{t('catFirm')}</h2>
+            <h2 className="text-xl font-bold text-ui-content-primary">{t('catFirm')}</h2>
           </div>
-          <p className="text-xs text-gray-500 mt-1">
-            Reference route: <code className="font-mono bg-gray-100 px-1 py-0.5 rounded">#/user-panel/firm-etc</code>
+          <p className="text-xs text-ui-content-muted mt-1">
+            Reference route: <code className="font-mono bg-ui-surface-subtle px-1 py-0.5 rounded">#/user-panel/firm-etc</code>
           </p>
         </div>
 
@@ -97,7 +97,7 @@ export const FirmPage: React.FC = () => {
           <button
             type="button"
             onClick={handleOpenAdd}
-            className="inline-flex items-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold px-3 py-2 rounded-md shadow-xs cursor-pointer"
+            className="inline-flex items-center gap-1.5 bg-ui-action-bg hover:bg-ui-action-hover text-white text-xs font-semibold px-3 py-2 rounded-md shadow-xs cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             {language === 'bn' ? 'অংশীদারি ফার্ম যোগ করুন' : 'Add Partnership Firm'}
@@ -106,12 +106,12 @@ export const FirmPage: React.FC = () => {
       </div>
 
       {isEditing && (
-        <div className="bg-white rounded-xl border border-emerald-300 shadow-md p-6 space-y-4 animate-in fade-in">
-          <div className="flex items-center justify-between border-b border-gray-100 pb-2">
-            <h3 className="text-sm font-bold text-gray-900">
+        <div className="bg-ui-surface rounded-xl border border-emerald-300 shadow-md p-6 space-y-4 animate-in fade-in">
+          <div className="flex items-center justify-between border-b border-ui-stroke-subtle pb-2">
+            <h3 className="text-sm font-bold text-ui-content-primary">
               {currentEntry.id ? 'Edit Partnership Firm' : 'Add Partnership Firm'}
             </h3>
-            <button type="button" onClick={() => setIsEditing(false)} className="text-gray-400 hover:text-gray-600">
+            <button type="button" onClick={() => setIsEditing(false)} className="text-ui-content-muted hover:text-ui-content-secondary">
               <X className="w-5 h-5" />
             </button>
           </div>
@@ -119,56 +119,56 @@ export const FirmPage: React.FC = () => {
           <div className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="sm:col-span-2">
-                <label className="block text-xs font-semibold text-gray-700 mb-1">Firm Name *</label>
+                <label className="block text-xs font-semibold text-ui-content-secondary mb-1">Firm Name *</label>
                 <input
                   type="text"
                   value={currentEntry.firmName}
                   onChange={(e) => setCurrentEntry((p) => ({ ...p, firmName: e.target.value }))}
                   placeholder="e.g. Standard Trading Associates"
-                  className="w-full rounded-md border border-gray-300 py-1.5 px-3 text-xs focus:border-emerald-600 focus:outline-none"
+                  className="w-full rounded-md border border-ui-stroke-default py-1.5 px-3 text-xs focus:border-ui-focus focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">Firm TIN</label>
+                <label className="block text-xs font-semibold text-ui-content-secondary mb-1">Firm TIN</label>
                 <input
                   type="text"
                   value={currentEntry.firmTIN}
                   onChange={(e) => setCurrentEntry((p) => ({ ...p, firmTIN: e.target.value }))}
                   placeholder="e.g. 1928-3849-0021"
-                  className="w-full rounded-md border border-gray-300 py-1.5 px-3 text-xs focus:border-emerald-600 focus:outline-none font-mono"
+                  className="w-full rounded-md border border-ui-stroke-default py-1.5 px-3 text-xs focus:border-ui-focus focus:outline-none font-mono"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 pt-2">
               <div>
-                <label className="block text-xs text-gray-600 mb-1">Share Percentage (%)</label>
+                <label className="block text-xs text-ui-content-secondary mb-1">Share Percentage (%)</label>
                 <input
                   type="number"
                   min="1"
                   max="100"
                   value={currentEntry.sharePercentage}
                   onChange={(e) => setCurrentEntry((p) => ({ ...p, sharePercentage: parseFloat(e.target.value) || 0 }))}
-                  className="w-full rounded-md border border-gray-300 py-1.5 px-3 text-xs focus:border-emerald-600 focus:outline-none"
+                  className="w-full rounded-md border border-ui-stroke-default py-1.5 px-3 text-xs focus:border-ui-focus focus:outline-none"
                 />
               </div>
               <div>
-                <label className="block text-xs text-gray-600 mb-1">Share of Profit</label>
+                <label className="block text-xs text-ui-content-secondary mb-1">Share of Profit</label>
                 <AmountInput
                   value={currentEntry.shareOfProfit}
                   onChange={(v) => setCurrentEntry((p) => ({ ...p, shareOfProfit: v }))}
                 />
               </div>
               <div>
-                <label className="block text-xs text-gray-600 mb-1">Partner Remuneration / Salary</label>
+                <label className="block text-xs text-ui-content-secondary mb-1">Partner Remuneration / Salary</label>
                 <AmountInput
                   value={currentEntry.salaryFromFirm}
                   onChange={(v) => setCurrentEntry((p) => ({ ...p, salaryFromFirm: v }))}
                 />
               </div>
               <div>
-                <label className="block text-xs text-gray-600 mb-1">Interest on Capital</label>
+                <label className="block text-xs text-ui-content-secondary mb-1">Interest on Capital</label>
                 <AmountInput
                   value={currentEntry.interestOnCapital}
                   onChange={(v) => setCurrentEntry((p) => ({ ...p, interestOnCapital: v }))}
@@ -176,18 +176,18 @@ export const FirmPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex justify-end gap-2 pt-3 border-t border-gray-100">
+            <div className="flex justify-end gap-2 pt-3 border-t border-ui-stroke-subtle">
               <button
                 type="button"
                 onClick={() => setIsEditing(false)}
-                className="px-3 py-1.5 border border-gray-300 rounded-md text-xs font-medium text-gray-700 hover:bg-gray-50"
+                className="px-3 py-1.5 border border-ui-stroke-default rounded-md text-xs font-medium text-ui-content-secondary hover:bg-ui-surface-subtle"
               >
                 {t('cancel')}
               </button>
               <button
                 type="button"
                 onClick={handleSave}
-                className="inline-flex items-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-1.5 rounded-md text-xs font-medium"
+                className="inline-flex items-center gap-1.5 bg-ui-action-bg hover:bg-ui-action-hover text-white px-4 py-1.5 rounded-md text-xs font-medium"
               >
                 <Check className="w-3.5 h-3.5" />
                 {t('confirm')}
@@ -198,35 +198,35 @@ export const FirmPage: React.FC = () => {
       )}
 
       {/* List */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-xs overflow-hidden">
-        <div className="p-4 border-b border-gray-100 flex items-center justify-between">
-          <h3 className="text-sm font-bold text-gray-900">
+      <div className="bg-ui-surface rounded-xl border border-ui-stroke-subtle shadow-xs overflow-hidden">
+        <div className="p-4 border-b border-ui-stroke-subtle flex items-center justify-between">
+          <h3 className="text-sm font-bold text-ui-content-primary">
             {language === 'bn' ? 'অংশীদারি ফার্মের বিবরণী' : 'Declared Partnership Firms'}
           </h3>
-          <span className="font-mono font-bold text-xs text-emerald-800">
+          <span className="font-mono font-bold text-xs text-ui-accent">
             {t('total')}: {formatBDT(totalNet, language)}
           </span>
         </div>
 
         {income.firmEntries.length === 0 ? (
-          <div className="p-8 text-center text-xs text-gray-500">
+          <div className="p-8 text-center text-xs text-ui-content-muted">
             {t('noRecordsFound')}. Click "Add Partnership Firm" to record profit shares.
           </div>
         ) : (
           <div className="divide-y divide-gray-100">
             {income.firmEntries.map((entry) => (
-              <div key={entry.id} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-gray-50">
+              <div key={entry.id} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-ui-surface-subtle">
                 <div className="space-y-1">
-                  <div className="text-xs font-bold text-gray-900">{entry.firmName}</div>
-                  <div className="text-xs text-gray-600 font-mono">
+                  <div className="text-xs font-bold text-ui-content-primary">{entry.firmName}</div>
+                  <div className="text-xs text-ui-content-secondary font-mono">
                     TIN: {entry.firmTIN || 'N/A'} • Share: {entry.sharePercentage}%
                   </div>
                 </div>
 
                 <div className="flex items-center gap-3">
                   <div className="text-right">
-                    <span className="text-xs text-gray-500 block">Total Income from Firm:</span>
-                    <span className="text-sm font-bold font-mono text-gray-900">
+                    <span className="text-xs text-ui-content-muted block">Total Income from Firm:</span>
+                    <span className="text-sm font-bold font-mono text-ui-content-primary">
                       {formatBDT(entry.totalIncomeFromFirm, language)}
                     </span>
                   </div>
@@ -235,14 +235,14 @@ export const FirmPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => handleEdit(entry)}
-                      className="p-1.5 text-gray-500 hover:text-emerald-700 hover:bg-emerald-50 rounded"
+                      className="p-1.5 text-ui-content-muted hover:text-ui-accent hover:bg-ui-accent-soft rounded"
                     >
                       <Edit2 className="w-4 h-4" />
                     </button>
                     <button
                       type="button"
                       onClick={() => handleDelete(entry.id)}
-                      className="p-1.5 text-gray-500 hover:text-red-700 hover:bg-red-50 rounded"
+                      className="p-1.5 text-ui-content-muted hover:text-red-700 hover:bg-red-50 rounded"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
