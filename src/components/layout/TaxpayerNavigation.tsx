@@ -1,17 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { Bell, BookOpenCheck, BriefcaseBusiness, ChevronDown, ClipboardList, FileText, Globe2, Home, Menu, Palette, UserRound, X } from 'lucide-react';
+import { Bell, BookOpenCheck, ChevronDown, ClipboardList, FileText, Globe2, Home, Menu, Palette, UserRound, X } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
-import { useAppearance, FONT_OPTIONS, type FontId, type FontSizeId } from '../../appearance/AppearanceProvider';
+import { useAppearance, type FontSizeId } from '../../appearance/AppearanceProvider';
 import { THEMES, THEME_ORDER, type ThemeId } from '../../appearance/themes';
 import { hasReturnDraft } from '../../features/workspace/draftStatus';
 
 type NavItem = { to: string; en: string; bn: string; Icon: React.ComponentType<{ size?: number; 'aria-hidden'?: boolean }> };
 const sections: NavItem[] = [
   { to: '/user-panel/home', en: 'Dashboard', bn: 'ড্যাশবোর্ড', Icon: Home },
-  { to: '/user-panel/return-workspace', en: 'My Tax Return', bn: 'আমার আয়কর রিটার্ন', Icon: FileText },
   { to: '/user-panel/tax-records', en: 'Tax Records', bn: 'কর রেকর্ড', Icon: ClipboardList },
-  { to: '/user-panel/audited-accounts', en: 'Audited Accounts', bn: 'নিরীক্ষিত হিসাব', Icon: BriefcaseBusiness },
 ];
 const returnDetailPaths = new Set([
   'assessment', 'income', 'employment', 'financial-assets', 'rent', 'agriculture',
@@ -39,7 +37,7 @@ const navigationActive = (pathname: string, to: string) =>
 export function TaxpayerNavigation() {
   const location = useLocation();
   const { language, toggleLanguage, profile, income, rebate, expenditure, assetsLiabilities, taxPayment, assessment } = useApp();
-  const { themeId, setThemeId, fontId, setFontId, fontSizeId, setFontSizeId } = useAppearance();
+  const { themeId, setThemeId, fontSizeId, setFontSizeId } = useAppearance();
   const [menuOpen, setMenuOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
   const [appearanceOpen, setAppearanceOpen] = useState(false);
@@ -90,14 +88,8 @@ export function TaxpayerNavigation() {
           {THEME_ORDER.map(id => <option value={id} key={id}>{THEMES[id].name}</option>)}
         </select>
       </label>
-      <label>{t('Font', 'ফন্ট')}
-        <select value={fontId} onChange={e => setFontId(e.target.value as FontId)}>
-          {FONT_OPTIONS.map(font => <option value={font.id} key={font.id}>{font.name}</option>)}
-        </select>
-      </label>
       <label>{t('Text size', 'লেখার আকার')}
         <select value={fontSizeId} onChange={e => setFontSizeId(e.target.value as FontSizeId)}>
-          <option value="compact">{t('Compact', 'ছোট')}</option>
           <option value="standard">{t('Standard', 'সাধারণ')}</option>
           <option value="large">{t('Large', 'বড়')}</option>
         </select>
@@ -142,7 +134,7 @@ export function TaxpayerNavigation() {
         <BookOpenCheck size={25} aria-hidden={true}/>
         <span>eReturn <strong>V2</strong></span>
       </Link>
-      <Link to="/user-panel/return-workspace" className="er-shell-cta">{actionLabel}</Link>
+      <Link to="/user-panel/return-workspace" className="er-shell-cta"><FileText size={19} aria-hidden={true}/>{t('My Tax Return', 'আমার আয়কর রিটার্ন')}</Link>
       <nav className="er-rail-primary" aria-label={t('Primary navigation', 'প্রধান নেভিগেশন')}>{primaryLinks()}</nav>
       <div className="er-rail-account">
         <p className="er-rail-section">{t('Account', 'অ্যাকাউন্ট')}</p>{account}
@@ -152,7 +144,7 @@ export function TaxpayerNavigation() {
     <header className="er-compact-header">
       <Link to="/user-panel/home" className="er-compact-brand">eReturn <strong>V2</strong></Link>
       <div className="er-compact-actions">
-        <Link to="/user-panel/return-workspace" className="er-compact-cta">{actionLabel}</Link>
+        <Link to="/user-panel/return-workspace" className="er-compact-cta">{t('My Tax Return', 'আমার আয়কর রিটার্ন')}</Link>
         <button ref={menuTriggerRef} type="button" aria-haspopup="dialog" aria-expanded={menuOpen}
           aria-label={t('Open navigation menu', 'নেভিগেশন মেনু খুলুন')} onClick={() => setMenuOpen(true)}>
           <Menu size={23} aria-hidden={true}/>
@@ -182,7 +174,18 @@ export function TaxpayerNavigation() {
     </div>}
 
     <nav className="er-mobile-bottom" aria-label={t('Mobile primary navigation', 'মোবাইল প্রধান নেভিগেশন')}>
-      {primaryLinks()}
+      <button type="button" className="er-nav-link" aria-label={t('Open menu', 'মেনু খুলুন')} aria-expanded={menuOpen} onClick={() => setMenuOpen(true)}>
+        <Menu size={20} aria-hidden={true}/><span>{t('Menu','মেনু')}</span>
+      </button>
+      <NavLink to="/user-panel/tax-records" className={({isActive}) => 'er-nav-link' + (isActive ? ' er-nav-selected' : '')}>
+        <ClipboardList size={20} aria-hidden={true}/><span>{t('Records','রেকর্ড')}</span>
+      </NavLink>
+      <NavLink to="/user-panel/return-workspace" className={({isActive}) => 'er-nav-link' + (isActive ? ' er-nav-selected' : '')}>
+        <FileText size={20} aria-hidden={true}/><span>{t('Return','রিটার্ন')}</span>
+      </NavLink>
+      <NavLink to="/user-panel/home" className={({isActive}) => 'er-nav-link' + (isActive ? ' er-nav-selected' : '')}>
+        <Home size={20} aria-hidden={true}/><span>{t('Home','হোম')}</span>
+      </NavLink>
     </nav>
   </>;
 }
