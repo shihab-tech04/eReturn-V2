@@ -32,33 +32,33 @@ export const ExpenditurePage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <div className="flex items-center gap-2">
-            <ShoppingBag className="w-5 h-5 text-emerald-700" />
-            <h2 className="text-xl font-bold text-gray-900">{t('expenditureTitle')}</h2>
+            <ShoppingBag className="w-5 h-5 text-ui-accent" />
+            <h2 className="text-xl font-bold text-ui-content-primary">{t('expenditureTitle')}</h2>
           </div>
-          <p className="text-xs text-gray-500 mt-1">{t('expenditureSubtitle')}</p>
+          <p className="text-xs text-ui-content-muted mt-1">{t('expenditureSubtitle')}</p>
         </div>
 
-        <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-4 py-2 text-right">
-          <span className="text-[11px] text-emerald-800 font-medium block">
+        <div className="bg-ui-accent-soft border border-ui-accent-border rounded-lg px-4 py-2 text-right">
+          <span className="text-[11px] text-ui-accent font-medium block">
             {language === 'bn' ? 'মোট বার্ষিক ব্যয়:' : 'Total Annual Expenditure:'}
           </span>
-          <span className="text-lg font-bold font-mono text-emerald-900">
+          <span className="text-lg font-bold font-mono text-ui-content-primary">
             {formatBDT(total, language)}
           </span>
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-200 shadow-xs divide-y divide-gray-100">
+      <div className="bg-ui-surface rounded-xl border border-ui-stroke-subtle shadow-xs divide-y divide-gray-100">
         {/* 1. Personal & Food */}
-        <div className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-gray-50/50">
+        <div className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-ui-surface-subtle/50">
           <div className="space-y-0.5">
             <div className="flex items-center">
-              <span className="text-xs font-bold text-gray-900">
+              <span className="text-xs font-bold text-ui-content-primary">
                 1. {t('personalFood')}
               </span>
               <AccessibleHelpTooltip content="Monthly groceries, food, clothing, kitchen and daily family sustenance expenses." />
             </div>
-            <p className="text-[11px] text-gray-500">Groceries, household provisions, dining, clothing & healthcare</p>
+            <p className="text-[11px] text-ui-content-muted">Groceries, household provisions, dining, clothing & healthcare</p>
           </div>
           <div className="w-full sm:w-56">
             <AmountInput
@@ -69,15 +69,15 @@ export const ExpenditurePage: React.FC = () => {
         </div>
 
         {/* 2. Housing & Accommodation */}
-        <div className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-gray-50/50">
+        <div className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-ui-surface-subtle/50">
           <div className="space-y-0.5">
             <div className="flex items-center">
-              <span className="text-xs font-bold text-gray-900">
+              <span className="text-xs font-bold text-ui-content-primary">
                 2. {t('housingRent')}
               </span>
               <AccessibleHelpTooltip content="Annual rent paid for residential dwelling, building service charge and upkeep." />
             </div>
-            <p className="text-[11px] text-gray-500">Rent paid for residence, building society charge, security and repairs</p>
+            <p className="text-[11px] text-ui-content-muted">Rent paid for residence, building society charge, security and repairs</p>
           </div>
           <div className="w-full sm:w-56">
             <AmountInput
@@ -88,15 +88,15 @@ export const ExpenditurePage: React.FC = () => {
         </div>
 
         {/* 3. Auto & Transportation */}
-        <div className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-gray-50/50">
+        <div className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-ui-surface-subtle/50">
           <div className="space-y-0.5">
             <div className="flex items-center">
-              <span className="text-xs font-bold text-gray-900">
+              <span className="text-xs font-bold text-ui-content-primary">
                 3. {t('autoTransport')}
               </span>
               <AccessibleHelpTooltip content="Fuel, driver salary, CNG/petrol, vehicle tax token, insurance and rideshare/public transit." />
             </div>
-            <p className="text-[11px] text-gray-500">Motor vehicle fuel, driver compensation, maintenance & commute fares</p>
+            <p className="text-[11px] text-ui-content-muted">Motor vehicle fuel, driver compensation, maintenance & commute fares</p>
           </div>
           <div className="w-full sm:w-56">
             <AmountInput
@@ -107,15 +107,15 @@ export const ExpenditurePage: React.FC = () => {
         </div>
 
         {/* 4. Utility Bills */}
-        <div className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-gray-50/50">
+        <div className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-ui-surface-subtle/50">
           <div className="space-y-0.5">
             <div className="flex items-center">
-              <span className="text-xs font-bold text-gray-900">
+              <span className="text-xs font-bold text-ui-content-primary">
                 4. {t('utilities')}
               </span>
               <AccessibleHelpTooltip content="DESCO/DPDC electricity bills, WASA water, Titas Gas and mobile/broadband internet charges." />
             </div>
-            <p className="text-[11px] text-gray-500">Electricity (DESCO/DPDC), gas, water, mobile airtime and home broadband</p>
+            <p className="text-[11px] text-ui-content-muted">Electricity (DESCO/DPDC), gas, water, mobile airtime and home broadband</p>
           </div>
           <div className="w-full sm:w-56">
             <AmountInput
@@ -126,15 +126,15 @@ export const ExpenditurePage: React.FC = () => {
         </div>
 
         {/* 5. Education Expenses */}
-        <div className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-gray-50/50">
+        <div className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-ui-surface-subtle/50">
           <div className="space-y-0.5">
             <div className="flex items-center">
-              <span className="text-xs font-bold text-gray-900">
+              <span className="text-xs font-bold text-ui-content-primary">
                 5. {t('education')}
               </span>
               <AccessibleHelpTooltip content="School and college tuition, coaching, textbooks and university fees for dependents." />
             </div>
-            <p className="text-[11px] text-gray-500">School/college tuition, stationery, books, and coaching for children</p>
+            <p className="text-[11px] text-ui-content-muted">School/college tuition, stationery, books, and coaching for children</p>
           </div>
           <div className="w-full sm:w-56">
             <AmountInput
@@ -145,15 +145,15 @@ export const ExpenditurePage: React.FC = () => {
         </div>
 
         {/* 6. Festivals, Parties & Hospitality */}
-        <div className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-gray-50/50">
+        <div className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-ui-surface-subtle/50">
           <div className="space-y-0.5">
             <div className="flex items-center">
-              <span className="text-xs font-bold text-gray-900">
+              <span className="text-xs font-bold text-ui-content-primary">
                 6. {t('festivals')}
               </span>
               <AccessibleHelpTooltip content="Eid, Puja, family ceremonies, weddings, birthdays and social entertainment expenses." />
             </div>
-            <p className="text-[11px] text-gray-500">Eid, Puja celebrations, family weddings, birthdays and social entertainment</p>
+            <p className="text-[11px] text-ui-content-muted">Eid, Puja celebrations, family weddings, birthdays and social entertainment</p>
           </div>
           <div className="w-full sm:w-56">
             <AmountInput
@@ -164,15 +164,15 @@ export const ExpenditurePage: React.FC = () => {
         </div>
 
         {/* 7. Foreign Travel & Vacation */}
-        <div className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-gray-50/50">
+        <div className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-ui-surface-subtle/50">
           <div className="space-y-0.5">
             <div className="flex items-center">
-              <span className="text-xs font-bold text-gray-900">
+              <span className="text-xs font-bold text-ui-content-primary">
                 7. {t('foreignTravel')}
               </span>
               <AccessibleHelpTooltip content="Airfare, hotel accommodation, foreign currency endorsement and overseas holiday costs." />
             </div>
-            <p className="text-[11px] text-gray-500">Personal overseas holidays, air travel, hotels and travel allowances</p>
+            <p className="text-[11px] text-ui-content-muted">Personal overseas holidays, air travel, hotels and travel allowances</p>
           </div>
           <div className="w-full sm:w-56">
             <AmountInput
@@ -183,15 +183,15 @@ export const ExpenditurePage: React.FC = () => {
         </div>
 
         {/* 8. Donations & Gifts (Non-Rebate) */}
-        <div className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-gray-50/50">
+        <div className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-ui-surface-subtle/50">
           <div className="space-y-0.5">
             <div className="flex items-center">
-              <span className="text-xs font-bold text-gray-900">
+              <span className="text-xs font-bold text-ui-content-primary">
                 8. {t('donationsGifts')}
               </span>
               <AccessibleHelpTooltip content="Gifts to relatives, personal charity and informal donations not qualifying under Schedule 24D." />
             </div>
-            <p className="text-[11px] text-gray-500">Personal gifts to relatives and informal charity (distinct from 24D rebate)</p>
+            <p className="text-[11px] text-ui-content-muted">Personal gifts to relatives and informal charity (distinct from 24D rebate)</p>
           </div>
           <div className="w-full sm:w-56">
             <AmountInput
@@ -202,15 +202,15 @@ export const ExpenditurePage: React.FC = () => {
         </div>
 
         {/* 9. Other Household & Living */}
-        <div className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-gray-50/50">
+        <div className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-ui-surface-subtle/50">
           <div className="space-y-0.5">
             <div className="flex items-center">
-              <span className="text-xs font-bold text-gray-900">
+              <span className="text-xs font-bold text-ui-content-primary">
                 9. {t('otherLiving')}
               </span>
               <AccessibleHelpTooltip content="Domestic help salaries, electronics repairs, pet care, subscriptions and miscellaneous expenses." />
             </div>
-            <p className="text-[11px] text-gray-500">Domestic helper wages, appliance repairs, memberships and incidental costs</p>
+            <p className="text-[11px] text-ui-content-muted">Domestic helper wages, appliance repairs, memberships and incidental costs</p>
           </div>
           <div className="w-full sm:w-56">
             <AmountInput
@@ -222,7 +222,7 @@ export const ExpenditurePage: React.FC = () => {
       </div>
 
       {/* Total Box */}
-      <div className="bg-emerald-900 text-white rounded-xl p-5 flex items-center justify-between shadow-xs">
+      <div className="bg-ui-action-bg text-white rounded-xl p-5 flex items-center justify-between shadow-xs">
         <div>
           <span className="text-xs font-medium text-emerald-200 uppercase tracking-wider block">
             {t('totalLifestyleExpenditure')}
