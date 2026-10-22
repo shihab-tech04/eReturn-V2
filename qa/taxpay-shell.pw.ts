@@ -86,7 +86,7 @@ test('appearance includes six palettes, four fonts and desktop size exactness',a
 });
 
 test('deep links and protected return records remain accessible',async ({page})=>{
-  const pages=['assessment','employment','capital-gain','tax-payment','return-view','audited-accounts','tax-records','return-history','revised-return'];
+  const pages=['assessment','income','employment','financial-assets','rent','agriculture','business','capital-gain','income-from-other-sources','firm-etc','aop','foreign-income','spouse-income','tax-exempted-income','voluntary-disclosure-income','rebate','expenditure','assets-liabilities','tax-payment','return-view','audited-accounts','tax-records','return-history','revised-return'];
   for(const route of pages){
     await page.goto('/#/user-panel/'+route);
     await expect(page.locator('main')).toBeVisible();
@@ -96,4 +96,19 @@ test('deep links and protected return records remain accessible',async ({page})=
   await expect(page).toHaveURL(/\/#\/user-panel\/home$/);
   await page.goto('/#/user-panel/submission');
   await expect(page.getByRole('button',{name:/submit return/i})).toBeDisabled();
+});
+
+test('in-session draft facts survive workspace/detail/dashboard navigation',async ({page})=>{
+  await page.setViewportSize({width:1440,height:900});
+  await page.goto('/#/user-panel/return-workspace');
+  await expect(page.getByRole('link',{name:'Start Return'})).toBeVisible();
+  await page.locator('.er-assessment-summary .er-button').click();
+  await expect(page).toHaveURL(/\/\#\/user-panel\/assessment$/);
+  await page.locator('input[name="residentStatus"][value="Resident"]').check();
+  await page.getByRole('link',{name:/Back to My Tax Return/}).click();
+  await expect(page.locator('#assessment .er-value')).toContainText('Resident');
+  await page.getByRole('link',{name:'Dashboard'}).click();
+  await expect(page.getByRole('link',{name:'Resume Return'})).toBeVisible();
+  await page.getByRole('link',{name:'Resume Return'}).click();
+  await expect(page.locator('#assessment .er-value')).toContainText('Resident');
 });
