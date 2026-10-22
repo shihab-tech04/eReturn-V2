@@ -1,3 +1,4 @@
+import { preserveEnteredEmployment } from '../../adapters/individualEnteredFacts';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
@@ -28,34 +29,6 @@ export const EmploymentPage: React.FC = () => {
     netTaxableIncome: 0,
   });
 
-  const calculateTotals = (entry: EmploymentEntry) => {
-    const total =
-      (entry.basicPay || 0) +
-      (entry.houseRentAllowance || 0) +
-      (entry.medicalAllowance || 0) +
-      (entry.conveyanceAllowance || 0) +
-      (entry.festivalBonus || 0) +
-      (entry.otherAllowances || 0);
-
-    // Standard statutory exemption rule:
-    // House rent exempt up to 50% basic or 300,000 (lesser)
-    // Medical exempt up to 10% basic or 120,000 (lesser)
-    // Conveyance exempt up to 30,000
-    // Total standard statutory exemption can be estimated:
-    const hrExempt = Math.min(entry.houseRentAllowance || 0, Math.min((entry.basicPay || 0) * 0.5, 300000));
-    const medExempt = Math.min(entry.medicalAllowance || 0, Math.min((entry.basicPay || 0) * 0.1, 120000));
-    const convExempt = Math.min(entry.conveyanceAllowance || 0, 30000);
-    const autoExempt = hrExempt + medExempt + convExempt;
-
-    const net = Math.max(0, total - (entry.exemptedAmount || autoExempt));
-    return {
-      ...entry,
-      totalIncome: total,
-      exemptedAmount: entry.exemptedAmount || autoExempt,
-      netTaxableIncome: net,
-    };
-  };
-
   const handleOpenAdd = () => {
     setCurrentEntry({
       id: `emp-${Date.now()}`,
@@ -85,7 +58,9 @@ export const EmploymentPage: React.FC = () => {
       alert('Please enter Employer / Organization Name.');
       return;
     }
-    const calculated = calculateTotals(currentEntry);
+    let calculated: EmploymentEntry;
+    try { calculated = preserveEnteredEmployment(currentEntry); }
+    catch { alert(language === 'bn' ? 'চাকরির আয়ের তথ্য যাচাই করুন; ঋণাত্মক বা অবৈধ অঙ্ক গ্রহণযোগ্য নয়।' : 'Check employment amounts; invalid or negative amounts cannot be saved.'); return; }
     setIncome((prev) => {
       const exists = prev.employmentEntries.some((e) => e.id === calculated.id);
       return {
@@ -315,7 +290,7 @@ export const EmploymentPage: React.FC = () => {
             {language === 'bn' ? 'নিয়োগকর্তার তালিকা' : 'Declared Employment Records'}
           </h3>
           <span className="text-xs font-mono font-bold text-emerald-800">
-            {t('total')}: {formatBDT(totalNet, language)}
+            {t('total')}: {language === 'bn' ? 'অনুমোদিত হিসাব বাকি' : 'Pending verified Rules Engine'}
           </span>
         </div>
 
@@ -336,7 +311,7 @@ export const EmploymentPage: React.FC = () => {
                   </div>
                   <div className="text-xs text-gray-500">{entry.designation || 'N/A'}</div>
                   <div className="text-[11px] text-gray-400 font-mono">
-                    Gross: {formatBDT(entry.totalIncome, language)} • Exempt: {formatBDT(entry.exemptedAmount, language)}
+                    Gross: {formatBDT(entry.totalIncome, language)} • {language === 'bn' ? 'দাবিকৃত অব্যাহতি' : 'Exemption claimed (unverified)'}: {formatBDT(entry.exemptedAmount, language)}
                   </div>
                 </div>
 
@@ -344,7 +319,7 @@ export const EmploymentPage: React.FC = () => {
                   <div className="text-right">
                     <span className="text-xs text-gray-500 block">Taxable Income:</span>
                     <span className="text-sm font-bold font-mono text-gray-900">
-                      {formatBDT(entry.netTaxableIncome, language)}
+                      {language === 'bn' ? 'অনুমোদিত হিসাব বাকি' : 'Pending verified Rules Engine'}
                     </span>
                   </div>
 
