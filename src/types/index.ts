@@ -38,7 +38,7 @@ export interface AssessmentData {
 // 1. Employment
 export interface EmploymentEntry {
   id: string;
-  employmentType: 'Govt iBAS++' | 'Govt Non-iBAS++' | 'Private / Other' | 'Autonomous / Semi-Govt / Corporation';
+  employmentType: 'Govt iBAS++' | 'Govt Non-iBAS++' | 'Private / Other' | 'Autonomous / Semi-Govt / Corporation' | 'Salary Subject to Reduced Tax Rate';
   employerName: string;
   designation: string;
   basicPay: number;
