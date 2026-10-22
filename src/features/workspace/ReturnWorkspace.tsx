@@ -4,8 +4,6 @@ import { ArrowRight, ChevronRight, FileText, Info, Download, Upload, ShieldAlert
 import { useApp } from '../../context/AppContext';
 import { aggregateIncomeHeads, aggregateExpenditure, RULES_ENGINE_GATE } from '../../adapters/calculationAdapter';
 import { formatBDT, toBanglaDigits } from '../../i18n/formatters';
-import { FONT_OPTIONS, useAppearance, type FontId, type FontSizeId } from '../../appearance/AppearanceProvider';
-import { THEMES, THEME_ORDER, type ThemeId } from '../../appearance/themes';
 import type { IncomeState } from '../../types';
 import { CalculationStatusPanel } from './CalculationStatusPanel';
 import './workspace.css';
@@ -33,7 +31,6 @@ export const ReturnWorkspace: React.FC = () => {
     language, assessmentYear, assessment, income, rebate, expenditure,
     assetsLiabilities, taxPayment, exportDraftJson, importDraftJson,
   } = useApp();
-  const { themeId, setThemeId, fontId, setFontId, fontSizeId, setFontSizeId } = useAppearance();
   const fileInput = useRef<HTMLInputElement>(null);
   const [importMessage, setImportMessage] = useState('');
   const bn = language === 'bn';
@@ -86,6 +83,12 @@ export const ReturnWorkspace: React.FC = () => {
       description: tr('Inspect short and detailed return output before any filing', 'দাখিলের আগে সংক্ষিপ্ত ও বিস্তারিত রিটার্ন দেখুন'),
       path: 'return-view', value: tr('Review', 'পর্যালোচনা'),
       detail: tr('Not a filed return', 'দাখিলকৃত রিটার্ন নয়'),
+    },
+    {
+      id: 'audited-accounts', icon: '08', title: tr('Audited accounts (where applicable)', 'নিরীক্ষিত হিসাব (প্রযোজ্য হলে)'),
+      description: tr('Supporting financial statements for an applicable return', 'প্রযোজ্য রিটার্নের সহায়ক আর্থিক বিবরণী'),
+      path: 'audited-accounts', value: tr('Details', 'বিস্তারিত'),
+      detail: tr('Available inside My Tax Return, not a separate filing', 'আমার আয়কর রিটার্নের অংশ; আলাদা দাখিল নয়'),
     },
   ];
 
@@ -149,27 +152,6 @@ export const ReturnWorkspace: React.FC = () => {
         <Info size={16} aria-hidden="true" />
         {importMessage || tr('Changes are held in this browser session. Download a draft to keep a copy; this is not a server save.', 'পরিবর্তন এই ব্রাউজার সেশনে থাকে। কপি রাখতে খসড়া ডাউনলোড করুন; এটি সার্ভারে সংরক্ষণ নয়।')}
       </p>
-
-      <section className="er-preferences" aria-label={tr('Appearance settings', 'প্রদর্শনের সেটিংস')}>
-        <label>{tr('Theme', 'থিম')}
-          <select value={themeId} onChange={(e) => setThemeId(e.target.value as ThemeId)}>
-            {THEME_ORDER.map((id) => <option key={id} value={id}>{THEMES[id].name}</option>)}
-          </select>
-        </label>
-        <label>{tr('Font', 'ফন্ট')}
-          <select value={fontId} onChange={(e) => setFontId(e.target.value as FontId)}>
-            {FONT_OPTIONS.map((font) => <option key={font.id} value={font.id}>{font.name}</option>)}
-          </select>
-        </label>
-        <label>{tr('Text size', 'লেখার আকার')}
-          <select value={fontSizeId} onChange={(e) => setFontSizeId(e.target.value as FontSizeId)}>
-            <option value="compact">{tr('Compact', 'ছোট')}</option>
-            <option value="standard">{tr('Standard', 'সাধারণ')}</option>
-            <option value="large">{tr('Large', 'বড়')}</option>
-          </select>
-        </label>
-      </section>
-
 
       <div className="er-workspace-grid">
         <div className="er-workspace-left">
