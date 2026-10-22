@@ -29,12 +29,23 @@ test('Current visual contract matches pinned Sobaike Public light/dark/system to
       'success', 'warning', 'error',
     ] as const) assert.ok(t[key], 'Missing visual token ' + id + '/' + key);
   }
-  const css = readFileSync(new URL('../styles/sobaike-public-parity.css', import.meta.url), 'utf8');
-  for (const token of ['--radius-control:12px', '--radius-card:16px', '--radius-modal:24px',
-    '--type-body-size:14px', '--type-h1-size-desktop:32px', '--ui-primary-action-bg:#1B4D6B',
-    '--ui-page:#18191A', '--ui-text-primary:#E4E6EB']) {
-    assert.ok(css.includes(token), 'Canonical Sobaike visual token absent: ' + token);
+  const css = readFileSync(new URL('../styles/sobaike-canonical.css', import.meta.url), 'utf8');
+  // Pin the reference values in the actual imported canonical CSS, not a
+  // hand-copied local approximation. Whitespace formatting is immaterial.
+  const tokens = [
+    ['--radius-control', '12px'], ['--radius-card', '16px'],
+    ['--radius-modal', '24px'], ['--type-body-size', '14px'],
+    ['--type-h1-size-desktop', '32px'],
+    ['--ui-primary-action-bg', '#1B4D6B'],
+    ['--ui-page', '#18191A'], ['--ui-text-primary', '#E4E6EB'],
+  ];
+  for (const [key, value] of tokens) {
+    assert.ok(css.includes(key + ': ' + value + ';') ||
+      css.includes(key + ':' + value + ';'),
+      'Canonical Sobaike visual token absent: ' + key + ' = ' + value);
   }
+  assert.ok(css.includes('@theme inline'), 'Sobaike source utility-theme definitions missing');
+  assert.ok(css.includes('.ui-space-button-md'), 'Canonical Sobaike button recipe missing');
 });
 
 test('Stage 1 starts without invented taxpayer identity or filing records', () => {
