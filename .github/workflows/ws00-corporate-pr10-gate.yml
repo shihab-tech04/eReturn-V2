@@ -16,6 +16,8 @@ jobs:
           node-version: '22'
       - run: npm install --no-audit --no-fund
       - run: npm run lint
-      - name: Run original regression suite including existing six WS06 tests
+      - name: Run existing canonical unit suite
         run: npm run test
+      - name: Independently execute original WS06 corporate suite and WS00 negative tests
+        run: npx tsx --test src/tests/ws00CorporatePr10Gate.test.ts
       - run: npm run build
