@@ -1,0 +1,21 @@
+name: WS00 independent corporate PR10 tests
+on:
+  push:
+    branches: ['ws00/corporate-pr10-tests-20261022']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  prove-suite:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-audit --no-fund
+      - run: npm run lint
+      - name: Run original regression suite including existing six WS06 tests
+        run: npm run test
+      - run: npm run build
