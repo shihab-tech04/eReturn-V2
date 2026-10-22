@@ -1,0 +1,120 @@
+/*
+ * Sobaike Janao Public canonical form recipes applied to eReturn's existing
+ * tax forms without changing any legal calculation, value, or input ownership.
+ * Design tokens, typography scales and elevations live in sobaike-canonical.css.
+ * This adapter replaces obsolete hard-coded colors of the legacy forms.
+ */
+.er-app-shell :is(input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),select,textarea) {
+  font-family:var(--font-ui,'Noto Sans','Noto Sans Bengali',sans-serif);
+  font-size:calc(var(--type-body-size) * var(--reader-scale));
+  line-height:calc(var(--type-label-line) * var(--reader-scale));
+  color:var(--ui-text-primary);
+  background-color:var(--ui-input);
+  border-color:var(--ui-border);
+  border-style:solid;
+  border-width:var(--border-width-default,1px);
+  border-radius:var(--radius-control);
+  min-height:44px;
+  transition:border-color .15s ease,box-shadow .15s ease;
+}
+.er-app-shell input[type="number"],.er-app-shell .er-money {
+  font-variant-numeric:tabular-nums;
+  text-align:right;
+}
+.er-app-shell input::placeholder,.er-app-shell textarea::placeholder {
+  color:var(--ui-input-placeholder);
+  opacity:1;
+}
+.er-app-shell :is(input:not([type="checkbox"]):not([type="radio"]),select,textarea):is(:disabled,[aria-disabled="true"]) {
+  background-color:var(--ui-disabled-bg);
+  color:var(--ui-disabled-text);
+  cursor:not-allowed;
+}
+.er-app-shell :is(input,select,textarea):focus-visible {
+  border-color:var(--ui-focus)!important;
+  outline:2px solid var(--ui-focus)!important;
+  outline-offset:1px;
+}
+.er-app-shell :is(input,select,textarea)[aria-invalid="true"] {
+  border-color:var(--ui-validation-border)!important;
+}
+.er-app-shell :is(input,select,textarea):not([type="checkbox"]):not([type="radio"]) {
+  caret-color:var(--ui-text-primary);
+}
+.er-app-shell :is(input[type="checkbox"],input[type="radio"]) {
+  accent-color:var(--ui-primary-action-bg);
+  width:20px;height:20px;
+  min-height:unset;
+}
+.er-app-shell :is(button,[role="button"],.er-button) {
+  font-family:var(--font-ui,'Noto Sans','Noto Sans Bengali',sans-serif);
+  min-height:44px;
+}
+.er-app-shell :is(button,[role="button"],.er-button):focus-visible {
+  outline:2px solid var(--ui-focus);
+  outline-offset:2px;
+}
+.er-app-shell :is(button,[class*="bg-emerald-"],[class*="bg-green-"]).er-button,
+.er-app-shell button[class*="bg-emerald-"],
+.er-app-shell button[class*="bg-green-"] {
+  color:var(--ui-primary-action-text)!important;
+  background-color:var(--ui-primary-action-bg)!important;
+  border-color:var(--ui-primary-action-bg)!important;
+}
+.er-app-shell button[class*="bg-emerald-"]:hover,
+.er-app-shell button[class*="bg-green-"]:hover {
+  background-color:var(--ui-primary-action-hover)!important;
+}
+.er-app-shell :is(.bg-white,[class~="bg-white"]) {
+  background-color:var(--ui-surface);
+}
+.er-app-shell :is(.bg-gray-50,.bg-slate-50,[class~="bg-gray-50"],[class~="bg-slate-50"]) {
+  background-color:var(--ui-surface-subtle);
+}
+.er-app-shell :is(.text-gray-900,.text-slate-900,.text-gray-800) {
+  color:var(--ui-text-primary);
+}
+.er-app-shell :is(.text-gray-600,.text-gray-500,.text-slate-500,.text-slate-600) {
+  color:var(--ui-text-secondary);
+}
+.er-app-shell :is(.border-gray-100,.border-gray-200,.border-gray-300,.border-slate-200) {
+  border-color:var(--ui-border);
+}
+.er-app-shell .font-mono {
+  font-family:var(--font-ui,'Noto Sans','Noto Sans Bengali',sans-serif)!important;
+  font-variant-numeric:tabular-nums;
+}
+.er-app-shell :is(table,[role="table"]) {
+  color:var(--ui-text-primary);
+  border-color:var(--ui-border-subtle);
+  font-family:var(--font-ui,'Noto Sans','Noto Sans Bengali',sans-serif);
+}
+.er-app-shell :is(th,[role="columnheader"]) {
+  text-align:left;
+  font-weight:var(--font-weight-semibold,600);
+  background-color:var(--ui-surface-subtle);
+  color:var(--ui-text-secondary);
+  border-color:var(--ui-border-subtle);
+}
+.er-app-shell :is(td,[role="cell"]) {
+  background-color:var(--ui-surface);
+  color:var(--ui-text-primary);
+  border-color:var(--ui-border-subtle);
+}
+.er-app-shell :is(fieldset,[role="group"]) { border-color:var(--ui-border); }
+.er-app-shell legend { color:var(--ui-text-primary);font-size:calc(var(--type-label-size)*var(--reader-scale));font-weight:600 }
+.er-app-shell :is(.shadow-xs,.shadow-sm) {box-shadow:var(--elevation-low)}
+.er-app-shell :is(.rounded-md,.rounded-lg,.rounded-xl):is(button,input,select,textarea) {
+  border-radius:var(--radius-control);
+}
+.er-app-shell [role="alert"] {color:var(--ui-error-text);}
+.er-app-shell [role="status"] {font-variant-numeric:tabular-nums;}
+@media(max-width:767px){
+  .er-app-shell :is(input:not([type="checkbox"]):not([type="radio"]),select,textarea){
+    font-size:max(16px,calc(var(--type-body-size)*var(--reader-scale)));
+  }
+}
+@media print {
+  .er-app-shell :is(input,select,textarea) {color:#000!important;background:#fff!important;border-color:#777!important}
+  .er-app-shell :is(td,th) {background:#fff!important;color:#000!important}
+}
