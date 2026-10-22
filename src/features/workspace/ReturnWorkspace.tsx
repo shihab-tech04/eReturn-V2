@@ -7,6 +7,7 @@ import { formatBDT, toBanglaDigits } from '../../i18n/formatters';
 import { FONT_OPTIONS, useAppearance, type FontId, type FontSizeId } from '../../appearance/AppearanceProvider';
 import { THEMES, THEME_ORDER, type ThemeId } from '../../appearance/themes';
 import type { IncomeState } from '../../types';
+import { CalculationStatusPanel } from './CalculationStatusPanel';
 import './workspace.css';
 
 type EntryKey = Exclude<keyof IncomeState, 'voluntaryDisclosureAffirmed'>;
@@ -172,6 +173,8 @@ export const ReturnWorkspace: React.FC = () => {
           <small>{tr('Across 13 income sections', 'আয়ের ১৩টি বিভাগে')}</small>
         </div>
       </div>
+
+      <CalculationStatusPanel />
 
       <section className="er-section er-income" aria-labelledby="income-heading" id="income">
         <div className="er-card-head">

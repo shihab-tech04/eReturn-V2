@@ -52,6 +52,7 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
     const root = document.documentElement;
     const theme = THEMES[prefs.themeId];
     root.dataset.erTheme = theme.id;
+    root.dataset.erFontSize = prefs.fontSizeId;
     for (const [key, cssValue] of Object.entries(theme)) {
       if (key !== 'id' && key !== 'name') {
         root.style.setProperty('--er-' + key.replace(/[A-Z]/g, (m) => '-' + m.toLowerCase()), String(cssValue));
