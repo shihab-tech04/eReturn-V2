@@ -209,3 +209,19 @@ test('12. WS06 reviewed arithmetic remains evidence-only, deterministic and fail
   assert.throws(() => readReviewSnapshot(JSON.stringify(draft),'other-source'), /SOURCE_OR_SCHEMA_MISMATCH/);
   assert.deepEqual(readReviewSnapshot(JSON.stringify(draft),'synthetic-only').source.sha256, 'synthetic-only');
 });
+
+test('13. WS06 reviewed PDF page custody cannot be restored with altered page indexes', () => {
+  const rows=proposeCorporateLines([{page:1,text:'Statement of Financial Position\nTotal assets 100 90'}]);
+  const draft={
+    schema:'WS06_CORPORATE_INTAKE_V1' as const,
+    source:{name:'synthetic.pdf',sha256:'a'.repeat(64),bytes:150,pageCount:1,digitalPages:1,scanPages:0,parser:'PDFJS_TEXT_V1' as const},
+    context:{companyName:'',financialPeriodEnd:'',comparativePeriodEnd:'',currency:'UNCONFIRMED',scale:'UNCONFIRMED' as const},
+    lines:rows,sourcePages:[{page:1,text:'Statement of Financial Position\nTotal assets 100 90'}],
+    stage:'REVIEW_ONLY' as const
+  };
+  assert.equal(readReviewSnapshot(JSON.stringify(draft),draft.source.sha256).sourcePages?.[0].page,1);
+  const wrong={...draft,sourcePages:[{page:2,text:'modified'}]};
+  assert.throws(()=>readReviewSnapshot(JSON.stringify(wrong),draft.source.sha256),/INVALID_SOURCE_PAGE_INDEX/);
+  const outOfRange={...draft,lines:rows.map(x=>({...x,locator:{...x.locator,page:8}}))};
+  assert.throws(()=>readReviewSnapshot(JSON.stringify(outOfRange),draft.source.sha256),/INVALID_ROW_SOURCE_PAGE/);
+});
