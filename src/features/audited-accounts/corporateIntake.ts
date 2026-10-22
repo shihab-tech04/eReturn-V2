@@ -51,7 +51,23 @@ export function reconcile(input: AuditIntake): Reconciliation {
   if (!input.candidates.length) fail('EMPTY', [], 'No statement candidates');
   const byKey = new Map<string, Candidate>();
   const ids = new Set<string>();
+  // Accounting amounts cannot be reconciled across unlike units. Requiring
+  // one explicit ISO-style statement currency avoids silently treating
+  // identical USD/BDT figures as equivalent. No FX rate or conversion is
+  // inferred from PDF labels, candidate scales, or taxpayer-selected fields.
+  let statementCurrency: { currency: string; id: string } | null = null;
   for (const row of input.candidates) {
+    if (row.current !== null || row.previous !== null) {
+      const currency = row.currency;
+      if (typeof currency !== 'string' || !/^[A-Z]{3}$/.test(currency)) {
+        fail('CURRENCY_UNVERIFIED', [row.id], 'Each monetary candidate requires one reviewed, explicit three-letter currency');
+      } else if (statementCurrency === null) {
+        statementCurrency = { currency, id: row.id };
+      } else if (statementCurrency.currency !== currency) {
+        fail('CURRENCY_MISMATCH', [statementCurrency.id, row.id],
+          'Monetary statement candidates have different currencies; no automatic FX normalization is permitted');
+      }
+    }
     if (ids.has(row.id)) fail('DUPLICATE_ID', [row.id], 'Duplicate candidate identifier');
     ids.add(row.id);
     if (!row.evidence.length || row.evidence.some(e => !Number.isInteger(e.page) || e.page < 1))

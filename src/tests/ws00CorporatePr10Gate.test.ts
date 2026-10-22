@@ -40,3 +40,21 @@ test('WS00: identical numeric values from incompatible currencies must not recon
   assert.equal(result.readyForTaxReview, false, 'mixed currencies must require review');
   assert.ok(result.issues.some(issue => issue.code === 'CURRENCY_MISMATCH'));
 });
+
+test('WS00: missing currency on a monetary candidate fails closed without a BDT fallback', () => {
+  const report = fixture();
+  report.candidates[0].currency = null;
+  const result = reconcile(report);
+  assert.equal(result.readyForTaxReview, false);
+  assert.ok(result.issues.some(issue => issue.code === 'CURRENCY_UNVERIFIED' &&
+    issue.fieldIds.includes('assets')));
+});
+
+test('WS00: compound or ambiguous currency labels cannot authorize accounting equality', () => {
+  const report = fixture();
+  report.candidates[1].currency = 'BDT / USD';
+  const result = reconcile(report);
+  assert.equal(result.readyForTaxReview, false);
+  assert.ok(result.issues.some(issue => issue.code === 'CURRENCY_UNVERIFIED' &&
+    issue.fieldIds.includes('equity')));
+});
