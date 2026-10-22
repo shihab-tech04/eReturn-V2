@@ -28,7 +28,7 @@ import { ExpenditurePage } from './features/expenditure/ExpenditurePage';
 import { AssetsLiabilitiesPage } from './features/assets-liabilities/AssetsLiabilitiesPage';
 import { TaxPaymentPage } from './features/tax-payment/TaxPaymentPage';
 import { ReturnViewPage } from './features/return-view/ReturnViewPage';
-import { SubmissionPage } from './features/submission/SubmissionPage';
+import { SubmissionLayout, SubmissionPage, SubmissionEditPage } from './features/submission/GuidedSubmission';
 
 import { TinCertificatePage } from './features/tax-record/TinCertificatePage';
 import { AcknowledgementPage } from './features/tax-record/AcknowledgementPage';
@@ -78,7 +78,6 @@ export default function App() {
             <Route path="assets-liabilities" element={<AssetsLiabilitiesPage />} />
             <Route path="tax-payment" element={<TaxPaymentPage />} />
             <Route path="return-view" element={<ReturnViewPage />} />
-            <Route path="submission" element={<SubmissionPage />} />
 
             {/* Tax Records */}
             <Route path="tin-certificate" element={<TinCertificatePage />} />
@@ -96,6 +95,12 @@ export default function App() {
             {/* Profile & Account */}
             <Route path="profile" element={<ProfilePage />} />
             <Route path="change-password" element={<ChangePasswordPage />} />
+          </Route>
+
+          {/* Full-screen, distraction-free guided filing preparation. No taxpayer navigation shell. */}
+          <Route path="/user-panel/submission" element={<SubmissionLayout />}>
+            <Route index element={<SubmissionPage />} />
+            <Route path="edit/:section" element={<SubmissionEditPage />} />
           </Route>
 
           {/* Catch-all */}

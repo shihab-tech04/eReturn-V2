@@ -134,6 +134,9 @@ export const ReturnWorkspace: React.FC = () => {
           </p>
         </div>
         <div className="er-hero-actions">
+          <Link to="/user-panel/submission" className="er-button er-button-primary">
+            <FileText size={17} aria-hidden="true" /> {tr('Review & Submit', 'পর্যালোচনা ও দাখিল')}
+          </Link>
           <button type="button" className="er-button er-button-primary" onClick={exportDraftJson}>
             <Download size={17} aria-hidden="true" /> {tr('Download draft', 'খসড়া ডাউনলোড')}
           </button>

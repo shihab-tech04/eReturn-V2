@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
 import { ArrowLeft, ArrowRight, Save, CheckCircle } from 'lucide-react';
 import { Button } from '../sobaike-ui/Button';
@@ -17,6 +17,7 @@ export const StepNavigationButtons: React.FC<StepNavigationButtonsProps> = ({
 }) => {
   const { t } = useApp();
   const navigate = useNavigate();
+  const location = useLocation();
   const [showSavedFeedback, setShowSavedFeedback] = useState(false);
   const handleSaveDraft = () => {
     if (onSaveDraft) onSaveDraft();
@@ -27,6 +28,8 @@ export const StepNavigationButtons: React.FC<StepNavigationButtonsProps> = ({
     if (onSaveAndContinue) onSaveAndContinue();
     else if (nextPath) navigate(nextPath);
   };
+  // When editing from guided submission, its own focused footer owns navigation.
+  if (location.pathname.startsWith('/user-panel/submission/edit/')) return null;
   return (
     <div className="mt-8 pt-4 border-t border-ui-stroke-subtle flex flex-wrap items-center justify-between gap-3">
       <div>
