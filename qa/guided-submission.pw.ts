@@ -31,14 +31,14 @@ for (const width of [375,768,1440]) for (const lang of ['en','bn'] as const) {
 test('editing assessment preserves entered facts and returns to review without navigation',async ({page})=>{
   await page.setViewportSize({width:1440,height:900});
   await page.goto('/#/user-panel/submission');
-  await page.locator('[data-section="personal"]').getByRole('button',{name:/Assessment/}).click();
+  await page.locator('[data-section="personal"]').getByRole('button',{name:/^Assessment —/}).click();
   await expect(page).toHaveURL(/\/user-panel\/submission\/edit\/assessment\?step=1$/);
   await expect(page.locator('.er-desktop-rail,.er-mobile-bottom,.er-compact-header,nav')).toHaveCount(0);
   await expect(page.locator('input[name="residentStatus"][value="Resident"]')).toBeVisible();
   await page.locator('input[name="residentStatus"][value="Resident"]').check();
   await page.getByRole('button',{name:'Save & Return to Review'}).first().click();
   await expect(page.locator('.er-guided-step-label')).toHaveText('1 / 3');
-  await page.locator('[data-section="personal"]').getByRole('button',{name:/Assessment/}).click();
+  await page.locator('[data-section="personal"]').getByRole('button',{name:/^Assessment —/}).click();
   await expect(page.locator('input[name="residentStatus"][value="Resident"]')).toBeChecked();
   await page.getByRole('button',{name:'Back to Review'}).click();
   await expect(page.locator('.er-guided-review-row')).toHaveCount(5);
