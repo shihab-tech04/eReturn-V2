@@ -52,6 +52,8 @@ export async function extractCorporatePdf(file:File):Promise<CorporateReportDraf
     source:{name:file.name,sha256,bytes:file.size,pageCount:pages.length,digitalPages,scanPages,parser:'PDFJS_TEXT_V1'},
     context:{companyName:'',financialPeriodEnd:'',comparativePeriodEnd:'',currency:'UNCONFIRMED',scale:'UNCONFIRMED'},
     lines:proposeCorporateLines(pages),
+    sourcePages:pages,
+    metadataCandidates:[],
     stage:'REVIEW_ONLY'
   };
 }
