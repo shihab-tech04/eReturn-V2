@@ -1,5 +1,6 @@
 import React from 'react';
 import { SearchableSelect as SobaikeSearchableSelect } from '../sobaike-ui/SearchableSelect';
+import { ContextHelpButton } from '../help/ContextualHelp';
 
 /* Keep the approved eReturn API and option values while using the exact
  * Sobaike Janao Public searchable select implementation and keyboard UX. */
@@ -10,8 +11,8 @@ interface SearchableSelectProps {
 }
 export const SearchableSelect:React.FC<SearchableSelectProps>=({
  id,label,options,value,onChange,placeholder='Select option...',disabled=false,className=''
-})=><SobaikeSearchableSelect
+})=><div className="er-help-select-row"><div className="er-help-select-control"><SobaikeSearchableSelect
  id={id} label={label} value={value} onChange={onChange} placeholder={placeholder}
  disabled={disabled} className={className}
  options={options.map(option=>typeof option==='string'?{label:option,value:option}:option)}
-/>;
+/></div><ContextHelpButton topic={label || id || 'Select option'} compact/></div>;

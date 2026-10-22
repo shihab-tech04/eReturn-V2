@@ -6,6 +6,7 @@ import { aggregateIncomeHeads, aggregateExpenditure, RULES_ENGINE_GATE } from '.
 import { formatBDT, toBanglaDigits } from '../../i18n/formatters';
 import type { IncomeState } from '../../types';
 import { CalculationStatusPanel } from './CalculationStatusPanel';
+import { ContextHelpButton } from '../../components/help/ContextualHelp';
 import './workspace.css';
 
 type EntryKey = Exclude<keyof IncomeState, 'voluntaryDisclosureAffirmed'>;
@@ -110,7 +111,7 @@ export const ReturnWorkspace: React.FC = () => {
     <section key={section.id} className="er-section" id={section.id} aria-labelledby={'title-' + section.id}>
             <div className="er-section-title">
               <span className="er-index">{section.icon}</span>
-              <div><h2 id={'title-' + section.id}>{section.title}</h2><p>{section.description}</p></div>
+              <div><h2 id={'title-' + section.id}>{section.title} <ContextHelpButton topic={section.title} hint={section.description} compact/></h2><p>{section.description}</p></div>
             </div>
             <div className="er-card-bottom">
               <div><strong className="er-value">{section.value}</strong><small>{section.detail}</small></div>

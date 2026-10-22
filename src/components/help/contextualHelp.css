@@ -1,0 +1,43 @@
+/* Context help uses existing eReturn tokens; it does not replace the approved shell. */
+.er-help-launcher{position:fixed;right:20px;bottom:20px;z-index:75;display:inline-flex;align-items:center;gap:9px;padding:11px 15px;min-height:48px;border:1px solid var(--er-primary,#4b5694);border-radius:999px;background:var(--er-primary,#4b5694);color:var(--er-on-primary,#fff);font:inherit;font-size:13px;font-weight:700;box-shadow:0 6px 20px rgba(20,30,65,.2);cursor:pointer}
+.er-help-launcher:hover{background:var(--er-primary-dark,#343d73)}
+.er-help-launcher:focus-visible,.er-help-inline:focus-visible,.er-help-drawer button:focus-visible,.er-help-drawer textarea:focus-visible{outline:3px solid var(--er-secondary,#7c8bd6);outline-offset:2px}
+.er-help-inline{display:inline-flex;justify-content:center;align-items:center;vertical-align:middle;flex:none;width:44px;height:44px;padding:0;border:0;border-radius:10px;background:transparent;color:var(--er-primary,#4b5694);cursor:pointer}
+.er-help-inline:hover{background:var(--er-primary-light,#eef0fa)}
+.er-help-inline--compact{width:36px;height:36px}
+.er-help-backdrop{position:fixed;inset:0;z-index:140;background:rgba(12,18,36,.54);display:flex;justify-content:flex-end}
+.er-help-drawer{width:min(100%,460px);height:100dvh;overflow:hidden;display:flex;flex-direction:column;min-width:0;box-shadow:-14px 0 38px rgba(10,25,55,.18);background:var(--er-surface,#fff);color:var(--er-text-primary,#202338);font-family:var(--er-font-family,Inter,sans-serif);font-size:var(--er-font-size,16px)}
+.er-help-drawer *{box-sizing:border-box}
+.er-help-header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:17px 18px;border-bottom:1px solid var(--er-border,#e2e5f0)}
+.er-help-heading{display:flex;align-items:center;gap:12px;min-width:0;color:var(--er-primary,#4b5694)}
+.er-help-heading h2{margin:0;font-size:1.05em;line-height:1.35;color:var(--er-text-primary,#202338)}
+.er-help-heading p{margin:3px 0 0;font-size:.72em;color:var(--er-text-secondary,#616779)}
+.er-help-close{width:44px;height:44px;display:grid;place-items:center;flex:none;border:1px solid var(--er-border,#e2e5f0);border-radius:12px;background:var(--er-surface,#fff);color:inherit;cursor:pointer}
+.er-help-scroll{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:18px;display:flex;flex-direction:column;gap:17px}
+.er-help-topic,.er-help-chat{padding:18px;border:1px solid var(--er-border,#e2e5f0);border-radius:14px;background:var(--er-surface,#fff);min-width:0}
+.er-help-overline{font-size:.68em;font-weight:750;letter-spacing:.07em;color:var(--er-primary,#4b5694);margin:0 0 8px}
+.er-help-topic h3,.er-help-chat h3{font-size:1em;font-weight:750;margin:0 0 9px;line-height:1.5;overflow-wrap:anywhere}
+.er-help-topic h3:not(:first-of-type){margin-top:16px}
+.er-help-topic p,.er-help-topic li,.er-help-chat p{font-size:.82em;line-height:1.6;color:var(--er-text-secondary,#616779);overflow-wrap:anywhere}
+.er-help-topic p{margin:0 0 10px}
+.er-help-topic ol{padding-inline-start:22px;margin:0;display:grid;gap:8px}
+.er-help-focus{display:flex;align-items:flex-start;gap:7px;padding:8px 10px;border-radius:9px;background:var(--er-primary-light,#eef0fa);color:var(--er-text-primary,#202338)!important}
+.er-help-focus svg{flex:none;margin-top:3px}
+.er-help-mode{border-inline-start:3px solid var(--er-primary,#4b5694);padding:9px 11px;background:var(--er-primary-light,#eef0fa);margin:0 0 14px}
+.er-help-messages{display:grid;gap:10px;margin-bottom:13px;max-height:280px;overflow-y:auto}
+.er-help-message{margin:0;max-width:96%;padding:9px 11px;border-radius:12px;background:var(--er-background,#f7f8fc);border:1px solid var(--er-border,#e2e5f0)}
+.er-help-message--visitor{justify-self:end;background:var(--er-primary-light,#eef0fa)}
+.er-help-message--guide{justify-self:start}
+.er-help-form{display:grid;gap:9px}
+.er-help-form label{font-size:.83em;font-weight:700;color:var(--er-text-primary,#202338)}
+.er-help-form textarea{width:100%;min-height:75px;padding:11px;border:1px solid var(--er-border,#e2e5f0);border-radius:10px;background:var(--er-surface,#fff);color:var(--er-text-primary,#202338);font:inherit;font-size:.85em;resize:vertical}
+.er-help-form button{display:inline-flex;align-items:center;gap:8px;justify-content:center;min-height:44px;border:none;border-radius:10px;background:var(--er-primary,#4b5694);color:var(--er-on-primary,#fff);font:inherit;font-size:.83em;font-weight:700;cursor:pointer}
+.er-help-form button:disabled{opacity:.5;cursor:not-allowed}
+.er-help-privacy{margin:11px 0 0}
+@media(max-width:767px){.er-help-launcher{right:14px;bottom:calc(75px + env(safe-area-inset-bottom))}.er-submission-shell~.er-help-launcher{bottom:18px}.er-help-drawer{width:100%;max-width:none}.er-help-scroll{padding:12px}.er-help-topic,.er-help-chat{padding:14px}}
+@media print{.er-help-launcher,.er-help-inline,.er-help-backdrop{display:none!important}}
+@media(prefers-reduced-motion:reduce){.er-help-drawer *{scroll-behavior:auto!important;transition:none!important}}
+
+.er-help-select-row{display:flex;align-items:flex-end;gap:5px;min-width:0;width:100%}
+.er-help-select-control{flex:1;min-width:0}
+.er-help-select-row>.er-help-inline{margin-bottom:3px}
