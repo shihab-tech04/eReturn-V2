@@ -40,10 +40,10 @@ export const ChangePasswordPage: React.FC = () => {
     <div className="max-w-md mx-auto space-y-6">
       <div>
         <div className="flex items-center gap-2">
-          <Lock className="w-5 h-5 text-gray-700" />
-          <h2 className="text-xl font-bold text-gray-900">{t('changePasswordTitle')}</h2>
+          <Lock className="w-5 h-5 text-ui-content-secondary" />
+          <h2 className="text-xl font-bold text-ui-content-primary">{t('changePasswordTitle')}</h2>
         </div>
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="text-xs text-ui-content-muted mt-1">
           Keep your taxpayer credentials secure.
         </p>
       </div>
@@ -52,12 +52,12 @@ export const ChangePasswordPage: React.FC = () => {
         <div
           className={`p-3 rounded-lg text-xs flex items-center gap-2 animate-in fade-in ${
             statusMessage.type === 'success'
-              ? 'bg-emerald-50 border border-emerald-200 text-emerald-900'
+              ? 'bg-ui-accent-soft border border-ui-accent-border text-ui-content-primary'
               : 'bg-red-50 border border-red-200 text-red-900'
           }`}
         >
           {statusMessage.type === 'success' ? (
-            <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" />
+            <CheckCircle2 className="w-4 h-4 text-ui-accent shrink-0" />
           ) : (
             <AlertCircle className="w-4 h-4 text-red-700 shrink-0" />
           )}
@@ -65,22 +65,22 @@ export const ChangePasswordPage: React.FC = () => {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="bg-white rounded-xl border border-gray-200 shadow-xs p-6 space-y-4 text-xs">
+      <form onSubmit={handleSubmit} className="bg-ui-surface rounded-xl border border-ui-stroke-subtle shadow-xs p-6 space-y-4 text-xs">
         {/* Old Password */}
         <div>
-          <label className="block font-semibold text-gray-700 mb-1">{t('oldPassword')} *</label>
+          <label className="block font-semibold text-ui-content-secondary mb-1">{t('oldPassword')} *</label>
           <div className="relative">
             <input
               type={showOld ? 'text' : 'password'}
               value={oldPassword}
               onChange={(e) => setOldPassword(e.target.value)}
               placeholder="Enter current password"
-              className="w-full rounded-md border border-gray-300 py-2 pl-3 pr-10 focus:border-emerald-600 focus:outline-none"
+              className="w-full rounded-md border border-ui-stroke-default py-2 pl-3 pr-10 focus:border-ui-focus focus:outline-none"
             />
             <button
               type="button"
               onClick={() => setShowOld(!showOld)}
-              className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 cursor-pointer"
+              className="absolute inset-y-0 right-0 pr-3 flex items-center text-ui-content-muted hover:text-ui-content-secondary cursor-pointer"
             >
               {showOld ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
@@ -89,19 +89,19 @@ export const ChangePasswordPage: React.FC = () => {
 
         {/* New Password */}
         <div>
-          <label className="block font-semibold text-gray-700 mb-1">{t('newPassword')} *</label>
+          <label className="block font-semibold text-ui-content-secondary mb-1">{t('newPassword')} *</label>
           <div className="relative">
             <input
               type={showNew ? 'text' : 'password'}
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               placeholder="Minimum 8 characters with numbers"
-              className="w-full rounded-md border border-gray-300 py-2 pl-3 pr-10 focus:border-emerald-600 focus:outline-none"
+              className="w-full rounded-md border border-ui-stroke-default py-2 pl-3 pr-10 focus:border-ui-focus focus:outline-none"
             />
             <button
               type="button"
               onClick={() => setShowNew(!showNew)}
-              className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 cursor-pointer"
+              className="absolute inset-y-0 right-0 pr-3 flex items-center text-ui-content-muted hover:text-ui-content-secondary cursor-pointer"
             >
               {showNew ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
@@ -110,19 +110,19 @@ export const ChangePasswordPage: React.FC = () => {
 
         {/* Confirm Password */}
         <div>
-          <label className="block font-semibold text-gray-700 mb-1">{t('confirmPassword')} *</label>
+          <label className="block font-semibold text-ui-content-secondary mb-1">{t('confirmPassword')} *</label>
           <div className="relative">
             <input
               type={showConfirm ? 'text' : 'password'}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="Re-type new password"
-              className="w-full rounded-md border border-gray-300 py-2 pl-3 pr-10 focus:border-emerald-600 focus:outline-none"
+              className="w-full rounded-md border border-ui-stroke-default py-2 pl-3 pr-10 focus:border-ui-focus focus:outline-none"
             />
             <button
               type="button"
               onClick={() => setShowConfirm(!showConfirm)}
-              className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 cursor-pointer"
+              className="absolute inset-y-0 right-0 pr-3 flex items-center text-ui-content-muted hover:text-ui-content-secondary cursor-pointer"
             >
               {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
@@ -132,7 +132,7 @@ export const ChangePasswordPage: React.FC = () => {
         <div className="pt-2">
           <button
             type="submit"
-            className="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-semibold py-2 px-4 rounded-md shadow-xs cursor-pointer"
+            className="w-full bg-ui-action-bg hover:bg-ui-action-hover text-white font-semibold py-2 px-4 rounded-md shadow-xs cursor-pointer"
           >
             {t('updatePassword')}
           </button>
