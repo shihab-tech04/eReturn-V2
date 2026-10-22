@@ -32,3 +32,5 @@ jobs:
           name: nbr-cutover-source-backup
           path: backup/
           retention-days: 7
+
+# Recovery checkpoint refresh 2026-10-22: backup current main and all remote refs before any further release.
