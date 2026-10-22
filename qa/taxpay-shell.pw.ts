@@ -12,7 +12,7 @@ for (const width of sizes) for (const lang of langs) {
     await page.goto('/#/user-panel/home');
     const bn=lang==='bn';
     if (bn) {
-      if (width>=1280) await page.getByRole('button',{name:'Language: English'}).click();
+      if (width>=1440) await page.getByRole('button',{name:'Language: English'}).click();
       else {
         await page.getByRole('button',{name:'Open navigation menu'}).click();
         await page.getByRole('button',{name:'Account & preferences'}).click();
@@ -22,7 +22,7 @@ for (const width of sizes) for (const lang of langs) {
     }
     await expect(page.getByRole('heading',{name:longLabel(bn,'Taxpayer Dashboard','করদাতার ড্যাশবোর্ড')})).toBeVisible();
     await expect(page.getByText(longLabel(bn,'No independently verified filed returns are available.','স্বাধীনভাবে যাচাইকৃত দাখিলকৃত রিটার্ন পাওয়া যায়নি।'),{exact:false})).toBeVisible();
-    if(width>=1280) {
+    if(width>=1440) {
       await expect(page.locator('.er-desktop-rail')).toBeVisible();
       await expect(page.locator('.er-compact-header')).toBeHidden();
     } else {
@@ -42,10 +42,10 @@ for (const width of sizes) for (const lang of langs) {
       return {left:{x:left.x,width:left.width},right:{x:right.x,width:right.width},font:shell.fontSize,
         buttonRadius:button.borderRadius,overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth};
     });
-    expect(rects.buttonRadius).toBe('0px');
+    expect(rects.buttonRadius).toBe('12px');
     expect(rects.overflow).toBeLessThanOrEqual(2);
+    expect(rects.font).toBe(width>=768?'16px':'14px');
     if(width>=1280){
-      expect(rects.font).toBe('18px');
       expect(rects.right.x).toBeGreaterThan(rects.left.x);
       expect(rects.left.width/(rects.left.width+rects.right.width)).toBeGreaterThan(0.68);
       expect(rects.left.width/(rects.left.width+rects.right.width)).toBeLessThan(0.72);
@@ -54,6 +54,16 @@ for (const width of sizes) for (const lang of langs) {
     expect(errors).toEqual([]);
   });
 }
+
+test('Audited Accounts remains reachable inside My Tax Return, not the primary navigation',async ({page})=>{
+  await page.setViewportSize({width:1440,height:900});
+  await page.goto('/#/user-panel/return-workspace');
+  await expect(page.locator('.er-desktop-rail .er-shell-cta')).toHaveText('My Tax Return');
+  await expect(page.locator('.er-rail-primary .er-nav-link')).toHaveCount(2);
+  await expect(page.locator('#audited-accounts')).toBeVisible();
+  await page.locator('#audited-accounts a').click();
+  await expect(page).toHaveURL(/\/\#\/user-panel\/audited-accounts$/);
+});
 
 test('mobile drawer closes via Escape and restores focus',async ({page})=>{
   await page.setViewportSize({width:375,height:812});
@@ -68,21 +78,36 @@ test('mobile drawer closes via Escape and restores focus',async ({page})=>{
   await expect(trigger).toBeFocused();
 });
 
-test('appearance includes six palettes, four fonts and desktop size exactness',async ({page})=>{
+test('appearance matches Sobaike Public light/dark/system, Noto Sans and text-scale contract',async ({page})=>{
   await page.setViewportSize({width:1440,height:900});
   await page.goto('/#/user-panel/return-workspace');
-  const selects=page.locator('.er-preferences select');
-  await expect(selects).toHaveCount(3);
-  const themes=['indigo-blue','gov-blue','slate-purple','plum-executive','fresh-teal','dark-mode'];
-  for(const name of themes){
-    await selects.nth(0).selectOption(name);
-    await expect(page.locator('html')).toHaveAttribute('data-er-theme',name);
+  const rail=page.locator('.er-desktop-rail');
+  await expect(rail).toBeVisible();
+  await rail.getByRole('button',{name:'Appearance'}).click();
+  const selects=rail.locator('.er-nav-appearance select');
+  await expect(selects).toHaveCount(2);
+  const colors: Record<string,string>={light:'rgb(240, 242, 245)',dark:'rgb(24, 25, 26)'};
+  for(const theme of ['light','dark']) {
+    await selects.nth(0).selectOption(theme);
+    await expect(page.locator('html')).toHaveAttribute('data-er-theme',theme);
+    await expect.poll(()=>page.locator('.er-app-shell').evaluate(e=>getComputedStyle(e).backgroundColor)).toBe(colors[theme]);
   }
-  for(const name of ['inter','poppins','noto-sans','google-sans']) await selects.nth(1).selectOption(name);
-  for(const [name,px] of [['compact','16.2px'],['standard','18px'],['large','19.8px']]){
-    await selects.nth(2).selectOption(name);
+  await page.emulateMedia({colorScheme:'dark'});
+  await selects.nth(0).selectOption('system');
+  await expect(page.locator('html')).toHaveAttribute('data-er-theme','dark');
+  await page.emulateMedia({colorScheme:'light'});
+  await expect(page.locator('html')).toHaveAttribute('data-er-theme','light');
+  for(const [name,px] of [['standard','16px'],['large','18px']]) {
+    await selects.nth(1).selectOption(name);
     await expect.poll(()=>page.locator('.er-app-shell').evaluate(e=>getComputedStyle(e).fontSize)).toBe(px);
   }
+  await expect.poll(()=>page.locator('.er-app-shell').evaluate(e=>getComputedStyle(e).fontFamily)).toContain('Noto Sans');
+  const tokens=await page.locator('.er-shell-cta').evaluate(e=>{
+    const style=getComputedStyle(e);
+    return {radius:style.borderRadius,background:style.backgroundColor};
+  });
+  expect(tokens.radius).toBe('12px');
+  expect(tokens.background).toBe('rgb(27, 77, 107)');
 });
 
 test('deep links and protected return records remain accessible',async ({page})=>{
@@ -101,14 +126,14 @@ test('deep links and protected return records remain accessible',async ({page})=
 test('in-session draft facts survive workspace/detail/dashboard navigation',async ({page})=>{
   await page.setViewportSize({width:1440,height:900});
   await page.goto('/#/user-panel/return-workspace');
-  await expect(page.getByRole('link',{name:'Start Return'})).toBeVisible();
+  await expect(page.locator('.er-shell-cta')).toHaveText('My Tax Return');
   await page.locator('.er-assessment-summary .er-button').click();
   await expect(page).toHaveURL(/\/\#\/user-panel\/assessment$/);
   await page.locator('input[name="residentStatus"][value="Resident"]').check();
   await page.getByRole('link',{name:/Back to My Tax Return/}).click();
   await expect(page.locator('#assessment .er-value')).toContainText('Resident');
   await page.getByRole('link',{name:'Dashboard',exact:true}).click();
-  await expect(page.locator('.er-shell-cta')).toHaveText('Resume Return');
+  await expect(page.locator('.er-shell-cta')).toHaveText('My Tax Return');
   await page.locator('.er-shell-cta').click();
   await expect(page.locator('#assessment .er-value')).toContainText('Resident');
 });
