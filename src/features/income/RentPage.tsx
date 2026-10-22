@@ -106,7 +106,7 @@ export const RentPage: React.FC = () => {
 
   const totalRentReceived = income.rentEntries.reduce((s, e) => s + e.annualRentReceived, 0);
   const totalDeductions = income.rentEntries.reduce((s, e) => s + e.totalDeductions, 0);
-  const totalNet = income.rentEntries.reduce((s, e) => s + e.netRentalIncome, 0);
+  const netPending = language === 'bn' ? 'অনুমোদিত হিসাব বাকি' : 'Pending verified Rules Engine';
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
