@@ -2,8 +2,10 @@
 
 @layer base {
   body {
-    @apply antialiased text-gray-900 bg-slate-50 selection:bg-emerald-200 selection:text-emerald-950;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Hind Siliguri", "Noto Sans Bengali", sans-serif;
+    @apply antialiased;
+    color: var(--ui-text-primary, #050505);
+    background: var(--ui-page, #F0F2F5);
+    font-family: "Noto Sans", "Noto Sans Bengali", system-ui, sans-serif;
   }
 }
 
