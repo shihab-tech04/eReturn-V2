@@ -130,13 +130,13 @@ export const AssessmentPage: React.FC = () => {
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Title */}
       <div>
-        <h2 className="text-xl font-bold text-gray-900">{t('assessmentTitle')}</h2>
-        <p className="text-xs text-gray-500 mt-1">{t('assessmentSubtitle')}</p>
+        <h2 className="text-xl font-bold text-ui-content-primary">{t('assessmentTitle')}</h2>
+        <p className="text-xs text-ui-content-muted mt-1">{t('assessmentSubtitle')}</p>
       </div>
 
       {/* 1. Assessment Information Section */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-xs p-6 space-y-5">
-        <h3 className="text-sm font-bold text-emerald-800 uppercase tracking-wide border-b border-gray-100 pb-2">
+      <div className="bg-ui-surface rounded-xl border border-ui-stroke-subtle shadow-xs p-6 space-y-5">
+        <h3 className="text-sm font-bold text-ui-accent uppercase tracking-wide border-b border-ui-stroke-subtle pb-2">
           1. {language === 'bn' ? 'সাধারণ কর নির্ধারণ তথ্য' : 'Assessment Information'}
         </h3>
 
@@ -144,7 +144,7 @@ export const AssessmentPage: React.FC = () => {
           {/* Return Scheme */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label htmlFor="returnScheme" className="block text-xs font-semibold text-gray-700">
+              <label htmlFor="returnScheme" className="block text-xs font-semibold text-ui-content-secondary">
                 {t('returnScheme')}
               </label>
               <AccessibleHelpTooltip content="Universal Self Assessment under Section 180 allows immediate automatic acknowledgement upon filing." />
@@ -155,7 +155,7 @@ export const AssessmentPage: React.FC = () => {
               onChange={(e) =>
                 setAssessment((prev) => ({ ...prev, returnScheme: e.target.value as ReturnScheme }))
               }
-              className="block w-full rounded-md border border-gray-300 py-2 px-3 text-xs text-gray-900 focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600"
+              className="block w-full rounded-md border border-ui-stroke-default py-2 px-3 text-xs text-ui-content-primary focus:border-ui-focus focus:outline-none focus:ring-1 focus:ring-ui-focus"
             >
               <option value="Universal Self">{t('universalSelf')}</option>
               <option value="Normal">{t('normalScheme')}</option>
@@ -165,7 +165,7 @@ export const AssessmentPage: React.FC = () => {
           {/* Assessment Year */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label htmlFor="assessmentYearInput" className="block text-xs font-semibold text-gray-700">
+              <label htmlFor="assessmentYearInput" className="block text-xs font-semibold text-ui-content-secondary">
                 {t('assessmentYearLabel')}
               </label>
               <AccessibleHelpTooltip content="The tax year for which income is assessed and taxed (e.g. 2026-2027)." />
@@ -175,14 +175,14 @@ export const AssessmentPage: React.FC = () => {
               id="assessmentYearInput"
               value={assessment.assessmentYear}
               disabled
-              className="block w-full rounded-md border border-gray-200 bg-gray-50 py-2 px-3 text-xs text-gray-700 font-mono font-medium"
+              className="block w-full rounded-md border border-ui-stroke-subtle bg-ui-surface-subtle py-2 px-3 text-xs text-ui-content-secondary font-mono font-medium"
             />
           </div>
 
           {/* Income Year From (Correct accessible label, fixing reference defect) */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label htmlFor="incomeYearFrom" className="block text-xs font-semibold text-gray-700">
+              <label htmlFor="incomeYearFrom" className="block text-xs font-semibold text-ui-content-secondary">
                 {t('incomeYearFrom')}
               </label>
               <AccessibleHelpTooltip content="Starting date of the financial income period (typically 1st July)." />
@@ -195,14 +195,14 @@ export const AssessmentPage: React.FC = () => {
               onChange={(e) =>
                 setAssessment((prev) => ({ ...prev, incomeYearFrom: e.target.value }))
               }
-              className="block w-full rounded-md border border-gray-300 py-2 px-3 text-xs text-gray-900 focus:border-emerald-600 focus:outline-none"
+              className="block w-full rounded-md border border-ui-stroke-default py-2 px-3 text-xs text-ui-content-primary focus:border-ui-focus focus:outline-none"
             />
           </div>
 
           {/* Income Year To (Correct accessible label, fixing reference defect) */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label htmlFor="incomeYearTo" className="block text-xs font-semibold text-gray-700">
+              <label htmlFor="incomeYearTo" className="block text-xs font-semibold text-ui-content-secondary">
                 {t('incomeYearTo')}
               </label>
               <AccessibleHelpTooltip content="Closing date of the financial income period (typically 30th June)." />
@@ -215,20 +215,20 @@ export const AssessmentPage: React.FC = () => {
               onChange={(e) =>
                 setAssessment((prev) => ({ ...prev, incomeYearTo: e.target.value }))
               }
-              className="block w-full rounded-md border border-gray-300 py-2 px-3 text-xs text-gray-900 focus:border-emerald-600 focus:outline-none"
+              className="block w-full rounded-md border border-ui-stroke-default py-2 px-3 text-xs text-ui-content-primary focus:border-ui-focus focus:outline-none"
             />
           </div>
 
           {/* Resident Status */}
           <div className="md:col-span-2">
             <div className="flex items-center justify-between mb-2">
-              <span className="block text-xs font-semibold text-gray-700">
+              <span className="block text-xs font-semibold text-ui-content-secondary">
                 {t('residentStatus')}
               </span>
               <AccessibleHelpTooltip content="Resident taxpayers enjoy progressive tax slab exemptions. Non-residents are taxed at flat statutory rate." />
             </div>
             <div className="flex items-center gap-6">
-              <label className="inline-flex items-center gap-2 cursor-pointer text-xs text-gray-800">
+              <label className="inline-flex items-center gap-2 cursor-pointer text-xs text-ui-content-primary">
                 <input
                   type="radio"
                   name="residentStatus"
@@ -237,11 +237,11 @@ export const AssessmentPage: React.FC = () => {
                   onChange={() =>
                     setAssessment((prev) => ({ ...prev, residentStatus: 'Resident' }))
                   }
-                  className="text-emerald-700 focus:ring-emerald-600 h-4 w-4"
+                  className="text-ui-accent focus:ring-ui-focus h-4 w-4"
                 />
                 <span>{t('resident')}</span>
               </label>
-              <label className="inline-flex items-center gap-2 cursor-pointer text-xs text-gray-800">
+              <label className="inline-flex items-center gap-2 cursor-pointer text-xs text-ui-content-primary">
                 <input
                   type="radio"
                   name="residentStatus"
@@ -250,7 +250,7 @@ export const AssessmentPage: React.FC = () => {
                   onChange={() =>
                     setAssessment((prev) => ({ ...prev, residentStatus: 'Non-Resident' }))
                   }
-                  className="text-emerald-700 focus:ring-emerald-600 h-4 w-4"
+                  className="text-ui-accent focus:ring-ui-focus h-4 w-4"
                 />
                 <span>{t('nonResident')}</span>
               </label>
@@ -260,38 +260,38 @@ export const AssessmentPage: React.FC = () => {
       </div>
 
       {/* 2. Tax Exempted Income & Taxable Income Radio Questions */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-xs p-6 space-y-4">
-        <h3 className="text-sm font-bold text-emerald-800 uppercase tracking-wide border-b border-gray-100 pb-2">
+      <div className="bg-ui-surface rounded-xl border border-ui-stroke-subtle shadow-xs p-6 space-y-4">
+        <h3 className="text-sm font-bold text-ui-accent uppercase tracking-wide border-b border-ui-stroke-subtle pb-2">
           2. {language === 'bn' ? 'করযোগ্য ও করমুক্ত আয়ের অস্তিত্ব' : 'Taxable & Tax-Exempt Status'}
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Tax Exempted Question */}
-          <div className="p-3.5 rounded-lg border border-gray-200 bg-gray-50/50 space-y-2">
+          <div className="p-3.5 rounded-lg border border-ui-stroke-subtle bg-ui-surface-subtle/50 space-y-2">
             <div className="flex items-start justify-between">
-              <span className="text-xs font-semibold text-gray-800">
+              <span className="text-xs font-semibold text-ui-content-primary">
                 {t('taxExemptedQuestion')}
               </span>
               <AccessibleHelpTooltip content="Any foreign remittances, pension, or ITES exports exempt from income tax under Sixth Schedule." />
             </div>
             <div className="flex items-center gap-4 pt-1">
-              <label className="inline-flex items-center gap-1.5 cursor-pointer text-xs text-gray-700">
+              <label className="inline-flex items-center gap-1.5 cursor-pointer text-xs text-ui-content-secondary">
                 <input
                   type="radio"
                   name="hasTaxExemptedIncome"
                   checked={assessment.hasTaxExemptedIncome}
                   onChange={() => setAssessment((prev) => ({ ...prev, hasTaxExemptedIncome: true }))}
-                  className="text-emerald-700 h-3.5 w-3.5"
+                  className="text-ui-accent h-3.5 w-3.5"
                 />
                 {t('yes')}
               </label>
-              <label className="inline-flex items-center gap-1.5 cursor-pointer text-xs text-gray-700">
+              <label className="inline-flex items-center gap-1.5 cursor-pointer text-xs text-ui-content-secondary">
                 <input
                   type="radio"
                   name="hasTaxExemptedIncome"
                   checked={!assessment.hasTaxExemptedIncome}
                   onChange={() => setAssessment((prev) => ({ ...prev, hasTaxExemptedIncome: false }))}
-                  className="text-emerald-700 h-3.5 w-3.5"
+                  className="text-ui-accent h-3.5 w-3.5"
                 />
                 {t('no')}
               </label>
@@ -299,31 +299,31 @@ export const AssessmentPage: React.FC = () => {
           </div>
 
           {/* Taxable Income Question */}
-          <div className="p-3.5 rounded-lg border border-gray-200 bg-gray-50/50 space-y-2">
+          <div className="p-3.5 rounded-lg border border-ui-stroke-subtle bg-ui-surface-subtle/50 space-y-2">
             <div className="flex items-start justify-between">
-              <span className="text-xs font-semibold text-gray-800">
+              <span className="text-xs font-semibold text-ui-content-primary">
                 {t('taxableIncomeQuestion')}
               </span>
               <AccessibleHelpTooltip content="Whether gross income exceeds statutory minimum taxable threshold (৳ 3,50,000 for standard individual)." />
             </div>
             <div className="flex items-center gap-4 pt-1">
-              <label className="inline-flex items-center gap-1.5 cursor-pointer text-xs text-gray-700">
+              <label className="inline-flex items-center gap-1.5 cursor-pointer text-xs text-ui-content-secondary">
                 <input
                   type="radio"
                   name="hasTaxableIncome"
                   checked={assessment.hasTaxableIncome}
                   onChange={() => setAssessment((prev) => ({ ...prev, hasTaxableIncome: true }))}
-                  className="text-emerald-700 h-3.5 w-3.5"
+                  className="text-ui-accent h-3.5 w-3.5"
                 />
                 {t('yes')}
               </label>
-              <label className="inline-flex items-center gap-1.5 cursor-pointer text-xs text-gray-700">
+              <label className="inline-flex items-center gap-1.5 cursor-pointer text-xs text-ui-content-secondary">
                 <input
                   type="radio"
                   name="hasTaxableIncome"
                   checked={!assessment.hasTaxableIncome}
                   onChange={() => setAssessment((prev) => ({ ...prev, hasTaxableIncome: false }))}
-                  className="text-emerald-700 h-3.5 w-3.5"
+                  className="text-ui-accent h-3.5 w-3.5"
                 />
                 {t('no')}
               </label>
@@ -333,29 +333,29 @@ export const AssessmentPage: React.FC = () => {
       </div>
 
       {/* 3. Statutory Heads of Income */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-xs p-6 space-y-4">
-        <div className="flex items-center justify-between border-b border-gray-100 pb-2">
-          <h3 className="text-sm font-bold text-emerald-800 uppercase tracking-wide">
+      <div className="bg-ui-surface rounded-xl border border-ui-stroke-subtle shadow-xs p-6 space-y-4">
+        <div className="flex items-center justify-between border-b border-ui-stroke-subtle pb-2">
+          <h3 className="text-sm font-bold text-ui-accent uppercase tracking-wide">
             3. {t('headsOfIncomeTitle')}
           </h3>
-          <span className="text-[11px] text-gray-500">
+          <span className="text-[11px] text-ui-content-muted">
             {language === 'bn' ? 'প্রযোজ্য খাতে টিক চিহ্ন দিন' : 'Select all that apply'}
           </span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {/* Employment */}
-          <div className="flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:bg-emerald-50/30 transition-colors">
+          <div className="flex items-center justify-between p-3 rounded-lg border border-ui-stroke-subtle hover:bg-ui-accent-soft/30 transition-colors">
             <label
               htmlFor="head-emp"
-              className="flex items-center gap-2.5 cursor-pointer text-xs font-medium text-gray-800 select-none flex-1"
+              className="flex items-center gap-2.5 cursor-pointer text-xs font-medium text-ui-content-primary select-none flex-1"
             >
               <input
                 type="checkbox"
                 id="head-emp"
                 checked={assessment.heads.employment}
                 onChange={() => handleToggleHead('employment')}
-                className="h-4 w-4 text-emerald-700 rounded border-gray-300 focus:ring-emerald-600"
+                className="h-4 w-4 text-ui-accent rounded border-ui-stroke-default focus:ring-ui-focus"
               />
               <span>{t('headEmployment')}</span>
             </label>
@@ -364,17 +364,17 @@ export const AssessmentPage: React.FC = () => {
           </div>
 
           {/* Rent */}
-          <div className="flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:bg-emerald-50/30 transition-colors">
+          <div className="flex items-center justify-between p-3 rounded-lg border border-ui-stroke-subtle hover:bg-ui-accent-soft/30 transition-colors">
             <label
               htmlFor="head-rent"
-              className="flex items-center gap-2.5 cursor-pointer text-xs font-medium text-gray-800 select-none flex-1"
+              className="flex items-center gap-2.5 cursor-pointer text-xs font-medium text-ui-content-primary select-none flex-1"
             >
               <input
                 type="checkbox"
                 id="head-rent"
                 checked={assessment.heads.rent}
                 onChange={() => handleToggleHead('rent')}
-                className="h-4 w-4 text-emerald-700 rounded border-gray-300 focus:ring-emerald-600"
+                className="h-4 w-4 text-ui-accent rounded border-ui-stroke-default focus:ring-ui-focus"
               />
               <span>{t('headRent')}</span>
             </label>
@@ -382,17 +382,17 @@ export const AssessmentPage: React.FC = () => {
           </div>
 
           {/* Agriculture */}
-          <div className="flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:bg-emerald-50/30 transition-colors">
+          <div className="flex items-center justify-between p-3 rounded-lg border border-ui-stroke-subtle hover:bg-ui-accent-soft/30 transition-colors">
             <label
               htmlFor="head-agri"
-              className="flex items-center gap-2.5 cursor-pointer text-xs font-medium text-gray-800 select-none flex-1"
+              className="flex items-center gap-2.5 cursor-pointer text-xs font-medium text-ui-content-primary select-none flex-1"
             >
               <input
                 type="checkbox"
                 id="head-agri"
                 checked={assessment.heads.agriculture}
                 onChange={() => handleToggleHead('agriculture')}
-                className="h-4 w-4 text-emerald-700 rounded border-gray-300 focus:ring-emerald-600"
+                className="h-4 w-4 text-ui-accent rounded border-ui-stroke-default focus:ring-ui-focus"
               />
               <span>{t('headAgriculture')}</span>
             </label>
@@ -400,17 +400,17 @@ export const AssessmentPage: React.FC = () => {
           </div>
 
           {/* Business or Profession */}
-          <div className="flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:bg-emerald-50/30 transition-colors">
+          <div className="flex items-center justify-between p-3 rounded-lg border border-ui-stroke-subtle hover:bg-ui-accent-soft/30 transition-colors">
             <label
               htmlFor="head-biz"
-              className="flex items-center gap-2.5 cursor-pointer text-xs font-medium text-gray-800 select-none flex-1"
+              className="flex items-center gap-2.5 cursor-pointer text-xs font-medium text-ui-content-primary select-none flex-1"
             >
               <input
                 type="checkbox"
                 id="head-biz"
                 checked={assessment.heads.business}
                 onChange={() => handleToggleHead('business')}
-                className="h-4 w-4 text-emerald-700 rounded border-gray-300 focus:ring-emerald-600"
+                className="h-4 w-4 text-ui-accent rounded border-ui-stroke-default focus:ring-ui-focus"
               />
               <span>{t('headBusiness')}</span>
             </label>
@@ -418,17 +418,17 @@ export const AssessmentPage: React.FC = () => {
           </div>
 
           {/* Capital Gain */}
-          <div className="flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:bg-emerald-50/30 transition-colors">
+          <div className="flex items-center justify-between p-3 rounded-lg border border-ui-stroke-subtle hover:bg-ui-accent-soft/30 transition-colors">
             <label
               htmlFor="head-cg"
-              className="flex items-center gap-2.5 cursor-pointer text-xs font-medium text-gray-800 select-none flex-1"
+              className="flex items-center gap-2.5 cursor-pointer text-xs font-medium text-ui-content-primary select-none flex-1"
             >
               <input
                 type="checkbox"
                 id="head-cg"
                 checked={assessment.heads.capitalGain}
                 onChange={() => handleToggleHead('capitalGain')}
-                className="h-4 w-4 text-emerald-700 rounded border-gray-300 focus:ring-emerald-600"
+                className="h-4 w-4 text-ui-accent rounded border-ui-stroke-default focus:ring-ui-focus"
               />
               <span>{t('headCapitalGain')}</span>
             </label>
@@ -436,17 +436,17 @@ export const AssessmentPage: React.FC = () => {
           </div>
 
           {/* Financial Assets */}
-          <div className="flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:bg-emerald-50/30 transition-colors">
+          <div className="flex items-center justify-between p-3 rounded-lg border border-ui-stroke-subtle hover:bg-ui-accent-soft/30 transition-colors">
             <label
               htmlFor="head-fin"
-              className="flex items-center gap-2.5 cursor-pointer text-xs font-medium text-gray-800 select-none flex-1"
+              className="flex items-center gap-2.5 cursor-pointer text-xs font-medium text-ui-content-primary select-none flex-1"
             >
               <input
                 type="checkbox"
                 id="head-fin"
                 checked={assessment.heads.financialAssets}
                 onChange={() => handleToggleHead('financialAssets')}
-                className="h-4 w-4 text-emerald-700 rounded border-gray-300 focus:ring-emerald-600"
+                className="h-4 w-4 text-ui-accent rounded border-ui-stroke-default focus:ring-ui-focus"
               />
               <span>{t('headFinancialAssets')}</span>
             </label>
@@ -454,17 +454,17 @@ export const AssessmentPage: React.FC = () => {
           </div>
 
           {/* Other Sources */}
-          <div className="flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:bg-emerald-50/30 transition-colors sm:col-span-2">
+          <div className="flex items-center justify-between p-3 rounded-lg border border-ui-stroke-subtle hover:bg-ui-accent-soft/30 transition-colors sm:col-span-2">
             <label
               htmlFor="head-other"
-              className="flex items-center gap-2.5 cursor-pointer text-xs font-medium text-gray-800 select-none flex-1"
+              className="flex items-center gap-2.5 cursor-pointer text-xs font-medium text-ui-content-primary select-none flex-1"
             >
               <input
                 type="checkbox"
                 id="head-other"
                 checked={assessment.heads.otherSources}
                 onChange={() => handleToggleHead('otherSources')}
-                className="h-4 w-4 text-emerald-700 rounded border-gray-300 focus:ring-emerald-600"
+                className="h-4 w-4 text-ui-accent rounded border-ui-stroke-default focus:ring-ui-focus"
               />
               <span>{t('headOtherSources')}</span>
             </label>
@@ -474,24 +474,24 @@ export const AssessmentPage: React.FC = () => {
       </div>
 
       {/* 4. Additional Income Categories */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-xs p-6 space-y-4">
-        <h3 className="text-sm font-bold text-emerald-800 uppercase tracking-wide border-b border-gray-100 pb-2">
+      <div className="bg-ui-surface rounded-xl border border-ui-stroke-subtle shadow-xs p-6 space-y-4">
+        <h3 className="text-sm font-bold text-ui-accent uppercase tracking-wide border-b border-ui-stroke-subtle pb-2">
           4. {t('additionalCategoriesTitle')}
         </h3>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {/* Firm Partner */}
-          <div className="flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:bg-emerald-50/30 transition-colors">
+          <div className="flex items-center justify-between p-3 rounded-lg border border-ui-stroke-subtle hover:bg-ui-accent-soft/30 transition-colors">
             <label
               htmlFor="cat-firm"
-              className="flex items-center gap-2.5 cursor-pointer text-xs font-medium text-gray-800 select-none flex-1"
+              className="flex items-center gap-2.5 cursor-pointer text-xs font-medium text-ui-content-primary select-none flex-1"
             >
               <input
                 type="checkbox"
                 id="cat-firm"
                 checked={assessment.additionalCategories.firmPartner}
                 onChange={() => handleToggleAdditional('firmPartner')}
-                className="h-4 w-4 text-emerald-700 rounded border-gray-300"
+                className="h-4 w-4 text-ui-accent rounded border-ui-stroke-default"
               />
               <span>{t('catFirm')}</span>
             </label>
@@ -499,17 +499,17 @@ export const AssessmentPage: React.FC = () => {
           </div>
 
           {/* AoP Member */}
-          <div className="flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:bg-emerald-50/30 transition-colors">
+          <div className="flex items-center justify-between p-3 rounded-lg border border-ui-stroke-subtle hover:bg-ui-accent-soft/30 transition-colors">
             <label
               htmlFor="cat-aop"
-              className="flex items-center gap-2.5 cursor-pointer text-xs font-medium text-gray-800 select-none flex-1"
+              className="flex items-center gap-2.5 cursor-pointer text-xs font-medium text-ui-content-primary select-none flex-1"
             >
               <input
                 type="checkbox"
                 id="cat-aop"
                 checked={assessment.additionalCategories.aopMember}
                 onChange={() => handleToggleAdditional('aopMember')}
-                className="h-4 w-4 text-emerald-700 rounded border-gray-300"
+                className="h-4 w-4 text-ui-accent rounded border-ui-stroke-default"
               />
               <span>{t('catAop')}</span>
             </label>
@@ -517,17 +517,17 @@ export const AssessmentPage: React.FC = () => {
           </div>
 
           {/* Foreign Income */}
-          <div className="flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:bg-emerald-50/30 transition-colors">
+          <div className="flex items-center justify-between p-3 rounded-lg border border-ui-stroke-subtle hover:bg-ui-accent-soft/30 transition-colors">
             <label
               htmlFor="cat-foreign"
-              className="flex items-center gap-2.5 cursor-pointer text-xs font-medium text-gray-800 select-none flex-1"
+              className="flex items-center gap-2.5 cursor-pointer text-xs font-medium text-ui-content-primary select-none flex-1"
             >
               <input
                 type="checkbox"
                 id="cat-foreign"
                 checked={assessment.additionalCategories.foreignIncome}
                 onChange={() => handleToggleAdditional('foreignIncome')}
-                className="h-4 w-4 text-emerald-700 rounded border-gray-300"
+                className="h-4 w-4 text-ui-accent rounded border-ui-stroke-default"
               />
               <span>{t('catForeign')}</span>
             </label>
@@ -535,17 +535,17 @@ export const AssessmentPage: React.FC = () => {
           </div>
 
           {/* Spouse or Minor Children */}
-          <div className="flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:bg-emerald-50/30 transition-colors">
+          <div className="flex items-center justify-between p-3 rounded-lg border border-ui-stroke-subtle hover:bg-ui-accent-soft/30 transition-colors">
             <label
               htmlFor="cat-spouse"
-              className="flex items-center gap-2.5 cursor-pointer text-xs font-medium text-gray-800 select-none flex-1"
+              className="flex items-center gap-2.5 cursor-pointer text-xs font-medium text-ui-content-primary select-none flex-1"
             >
               <input
                 type="checkbox"
                 id="cat-spouse"
                 checked={assessment.additionalCategories.spouseOrMinor}
                 onChange={() => handleToggleAdditional('spouseOrMinor')}
-                className="h-4 w-4 text-emerald-700 rounded border-gray-300"
+                className="h-4 w-4 text-ui-accent rounded border-ui-stroke-default"
               />
               <span>{t('catSpouseMinor')}</span>
             </label>
@@ -555,22 +555,22 @@ export const AssessmentPage: React.FC = () => {
       </div>
 
       {/* 5. Voluntary Disclosure */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-xs p-6 space-y-4">
-        <h3 className="text-sm font-bold text-emerald-800 uppercase tracking-wide border-b border-gray-100 pb-2">
+      <div className="bg-ui-surface rounded-xl border border-ui-stroke-subtle shadow-xs p-6 space-y-4">
+        <h3 className="text-sm font-bold text-ui-accent uppercase tracking-wide border-b border-ui-stroke-subtle pb-2">
           5. {t('voluntaryDisclosureTitle')}
         </h3>
 
         <div className="flex items-center justify-between p-3.5 rounded-lg border border-amber-200 bg-amber-50/40">
           <label
             htmlFor="voluntary-disc"
-            className="flex items-center gap-2.5 cursor-pointer text-xs font-semibold text-gray-800 select-none flex-1"
+            className="flex items-center gap-2.5 cursor-pointer text-xs font-semibold text-ui-content-primary select-none flex-1"
           >
             <input
               type="checkbox"
               id="voluntary-disc"
               checked={assessment.voluntaryDisclosure}
               onChange={handleToggleVoluntary}
-              className="h-4 w-4 text-emerald-700 rounded border-gray-300"
+              className="h-4 w-4 text-ui-accent rounded border-ui-stroke-default"
             />
             <span>{t('voluntaryDisclosureCheck')}</span>
           </label>
