@@ -1,4 +1,4 @@
-import type { AgricultureEntry, RentPropertyEntry, IncomeState, TaxPaymentState } from '../types';
+import type { AgricultureEntry, RentPropertyEntry, EmploymentEntry, ForeignIncomeEntry, IncomeState, TaxPaymentState } from '../types';
 
 /** Captures taxpayer-entered facts; no statutory deductions, exemptions or rates. */
 const requireEnteredAmount = (value: unknown, field: string): number => {
@@ -43,6 +43,38 @@ export function preserveEnteredAgriculture(entry: AgricultureEntry): Agriculture
     'grossSaleProceeds', 'costOfProduction', 'statutoryExemptionClaimed',
   ] as const) requireEnteredAmount(entry[key], key);
   return { ...entry, netAgriculturalIncome: 0 };
+}
+
+/**
+ * Employer totals are arithmetic only; special allowances/exemptions and the
+ * resulting net taxable salary require a verified legal calculation.
+ */
+export function preserveEnteredEmployment(entry: EmploymentEntry): EmploymentEntry {
+  if (!entry.employerName?.trim()) throw new Error('EMPLOYER_REQUIRED');
+  const incomeComponents = [
+    entry.basicPay, entry.houseRentAllowance, entry.medicalAllowance,
+    entry.conveyanceAllowance, entry.festivalBonus, entry.otherAllowances,
+  ];
+  const gross = incomeComponents.reduce<number>(
+    (sum, value, index) => sum + requireEnteredAmount(value, 'salary_' + index), 0
+  );
+  requireEnteredAmount(entry.exemptedAmount, 'claimedExemption');
+  return { ...entry, totalIncome: gross, netTaxableIncome: 0 };
+}
+
+/** Exact exchange rate must be entered; no fallback to 1 or fixed FX rates. */
+export function preserveEnteredForeign(entry: ForeignIncomeEntry): ForeignIncomeEntry {
+  if (!entry.natureOfIncome?.trim()) throw new Error('FOREIGN_INCOME_NATURE_REQUIRED');
+  requireEnteredAmount(entry.amountForeignCurrency, 'foreignAmount');
+  requireEnteredAmount(entry.amountInBDT, 'convertedAmount');
+  requireEnteredAmount(entry.taxPaidAbroadBDT, 'foreignTaxEntered');
+  requireEnteredAmount(entry.creditClaimed, 'foreignCreditClaimed');
+  if (entry.amountForeignCurrency > 0 &&
+      (!Number.isFinite(entry.exchangeRate) || entry.exchangeRate <= 0)) {
+    throw new Error('EXPLICIT_EXCHANGE_RATE_REQUIRED');
+  }
+  // Do not infer legal foreign tax credit from the converted sum.
+  return { ...entry };
 }
 
 export type EnteredIncomeStatus = 'NO_ENTRIES' | 'ENTERED_NOT_TAX_VERIFIED';
