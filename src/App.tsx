@@ -5,6 +5,7 @@ import { AppearanceProvider } from './appearance/AppearanceProvider';
 import { ReturnWorkspace } from './features/workspace/ReturnWorkspace';
 import { TaxRecordsHub } from './features/tax-record/TaxRecordsHub';
 import { TaxpayerLayout } from './layouts/TaxpayerLayout';
+import { ContextualHelpProvider } from './components/help/ContextualHelp';
 
 import { HomeDashboard } from './features/home/HomeDashboard';
 import { AssessmentPage } from './features/assessment/AssessmentPage';
@@ -48,6 +49,7 @@ export default function App() {
     <AppProvider>
       <AppearanceProvider>
       <HashRouter>
+        <ContextualHelpProvider>
         <Routes>
           <Route path="/" element={<Navigate to="/user-panel/home" replace />} />
           <Route path="/user-panel" element={<TaxpayerLayout />}>
@@ -109,6 +111,7 @@ export default function App() {
           {/* Catch-all */}
           <Route path="*" element={<Navigate to="/user-panel/home" replace />} />
         </Routes>
+        </ContextualHelpProvider>
       </HashRouter>
       </AppearanceProvider>
     </AppProvider>
