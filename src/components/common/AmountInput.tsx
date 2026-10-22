@@ -41,9 +41,9 @@ export const AmountInput: React.FC<AmountInputProps> = ({
   const displayVal = value === 0 ? '' : language === 'bn' ? toBanglaDigits(value) : String(value);
 
   return (
-    <div className="relative rounded-md shadow-xs">
+    <div className="relative w-full">
       <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-        <span className="text-gray-500 font-medium text-sm">৳</span>
+        <span className="text-ui-content-muted font-medium type-label">৳</span>
       </div>
       <input
         type="text"
@@ -53,7 +53,7 @@ export const AmountInput: React.FC<AmountInputProps> = ({
         onChange={handleChange}
         disabled={disabled}
         placeholder={placeholder}
-        className={`block w-full rounded-md border border-gray-300 pl-8 pr-3 py-2 text-sm text-gray-900 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 focus:outline-none disabled:bg-gray-100 disabled:text-gray-500 text-right font-mono transition-colors ${className}`}
+        className={`block w-full min-h-[44px] bg-ui-surface text-ui-content-primary border border-ui-stroke-default ui-radius-control pl-8 pr-3 ui-space-field-y type-body focus:border-ui-accent focus:ring-2 focus:ring-ui-focus focus:outline-none disabled:bg-ui-disabled-bg disabled:text-ui-disabled-text text-right tabular-nums transition-colors ${className}`}
       />
     </div>
   );
