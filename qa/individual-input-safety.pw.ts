@@ -67,3 +67,24 @@ test('WS05 year selector and income-period dates remain synchronized on both rou
   await page.locator('header select').first().selectOption('2026-2027');
   await expect(page.locator('#assessmentYearInput')).toHaveValue('2026-2027');
 });
+
+
+for (const width of [375, 1280]) {
+  for (const lang of ['en', 'bn'] as const) {
+    test('WS05 ' + width + 'px/' + lang + ': Employment Type matches four observed options', async ({page}) => {
+      await page.setViewportSize({width,height:850});
+      await page.goto('/#/user-panel/employment');
+      if (lang === 'bn') await page.getByRole('button',{name:'বাংলা',exact:true}).click();
+      await page.getByRole('button',{
+        name:lang === 'bn' ? 'নিয়োগকর্তা যোগ করুন' : 'Add Employer Record',
+      }).click();
+      await expect(page.locator('input[type="radio"][name="empType"]')).toHaveCount(4);
+      await expect(page.getByRole('radio',{
+        name:lang === 'bn' ? 'হ্রাসকৃত করহারের আওতাধীন বেতন' : 'Salary Subject to Reduced Tax Rate',
+      })).toBeVisible();
+      await expect(page.getByRole('radio',{
+        name:lang === 'bn' ? 'হ্রাসকৃত করহারের আওতাধীন বেতন' : 'Salary Subject to Reduced Tax Rate',
+      })).not.toBeChecked();
+    });
+  }
+}
