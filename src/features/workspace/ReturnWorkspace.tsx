@@ -7,6 +7,7 @@ import { formatBDT, toBanglaDigits } from '../../i18n/formatters';
 import { FONT_OPTIONS, useAppearance, type FontId, type FontSizeId } from '../../appearance/AppearanceProvider';
 import { THEMES, THEME_ORDER, type ThemeId } from '../../appearance/themes';
 import type { IncomeState } from '../../types';
+import { CalculationStatusPanel } from './CalculationStatusPanel';
 import './workspace.css';
 
 type EntryKey = Exclude<keyof IncomeState, 'voluntaryDisclosureAffirmed'>;
@@ -102,6 +103,21 @@ export const ReturnWorkspace: React.FC = () => {
     event.currentTarget.value = '';
   };
 
+  const renderSummary = (section: typeof groups[number]) => (
+    <section key={section.id} className="er-section" id={section.id} aria-labelledby={'title-' + section.id}>
+            <div className="er-section-title">
+              <span className="er-index">{section.icon}</span>
+              <div><h2 id={'title-' + section.id}>{section.title}</h2><p>{section.description}</p></div>
+            </div>
+            <div className="er-card-bottom">
+              <div><strong className="er-value">{section.value}</strong><small>{section.detail}</small></div>
+              <Link className="er-button er-button-outline" to={link(section.path)}>
+                {tr('Open details', 'বিস্তারিত খুলুন')} <ArrowRight size={16} aria-hidden="true" />
+              </Link>
+            </div>
+          </section>
+  );
+
   return (
     <div className="er-workspace">
       <section className="er-hero" aria-labelledby="workspace-title">
@@ -120,6 +136,10 @@ export const ReturnWorkspace: React.FC = () => {
           </button>
           <button type="button" className="er-button er-button-soft" onClick={() => fileInput.current?.click()}>
             <Upload size={17} aria-hidden="true" /> {tr('Resume from file', 'ফাইল থেকে চালু করুন')}
+          </button>
+          <button type="button" className="er-button er-button-soft er-jump-calculation"
+            onClick={() => document.getElementById('er-calculation-panel-title')?.focus()}>
+            {tr('Calculation status', 'কর হিসাবের অবস্থা')}
           </button>
           <input ref={fileInput} type="file" accept=".json,application/json" hidden onChange={handleImport}
             aria-label={tr('Select a saved draft JSON file', 'সংরক্ষিত খসড়ার JSON ফাইল নির্বাচন করুন')} />
@@ -150,6 +170,39 @@ export const ReturnWorkspace: React.FC = () => {
         </label>
       </section>
 
+
+      <div className="er-workspace-grid">
+        <div className="er-workspace-left">
+          <div className="er-assessment-summary">
+            {groups.slice(0,1).map(renderSummary)}
+          </div>
+      <section className="er-section er-income" aria-labelledby="income-heading" id="income">
+        <div className="er-card-head">
+          <div className="er-section-title"><span className="er-index">02</span><div>
+            <h2 id="income-heading">{tr('Income sources', 'আয়ের উৎস')}</h2>
+            <p>{tr('Choose an income type to open its full-size form. Returning here will update this summary.', 'পূর্ণাঙ্গ ফরম খুলতে আয়ের ধরন নির্বাচন করুন। এখানে ফিরলে সারসংক্ষেপ আপডেট হবে।')}</p>
+          </div></div>
+          <Link className="er-button er-button-soft" to={link('income')}>
+            {tr('All income forms', 'সকল আয় ফরম')} <ArrowRight size={16} aria-hidden="true" />
+          </Link>
+        </div>
+        <div className="er-income-list">
+          {INCOME_LINKS.map(({ key, route, en, bn: titleBn }) => (
+            <Link key={key} to={link(route)} className="er-income-row">
+              <span>{bn ? titleBn : en}</span>
+              <span className="er-count">{n(income[key].length)} {tr('entries', 'এন্ট্রি')}</span>
+              <ChevronRight size={17} aria-hidden="true" />
+            </Link>
+          ))}
+        </div>
+      </section>
+
+
+          <div className="er-sections">
+            {groups.slice(1).map(renderSummary)}
+          </div>
+        </div>
+        <aside className="er-workspace-right" aria-label={tr('Calculation status and trace', 'কর হিসাবের অবস্থা ও ট্রেস')}>
       <div className="er-metrics" aria-label={tr('Return at a glance', 'রিটার্ন এক নজরে')}>
         <div className="er-metric">
           <span>{tr('Income entered', 'প্রবেশকৃত আয়')}</span>
@@ -173,43 +226,9 @@ export const ReturnWorkspace: React.FC = () => {
         </div>
       </div>
 
-      <section className="er-section er-income" aria-labelledby="income-heading" id="income">
-        <div className="er-card-head">
-          <div className="er-section-title"><span className="er-index">02</span><div>
-            <h2 id="income-heading">{tr('Income sources', 'আয়ের উৎস')}</h2>
-            <p>{tr('Choose an income type to open its full-size form. Returning here will update this summary.', 'পূর্ণাঙ্গ ফরম খুলতে আয়ের ধরন নির্বাচন করুন। এখানে ফিরলে সারসংক্ষেপ আপডেট হবে।')}</p>
-          </div></div>
-          <Link className="er-button er-button-soft" to={link('income')}>
-            {tr('All income forms', 'সকল আয় ফরম')} <ArrowRight size={16} aria-hidden="true" />
-          </Link>
-        </div>
-        <div className="er-income-list">
-          {INCOME_LINKS.map(({ key, route, en, bn: titleBn }) => (
-            <Link key={key} to={link(route)} className="er-income-row">
-              <span>{bn ? titleBn : en}</span>
-              <span className="er-count">{n(income[key].length)} {tr('entries', 'এন্ট্রি')}</span>
-              <ChevronRight size={17} aria-hidden="true" />
-            </Link>
-          ))}
-        </div>
-      </section>
 
-      <div className="er-sections">
-        {groups.map((section) => (
-          <section key={section.id} className="er-section" id={section.id} aria-labelledby={'title-' + section.id}>
-            <div className="er-section-title">
-              <span className="er-index">{section.icon}</span>
-              <div><h2 id={'title-' + section.id}>{section.title}</h2><p>{section.description}</p></div>
-            </div>
-            <div className="er-card-bottom">
-              <div><strong className="er-value">{section.value}</strong><small>{section.detail}</small></div>
-              <Link className="er-button er-button-outline" to={link(section.path)}>
-                {tr('Open details', 'বিস্তারিত খুলুন')} <ArrowRight size={16} aria-hidden="true" />
-              </Link>
-            </div>
-          </section>
-        ))}
-      </div>
+      <CalculationStatusPanel />
+
 
       <section className="er-readiness" aria-labelledby="readiness-title">
         <ShieldAlert size={22} aria-hidden="true" />
@@ -220,6 +239,9 @@ export const ReturnWorkspace: React.FC = () => {
           <Link to={link('return-view')} className="er-button er-button-outline"><FileText size={17} aria-hidden="true" />{tr('Review return', 'রিটার্ন পর্যালোচনা')}</Link>
         </div>
       </section>
+
+        </aside>
+      </div>
     </div>
   );
 };

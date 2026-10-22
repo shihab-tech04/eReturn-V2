@@ -63,7 +63,7 @@
 .er-readiness > svg {flex-shrink:0;color:var(--er-primary);}
 .er-readiness p {font-size:.84em;color:var(--er-text-secondary);margin:6px 0 12px;}
 html[data-er-theme="dark-mode"] .er-workspace {color-scheme:dark;}
-html[data-er-theme] header {background:var(--er-primary-dark);border-bottom-color:var(--er-primary);}
+
 html[data-er-theme] .er-workspace {accent-color:var(--er-primary);}
 @media(max-width:1000px) {.er-metrics {grid-template-columns:repeat(2,minmax(0,1fr));}.er-hero {align-items:flex-start;flex-direction:column;}.er-hero-actions {justify-content:flex-start;}}
 @media(max-width:680px) {
@@ -83,4 +83,49 @@ html[data-er-theme="dark-mode"] .er-app-shell footer,
 html[data-er-theme="dark-mode"] .er-app-shell footer p,
 html[data-er-theme="dark-mode"] .er-app-shell footer span {
   color:var(--er-text-secondary,#BDC1C6);
+}
+
+.er-calculation-panel{background:var(--er-surface);border:1px solid var(--er-border);padding:22px;min-width:0;}
+.er-calculation-panel h2{font-size:1.07em;font-weight:750;line-height:1.35;margin:0 0 14px;}
+.er-calculation-panel h3{font-size:.87em;font-weight:700;margin:17px 0 8px;}
+.er-calculation-panel p,.er-calculation-panel li{font-size:.78em;line-height:1.55;color:var(--er-text-secondary);}
+.er-calculation-panel .er-calculation-state{padding:10px 12px;background:var(--er-primary-light);color:var(--er-primary-dark);border-inline-start:3px solid var(--er-warning);font-weight:700;}
+.er-calculation-panel dl{display:grid;margin:14px 0;}
+.er-calculation-panel dl div{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--er-border);}
+.er-calculation-panel dt{font-size:.77em;color:var(--er-text-secondary);}
+.er-calculation-panel dd{font-weight:700;font-size:.84em;margin:0;font-variant-numeric:tabular-nums;}
+.er-calculation-panel ul{margin:5px 0;padding-inline-start:20px;}
+.er-calculation-panel small{font-size:.66em;color:var(--er-text-secondary);overflow-wrap:anywhere;}
+@media(min-width:1280px){
+ .er-workspace{grid-template-columns:minmax(0,7fr) minmax(0,3fr);align-items:start;gap:16px;}
+ .er-hero,.er-note,.er-preferences{grid-column:1 / -1;}
+ .er-metrics{grid-column:2;grid-row:4;grid-template-columns:minmax(0,1fr);gap:12px;}
+ .er-metric{padding:14px;}
+ .er-income{grid-column:1;grid-row:4 / span 2;}
+ .er-calculation-panel{grid-column:2;grid-row:5;}
+ .er-sections{grid-column:1;grid-row:6;grid-template-columns:minmax(0,1fr);}
+ .er-readiness{grid-column:2;grid-row:6;}
+ .er-card-head{align-items:flex-start;}
+ .er-income-list{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media(min-width:1280px) and (max-width:1370px){.er-income-list{grid-template-columns:minmax(0,1fr);}}
+@media(max-width:1279px){.er-workspace{grid-template-columns:minmax(0,1fr);}.er-calculation-panel{grid-row:auto;grid-column:1;}}
+
+/* Grouped left/right work surfaces: real 70:30 proportions, no phantom grid rows. */
+.er-workspace{grid-template-columns:minmax(0,1fr)!important;}
+.er-workspace-grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,3fr);gap:16px;align-items:start;}
+.er-workspace-left,.er-workspace-right{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-content:start;min-width:0;}
+.er-workspace-grid :is(.er-income,.er-metrics,.er-sections,.er-readiness,.er-calculation-panel){grid-column:auto;grid-row:auto;min-width:0;}
+.er-assessment-summary .er-section{width:100%;}
+.er-workspace-left .er-sections{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;}
+.er-workspace-right .er-metrics{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;}
+.er-workspace .er-jump-calculation{display:none;}
+@media(max-width:1279px){
+ .er-workspace-grid{grid-template-columns:minmax(0,1fr);}
+ .er-workspace .er-jump-calculation{display:inline-flex;}
+ .er-workspace-left .er-sections{grid-template-columns:repeat(2,minmax(0,1fr));}
+ .er-workspace-right .er-metrics{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media(max-width:680px){
+ .er-workspace-left .er-sections,.er-workspace-right .er-metrics{grid-template-columns:minmax(0,1fr);}
 }

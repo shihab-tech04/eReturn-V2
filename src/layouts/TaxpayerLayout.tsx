@@ -1,53 +1,36 @@
 import React from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import { Header } from '../components/common/Header';
-import { Sidebar } from '../components/common/Sidebar';
 import { ConfirmationModal } from '../components/common/ConfirmationModal';
 import { GapRegisterModal } from '../components/common/GapRegisterModal';
+import { TaxpayerNavigation, isReturnDetailPath, isTaxRecordPath } from '../components/layout/TaxpayerNavigation';
 import { useApp } from '../context/AppContext';
+import '../components/layout/taxpayer-shell.css';
 
 export const TaxpayerLayout: React.FC = () => {
   const { language } = useApp();
-  const isWorkspace = useLocation().pathname === '/user-panel/home';
+  const pathname = useLocation().pathname;
+  const wide = pathname === '/user-panel/return-workspace';
+  const isLanding = pathname === '/user-panel/home' || wide || pathname === '/user-panel/tax-records';
+  const returnDetail = isReturnDetailPath(pathname);
+  const recordDetail = isTaxRecordPath(pathname);
 
-  return (
-    <div className="er-app-shell min-h-screen flex flex-col font-sans antialiased">
-      <Header />
-      <div className={"flex-1 flex w-full mx-auto " + (isWorkspace ? "max-w-[1500px]" : "max-w-7xl")}>
-        {!isWorkspace && <Sidebar />}
-        <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8">
-          {!isWorkspace && <Link to="/user-panel/home" className="er-back-link inline-flex items-center gap-2 text-sm font-semibold mb-4 underline">{language === "bn" ? "← রিটার্ন সারসংক্ষেপে ফিরুন" : "← Back to return workspace"}</Link>}
-          <Outlet />
-        </main>
-      </div>
-
-      <footer className="bg-white border-t border-gray-200 py-4 px-6 text-xs text-gray-500">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
-          <div>
-            <p className="font-semibold text-gray-700">
-              {language === 'bn'
-                ? 'জাতীয় রাজস্ব বোর্ড (এনবিআর), গণপ্রজাতন্ত্রী বাংলাদেশ সরকার'
-                : 'National Board of Revenue (NBR), Government of the People\'s Republic of Bangladesh'}
-            </p>
-            <p className="text-[11px] text-gray-400 mt-0.5">
-              {language === 'bn'
-                ? 'ই-রিটার্ন ট্যাক্সপেয়ার পোর্টাল • হেল্পলাইন: ০৯৬১২-৭৭৯০৯০ বা ৩৩৩'
-                : 'eReturn Taxpayer Portal • Helpdesk: 09612-779090 or 333 • Email: ereturn@incometax.gov.bd'}
-            </p>
-          </div>
-          <div className="flex items-center gap-4 text-[11px]">
-            <span className="text-emerald-700 font-medium">
-              Canonical Registry: FINAL_2026_09_30
-            </span>
-            <span className="text-gray-400">|</span>
-            <span>{language === "bn" ? "করের হিসাব অনুমোদন সাপেক্ষ" : "Statutory calculations require certification"}</span>
-          </div>
+  return <div className="er-app-shell">
+    <TaxpayerNavigation />
+    <div className="er-main-region">
+      <main id="er-main" className={'er-main-content' + (wide ? ' er-main-content--wide' : '')}>
+        {!isLanding && <Link className="er-back-link" to={returnDetail ? '/user-panel/return-workspace' : recordDetail ? '/user-panel/tax-records' : '/user-panel/home'}>
+          {language === 'bn' ? '← ফিরে যান' : '← Back to ' + (returnDetail ? 'My Tax Return' : recordDetail ? 'Tax Records' : 'Dashboard')}
+        </Link>}
+        <Outlet />
+      </main>
+      <footer className="er-shell-footer">
+        <div className="er-shell-footer-inner">
+          <p>{language === 'bn' ? 'eReturn V2 · করদাতার ওয়ার্কস্পেস' : 'eReturn V2 · Taxpayer Workspace'}</p>
+          <p>{language === 'bn' ? 'আইনগত কর হিসাব প্রত্যয়ন সাপেক্ষ · অনলাইনে দাখিল বন্ধ' : 'Statutory calculation not certified · Online filing unavailable'}</p>
         </div>
       </footer>
-
-      {/* Global Modals */}
-      <ConfirmationModal />
-      <GapRegisterModal />
     </div>
-  );
+    <ConfirmationModal />
+    <GapRegisterModal />
+  </div>;
 };
