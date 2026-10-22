@@ -71,7 +71,7 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <header className="bg-emerald-800 text-white shadow-md border-b-2 border-emerald-950 sticky top-0 z-40">
+    <header className="bg-ui-action-bg text-white shadow-md border-b-2 border-emerald-950 sticky top-0 z-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Brand & Emblem */}
@@ -103,7 +103,7 @@ export const Header: React.FC = () => {
           {/* Right Controls */}
           <div className="flex items-center gap-2 sm:gap-4">
             {/* Assessment Year Selector */}
-            <div className="flex items-center gap-1.5 bg-emerald-900/80 px-2.5 py-1 rounded-md border border-emerald-700">
+            <div className="flex items-center gap-1.5 bg-ui-action-bg/80 px-2.5 py-1 rounded-md border border-emerald-700">
               <span className="text-xs text-emerald-200 font-medium hidden md:inline">
                 {t('assessmentYearLabel')}:
               </span>
@@ -112,9 +112,9 @@ export const Header: React.FC = () => {
                 onChange={(e) => setAssessmentYear(e.target.value as AssessmentYear)}
                 className="bg-transparent text-xs font-bold text-white focus:outline-none cursor-pointer"
               >
-                <option value="2026-2027" className="text-gray-900">2026-2027 (Current)</option>
-                <option value="2025-2026" className="text-gray-900">2025-2026</option>
-                <option value="2024-2025" className="text-gray-900">2024-2025</option>
+                <option value="2026-2027" className="text-ui-content-primary">2026-2027 (Current)</option>
+                <option value="2025-2026" className="text-ui-content-primary">2025-2026</option>
+                <option value="2024-2025" className="text-ui-content-primary">2024-2025</option>
               </select>
             </div>
 
@@ -135,7 +135,7 @@ export const Header: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setDraftDropdownOpen(!draftDropdownOpen)}
-                className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-md bg-emerald-900 hover:bg-emerald-700 border border-emerald-700 transition-colors"
+                className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-md bg-ui-action-bg hover:bg-ui-action-hover border border-emerald-700 transition-colors"
               >
                 <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-300" />
                 <span className="hidden lg:inline">Draft & Test Tools</span>
@@ -143,8 +143,8 @@ export const Header: React.FC = () => {
               </button>
 
               {draftDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-56 rounded-md bg-white shadow-xl py-1 text-gray-800 text-xs border border-gray-200 z-50">
-                  <div className="px-3 py-1.5 border-b border-gray-100 font-semibold text-gray-500 uppercase text-[10px]">
+                <div className="absolute right-0 mt-2 w-56 rounded-md bg-ui-surface shadow-xl py-1 text-ui-content-primary text-xs border border-ui-stroke-subtle z-50">
+                  <div className="px-3 py-1.5 border-b border-ui-stroke-subtle font-semibold text-ui-content-muted uppercase text-[10px]">
                     Session Data Management
                   </div>
                   <button
@@ -152,9 +152,9 @@ export const Header: React.FC = () => {
                       exportDraftJson();
                       setDraftDropdownOpen(false);
                     }}
-                    className="w-full text-left px-3 py-2 hover:bg-emerald-50 flex items-center gap-2 text-gray-700"
+                    className="w-full text-left px-3 py-2 hover:bg-ui-accent-soft flex items-center gap-2 text-ui-content-secondary"
                   >
-                    <Download className="w-3.5 h-3.5 text-emerald-700" />
+                    <Download className="w-3.5 h-3.5 text-ui-accent" />
                     {t('exportDraft')}
                   </button>
                   <button
@@ -162,7 +162,7 @@ export const Header: React.FC = () => {
                       fileInputRef.current?.click();
                       setDraftDropdownOpen(false);
                     }}
-                    className="w-full text-left px-3 py-2 hover:bg-emerald-50 flex items-center gap-2 text-gray-700"
+                    className="w-full text-left px-3 py-2 hover:bg-ui-accent-soft flex items-center gap-2 text-ui-content-secondary"
                   >
                     <Upload className="w-3.5 h-3.5 text-blue-700" />
                     {t('importDraft')}
@@ -172,12 +172,12 @@ export const Header: React.FC = () => {
                       loadDemoFixture();
                       setDraftDropdownOpen(false);
                     }}
-                    className="w-full text-left px-3 py-2 hover:bg-emerald-50 flex items-center gap-2 text-gray-700"
+                    className="w-full text-left px-3 py-2 hover:bg-ui-accent-soft flex items-center gap-2 text-ui-content-secondary"
                   >
                     <RefreshCw className="w-3.5 h-3.5 text-indigo-700" />
                     {t('loadDemo')}
                   </button>
-                  <div className="border-t border-gray-100 my-1" />
+                  <div className="border-t border-ui-stroke-subtle my-1" />
                   <button
                     onClick={() => {
                       setDraftDropdownOpen(false);
@@ -210,7 +210,7 @@ export const Header: React.FC = () => {
             <button
               type="button"
               onClick={toggleLanguage}
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-md bg-emerald-900 hover:bg-emerald-700 border border-emerald-600 transition-colors"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-md bg-ui-action-bg hover:bg-ui-action-hover border border-ui-accent transition-colors"
             >
               <Globe className="w-3.5 h-3.5 text-emerald-300" />
               <span>{language === 'en' ? 'বাংলা' : 'English'}</span>
@@ -221,9 +221,9 @@ export const Header: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
-                className="flex items-center gap-2 bg-emerald-900/90 hover:bg-emerald-950 px-2.5 py-1 rounded-md border border-emerald-700 text-left transition-colors cursor-pointer"
+                className="flex items-center gap-2 bg-ui-action-bg/90 hover:bg-emerald-950 px-2.5 py-1 rounded-md border border-emerald-700 text-left transition-colors cursor-pointer"
               >
-                <div className="w-7 h-7 rounded-full bg-emerald-700 border border-emerald-500 flex items-center justify-center shrink-0">
+                <div className="w-7 h-7 rounded-full bg-ui-action-bg border border-ui-accent flex items-center justify-center shrink-0">
                   <User className="w-4 h-4 text-white" />
                 </div>
                 <div className="hidden sm:block text-left">
@@ -238,20 +238,20 @@ export const Header: React.FC = () => {
               </button>
 
               {profileDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-64 rounded-md bg-white shadow-xl py-1 text-gray-800 text-xs border border-gray-200 z-50 animate-in fade-in">
-                  <div className="p-3 border-b border-gray-100 bg-gray-50">
-                    <p className="font-bold text-gray-900">{profile.name}</p>
-                    <p className="text-[11px] font-mono text-gray-500">TIN: {profile.tin}</p>
-                    <p className="text-[11px] text-gray-500">{profile.taxesZone} • {profile.taxesCircle}</p>
+                <div className="absolute right-0 mt-2 w-64 rounded-md bg-ui-surface shadow-xl py-1 text-ui-content-primary text-xs border border-ui-stroke-subtle z-50 animate-in fade-in">
+                  <div className="p-3 border-b border-ui-stroke-subtle bg-ui-surface-subtle">
+                    <p className="font-bold text-ui-content-primary">{profile.name}</p>
+                    <p className="text-[11px] font-mono text-ui-content-muted">TIN: {profile.tin}</p>
+                    <p className="text-[11px] text-ui-content-muted">{profile.taxesZone} • {profile.taxesCircle}</p>
                   </div>
                   <button
                     onClick={() => {
                       navigate('/user-panel/profile');
                       setProfileDropdownOpen(false);
                     }}
-                    className="w-full text-left px-3 py-2 hover:bg-emerald-50 flex items-center gap-2 text-gray-700"
+                    className="w-full text-left px-3 py-2 hover:bg-ui-accent-soft flex items-center gap-2 text-ui-content-secondary"
                   >
-                    <User className="w-3.5 h-3.5 text-emerald-700" />
+                    <User className="w-3.5 h-3.5 text-ui-accent" />
                     {t('navProfile')}
                   </button>
                   <button
@@ -259,9 +259,9 @@ export const Header: React.FC = () => {
                       navigate('/user-panel/change-password');
                       setProfileDropdownOpen(false);
                     }}
-                    className="w-full text-left px-3 py-2 hover:bg-emerald-50 flex items-center gap-2 text-gray-700"
+                    className="w-full text-left px-3 py-2 hover:bg-ui-accent-soft flex items-center gap-2 text-ui-content-secondary"
                   >
-                    <KeyRound className="w-3.5 h-3.5 text-emerald-700" />
+                    <KeyRound className="w-3.5 h-3.5 text-ui-accent" />
                     {t('navChangePassword')}
                   </button>
                 </div>
