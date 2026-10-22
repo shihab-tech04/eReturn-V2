@@ -142,7 +142,11 @@ export const EmploymentPage: React.FC = () => {
                   { value: 'Govt iBAS++', label: t('govtIbas') },
                   { value: 'Govt Non-iBAS++', label: t('govtNonIbas') },
                   { value: 'Private / Other', label: t('privateOther') },
-                  { value: 'Autonomous / Semi-Govt / Corporation', label: t('autonomous') },
+                  { value: 'Salary Subject to Reduced Tax Rate', label: t('salaryReduced') },
+                  // Preserve the historical value when editing an existing older draft.
+                  ...(currentEntry.employmentType === 'Autonomous / Semi-Govt / Corporation'
+                    ? [{ value: 'Autonomous / Semi-Govt / Corporation', label: t('autonomous') }]
+                    : []),
                 ].map((opt) => (
                   <label
                     key={opt.value}
