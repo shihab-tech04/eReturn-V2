@@ -1,0 +1,37 @@
+name: WS00 PR6-to-WS05 isolated integration rehearsal
+on:
+  push:
+    branches: ['ws00/ereturn-pr6-pr7-integration-20261022']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  compatibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependencies in isolated runner
+        run: npm install --no-audit --no-fund
+      - name: Verify TypeScript
+        run: npm run lint
+      - name: Run all unit regression tests
+        run: npm run test
+      - name: Rebuild combined PR6 and WS05 source
+        run: npm run build
+      - name: Install browser
+        run: npx playwright install --with-deps chromium
+      - name: Run route, EN/BN and fail-closed browser QA
+        run: npx playwright test --config playwright.config.ts
+      - name: Save failure traces (not a certification)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ws00-pr6-ws05-integration-evidence
+          path: |
+            test-results/
+            playwright-report/
+          retention-days: 14
