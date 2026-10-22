@@ -3,6 +3,7 @@ import { useApp } from '../../context/AppContext';
 import { AuditedBusiness, AccountNote } from '../../types';
 import { AmountInput } from '../../components/common/AmountInput';
 import { formatBDT } from '../../i18n/formatters';
+import { CorporateReportIntake } from './CorporateReportIntake';
 import {
   Briefcase,
   Plus,
@@ -181,6 +182,9 @@ export const AuditedAccountsPage: React.FC = () => {
           </button>
         </div>
       </div>
+
+      {/* WS06: local evidence intake. Separate from manual accounts and non-executable. */}
+      <CorporateReportIntake language={language} businessName={activeBusiness?.businessName ?? ''} />
 
       {/* Observed Empty State */}
       {auditedBusinesses.length === 0 ? (

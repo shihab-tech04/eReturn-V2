@@ -172,3 +172,56 @@ test('10. Audited Accounts 3-Level Note Hierarchy', () => {
   const sub = level3[0];
   assert.equal(sub.parentId, child.id);
 });
+
+import { parseAmount, proposeCorporateLines, reconcileCorporate, createCompanyReturnHandoff, readReviewSnapshot } from '../features/audited-accounts/corporateIntake';
+
+test('11. WS06 untrusted PDF text only yields candidate accounting rows', () => {
+  assert.equal(parseAmount('১,২৩৪.৫০'), 123450n);
+  assert.equal(parseAmount('(250.25)'), -25025n);
+  assert.equal(parseAmount('unverified'), null);
+  const rows = proposeCorporateLines([{ page: 1, text:
+    'Statement of Financial Position\nTotal assets 1,000.00 900.00\nTotal equity and liabilities 1,000.00 899.00\nTotal assets 1,000.00 900.00' }]);
+  assert.equal(rows.length, 3);
+  assert.ok(rows.every(x => x.status !== 'REVIEWED'));
+  assert.ok(rows.filter(x => x.canonical === 'total_assets').every(x => x.issues.includes('DUPLICATE_CANONICAL_CANDIDATE')));
+  assert.ok(rows.every(x => x.locator.page === 1));
+});
+
+test('12. WS06 reviewed arithmetic remains evidence-only, deterministic and fail-closed', () => {
+  const lines = proposeCorporateLines([{page: 2, text:
+    'Statement of Financial Position\nTotal assets 1,000.00 900.00\nTotal equity and liabilities 1,000.00 899.00'}]);
+  const draft = {
+    schema: 'WS06_CORPORATE_INTAKE_V1' as const,
+    source: {name:'synthetic.pdf',sha256:'synthetic-only',bytes:100,pageCount:2,digitalPages:2,scanPages:0,parser:'PDFJS_TEXT_V1' as const},
+    context: {companyName:'Synthetic Corporation',financialPeriodEnd:'2026-06-30',comparativePeriodEnd:'2025-06-30',currency:'BDT',scale:'UNITS' as const},
+    lines: lines.map(x => ({...x,status:'REVIEWED' as const})),
+    stage: 'REVIEW_ONLY' as const,
+  };
+  const outcome = reconcileCorporate(draft);
+  assert.equal(outcome.find(x => x.period==='current' && x.check==='Assets = equity + liabilities')?.status,'MATCH');
+  assert.equal(outcome.find(x => x.period==='previous' && x.check==='Assets = equity + liabilities')?.status,'FAIL');
+  const unconfirmed = {...draft,context:{...draft.context,currency:'UNCONFIRMED'}};
+  assert.ok(reconcileCorporate(unconfirmed).every(x => x.status === 'BLOCKED'));
+  const handoff = createCompanyReturnHandoff(draft);
+  assert.equal(handoff.isExecutable,false);
+  assert.equal(handoff.taxComputation,null);
+  assert.match(handoff.status,/BLOCKED_PENDING_CORPORATE/);
+  assert.throws(() => readReviewSnapshot(JSON.stringify(draft),'other-source'), /SOURCE_OR_SCHEMA_MISMATCH/);
+  assert.deepEqual(readReviewSnapshot(JSON.stringify(draft),'synthetic-only').source.sha256, 'synthetic-only');
+});
+
+test('13. WS06 reviewed PDF page custody cannot be restored with altered page indexes', () => {
+  const rows=proposeCorporateLines([{page:1,text:'Statement of Financial Position\nTotal assets 100 90'}]);
+  const draft={
+    schema:'WS06_CORPORATE_INTAKE_V1' as const,
+    source:{name:'synthetic.pdf',sha256:'a'.repeat(64),bytes:150,pageCount:1,digitalPages:1,scanPages:0,parser:'PDFJS_TEXT_V1' as const},
+    context:{companyName:'',financialPeriodEnd:'',comparativePeriodEnd:'',currency:'UNCONFIRMED',scale:'UNCONFIRMED' as const},
+    lines:rows,sourcePages:[{page:1,text:'Statement of Financial Position\nTotal assets 100 90'}],
+    stage:'REVIEW_ONLY' as const
+  };
+  assert.equal(readReviewSnapshot(JSON.stringify(draft),draft.source.sha256).sourcePages?.[0].page,1);
+  const wrong={...draft,sourcePages:[{page:2,text:'modified'}]};
+  assert.throws(()=>readReviewSnapshot(JSON.stringify(wrong),draft.source.sha256),/INVALID_SOURCE_PAGE_INDEX/);
+  const outOfRange={...draft,lines:rows.map(x=>({...x,locator:{...x.locator,page:8}}))};
+  assert.throws(()=>readReviewSnapshot(JSON.stringify(outOfRange),draft.source.sha256),/INVALID_ROW_SOURCE_PAGE/);
+});
