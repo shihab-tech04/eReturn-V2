@@ -1,6 +1,8 @@
 import React from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AppProvider } from './context/AppContext';
+import { AppearanceProvider } from './appearance/AppearanceProvider';
+import { ReturnWorkspace } from './features/workspace/ReturnWorkspace';
 import { TaxpayerLayout } from './layouts/TaxpayerLayout';
 
 import { HomeDashboard } from './features/home/HomeDashboard';
@@ -42,12 +44,14 @@ import { ChangePasswordPage } from './features/profile/ChangePasswordPage';
 export default function App() {
   return (
     <AppProvider>
+      <AppearanceProvider>
       <HashRouter>
         <Routes>
           <Route path="/" element={<Navigate to="/user-panel/home" replace />} />
           <Route path="/user-panel" element={<TaxpayerLayout />}>
             <Route index element={<Navigate to="/user-panel/home" replace />} />
-            <Route path="home" element={<HomeDashboard />} />
+            <Route path="home" element={<ReturnWorkspace />} />
+            <Route path="overview" element={<HomeDashboard />} />
             
             {/* 7-Stage Return Preparation */}
             <Route path="assessment" element={<AssessmentPage />} />
@@ -95,6 +99,7 @@ export default function App() {
           <Route path="*" element={<Navigate to="/user-panel/home" replace />} />
         </Routes>
       </HashRouter>
+      </AppearanceProvider>
     </AppProvider>
   );
 }

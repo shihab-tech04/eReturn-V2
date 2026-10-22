@@ -4,7 +4,7 @@ export type AssessmentYear = '2026-2027' | '2025-2026' | '2024-2025';
 
 export type ReturnScheme = 'Universal Self' | 'Normal';
 
-export type ResidentStatus = 'Resident' | 'Non-Resident';
+export type ResidentStatus = '' | 'Resident' | 'Non-Resident';
 
 export interface AssessmentData {
   returnScheme: ReturnScheme;
@@ -464,7 +464,7 @@ export interface UserProfile {
   spouseName: string;
   spouseTin: string;
   dob: string;
-  gender: 'Male' | 'Female' | 'Third Gender';
+  gender: '' | 'Male' | 'Female' | 'Third Gender';
   mobile: string;
   email: string;
   currentAddress: string;

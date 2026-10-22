@@ -1,23 +1,22 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import { Header } from '../components/common/Header';
 import { Sidebar } from '../components/common/Sidebar';
-import { ReturnStepper } from '../components/common/ReturnStepper';
 import { ConfirmationModal } from '../components/common/ConfirmationModal';
 import { GapRegisterModal } from '../components/common/GapRegisterModal';
 import { useApp } from '../context/AppContext';
 
 export const TaxpayerLayout: React.FC = () => {
   const { language } = useApp();
+  const isWorkspace = useLocation().pathname === '/user-panel/home';
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col font-sans antialiased text-gray-900">
+    <div className="min-h-screen flex flex-col font-sans antialiased" style={{ background: "var(--er-background, #F7F8FC)", color: "var(--er-text-primary, #202338)" }}>
       <Header />
-      <ReturnStepper />
-
-      <div className="flex-1 flex max-w-7xl w-full mx-auto">
-        <Sidebar />
-        <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 bg-slate-50">
+      <div className={"flex-1 flex w-full mx-auto " + (isWorkspace ? "max-w-[1500px]" : "max-w-7xl")}>
+        {!isWorkspace && <Sidebar />}
+        <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8">
+          {!isWorkspace && <Link to="/user-panel/home" className="inline-flex items-center gap-2 text-sm font-semibold mb-4 underline" style={{ color: "var(--er-primary, #4B5694)" }}>{language === "bn" ? "← রিটার্ন সারসংক্ষেপে ফিরুন" : "← Back to return workspace"}</Link>}
           <Outlet />
         </main>
       </div>
@@ -41,7 +40,7 @@ export const TaxpayerLayout: React.FC = () => {
               Canonical Registry: FINAL_2026_09_30
             </span>
             <span className="text-gray-400">|</span>
-            <span>Security: SSL 256-Bit</span>
+            <span>{language === "bn" ? "করের হিসাব অনুমোদন সাপেক্ষ" : "Statutory calculations require certification"}</span>
           </div>
         </div>
       </footer>
