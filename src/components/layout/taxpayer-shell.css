@@ -4,7 +4,7 @@
  */
 .er-app-shell { min-height:100dvh; background:var(--er-background,#F7F8FC); color:var(--er-text-primary,#202338); font-family:var(--er-font-family,Inter,sans-serif); font-size:var(--er-font-size,16px); }
 .er-app-shell, .er-app-shell * { box-sizing:border-box; }
-.er-app-shell :is(button, [role="button"], .er-button, .er-shell-cta, .er-compact-cta, .er-nav-link, .er-quick-link, .er-account-expander, [class*="btn"]) { border-radius:var(--radius-control,12px) !important; }
+.er-app-shell :is(.er-button, .er-shell-cta, .er-compact-cta, .er-nav-link, .er-quick-link, .er-account-expander) { border-radius:var(--radius-control,12px); }
 .er-app-shell :is(a,button,input,select,textarea,[role="button"]):focus-visible { outline:3px solid var(--er-secondary,#7C8BD6); outline-offset:2px; }
 .er-app-shell :is(button, select) { font-family:inherit; }
 .er-app-shell :is(h1,h2,h3,p) { overflow-wrap:anywhere; }
