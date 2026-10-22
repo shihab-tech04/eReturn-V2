@@ -10,6 +10,7 @@ import {
   enteredWithholdingAndPayment,
 } from '../adapters/individualEnteredFacts';
 import { INITIAL_INCOME, INITIAL_TAX_PAYMENT } from '../data/mockData';
+import type { AgricultureEntry, ForeignIncomeEntry } from '../types';
 
 test('WS05 rent: input is retained; statutory allowance and net liability are not inferred', () => {
   const entry = {
@@ -38,8 +39,10 @@ test('WS05 rent: input is retained; statutory allowance and net liability are no
 });
 
 test('WS05 agriculture: zero cost never creates a 60% deemed expenditure', () => {
-  const entry = {
-    ...INITIAL_INCOME.agricultureEntries[0],
+  const entry: AgricultureEntry = {
+    id: 'isolated-agri',
+    type: 'Production of Crops & Grains',
+    landDescription: 'Controlled test plot',
     grossSaleProceeds: 350000,
     costOfProduction: 0,
     statutoryExemptionClaimed: 70000,
@@ -73,8 +76,9 @@ test('WS05 employment: gross is mathematical; no salary exemption or taxable inc
 });
 
 test('WS05 foreign: missing exchange rate must fail closed; foreign tax is unverified', () => {
-  const entry = {
-    ...INITIAL_INCOME.foreignIncomeEntries[0],
+  const entry: ForeignIncomeEntry = {
+    id: 'isolated-foreign',
+    country: 'Other Country',
     natureOfIncome: 'Foreign consulting',
     amountForeignCurrency: 100,
     exchangeRate: 0,
