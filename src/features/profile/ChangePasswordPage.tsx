@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
-import { Lock, Eye, EyeOff, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
 
 export const ChangePasswordPage: React.FC = () => {
   const { language, t } = useApp();
@@ -10,30 +10,14 @@ export const ChangePasswordPage: React.FC = () => {
   const [showOld, setShowOld] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-  const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!oldPassword) {
-      setStatusMessage({ type: 'error', text: 'Please enter your current account password.' });
-      return;
-    }
-    if (newPassword.length < 8) {
-      setStatusMessage({ type: 'error', text: 'New password must be at least 8 characters long.' });
-      return;
-    }
-    if (newPassword !== confirmPassword) {
-      setStatusMessage({ type: 'error', text: 'New password and confirm password do not match.' });
-      return;
-    }
-
-    setStatusMessage({
-      type: 'success',
-      text: 'Password updated successfully in development session!',
-    });
-    setOldPassword('');
-    setNewPassword('');
-    setConfirmPassword('');
+    // Defense in depth: no client-only credential mutation or simulated success.
+    setStatusMessage(language === 'bn'
+      ? 'নিরাপদ অ্যাকাউন্ট সেবা সংযুক্ত না থাকায় পাসওয়ার্ড পরিবর্তন করা যাচ্ছে না।'
+      : 'Password update unavailable: no verified authenticated account service is connected.');
   };
 
   return (
@@ -48,22 +32,14 @@ export const ChangePasswordPage: React.FC = () => {
         </p>
       </div>
 
-      {statusMessage && (
-        <div
-          className={`p-3 rounded-lg text-xs flex items-center gap-2 animate-in fade-in ${
-            statusMessage.type === 'success'
-              ? 'bg-ui-accent-soft border border-ui-accent-border text-ui-content-primary'
-              : 'bg-red-50 border border-red-200 text-red-900'
-          }`}
-        >
-          {statusMessage.type === 'success' ? (
-            <CheckCircle2 className="w-4 h-4 text-ui-accent shrink-0" />
-          ) : (
-            <AlertCircle className="w-4 h-4 text-red-700 shrink-0" />
-          )}
-          <span>{statusMessage.text}</span>
-        </div>
-      )}
+      <div id="password-unavailable-note" role="status" className="bg-amber-50 border border-amber-300 text-amber-950 rounded-lg p-3 text-xs">
+        {language === 'bn'
+          ? 'পাসওয়ার্ড পরিবর্তনের জন্য যাচাইকৃত অ্যাকাউন্ট সেবা প্রয়োজন। এই পৃষ্ঠায় কোনো পাসওয়ার্ড সংরক্ষণ বা পরিবর্তন করা হয় না।'
+          : 'Password changes require a verified account service. This page does not save or change passwords.'}
+      </div>
+      {statusMessage && <div role="alert" className="bg-red-50 border border-red-200 text-red-900 rounded-lg p-3 text-xs">
+        <AlertCircle className="inline-block w-4 h-4 mr-2" />{statusMessage}
+      </div>}
 
       <form onSubmit={handleSubmit} className="bg-ui-surface rounded-xl border border-ui-stroke-subtle shadow-xs p-6 space-y-4 text-xs">
         {/* Old Password */}
@@ -72,6 +48,8 @@ export const ChangePasswordPage: React.FC = () => {
           <div className="relative">
             <input
               type={showOld ? 'text' : 'password'}
+              disabled
+              aria-describedby="password-unavailable-note"
               value={oldPassword}
               onChange={(e) => setOldPassword(e.target.value)}
               placeholder="Enter current password"
@@ -93,6 +71,8 @@ export const ChangePasswordPage: React.FC = () => {
           <div className="relative">
             <input
               type={showNew ? 'text' : 'password'}
+              disabled
+              aria-describedby="password-unavailable-note"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               placeholder="Minimum 8 characters with numbers"
@@ -114,6 +94,8 @@ export const ChangePasswordPage: React.FC = () => {
           <div className="relative">
             <input
               type={showConfirm ? 'text' : 'password'}
+              disabled
+              aria-describedby="password-unavailable-note"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="Re-type new password"
@@ -132,6 +114,8 @@ export const ChangePasswordPage: React.FC = () => {
         <div className="pt-2">
           <button
             type="submit"
+            disabled
+            aria-disabled="true"
             className="w-full bg-ui-action-bg hover:bg-ui-action-hover text-white font-semibold py-2 px-4 rounded-md shadow-xs cursor-pointer"
           >
             {t('updatePassword')}
