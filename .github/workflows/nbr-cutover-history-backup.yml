@@ -1,0 +1,34 @@
+name: NBR cutover off-GitHub source backup
+on:
+  push:
+    branches:
+      - recovery/nbr-sql-cutover-20261022
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Create history bundle and verify offline restore
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p backup
+          git fetch --all --tags --prune
+          git bundle create backup/full-history.bundle --all
+          git bundle verify backup/full-history.bundle
+          git clone --quiet --mirror backup/full-history.bundle /tmp/nbr-cutover-restored.git
+          git --git-dir=/tmp/nbr-cutover-restored.git fsck --full --no-reflogs
+          git --git-dir=/tmp/nbr-cutover-restored.git cat-file -e "${GITHUB_SHA}^{commit}"
+          printf '%s\n' "source_commit=${GITHUB_SHA}" "repository=${GITHUB_REPOSITORY}" "restore_test=PASS" > backup/manifest.txt
+          sha256sum backup/full-history.bundle > backup/SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nbr-cutover-source-backup
+          path: backup/
+          retention-days: 7
