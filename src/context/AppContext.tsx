@@ -174,7 +174,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     // Update TaxPayment
     setTaxPayment((prev) => ({
       ...prev,
-      taxableIncome: incAgg.totalTaxableIncome,
+      taxableIncome: 0, // No approved statutory taxable-income amount; UI remains pending.
       grossTaxCalculated: 0,
       taxRebateDeducted: 0,
       netTaxLiability: 0,
