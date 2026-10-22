@@ -78,7 +78,7 @@ test('original in-system Submission and Return Preview preserved',async ({page})
   await page.goto('/#/user-panel/return-view');
   await expect(page.locator('.er-desktop-rail')).toBeVisible();
   await page.getByRole('button',{name:'Proceed to Submission'}).click();
-  await expect(page).toHaveURL(/user-panel\/guided-submission$/);
+  await expect(page).toHaveURL(/user-panel\/submission$/);
   await expect(page.locator('.er-desktop-rail')).toBeVisible();
   await expect(page.getByRole('button',{name:/submit return/i})).toBeDisabled();
 });
