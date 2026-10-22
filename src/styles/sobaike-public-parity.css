@@ -148,3 +148,7 @@ html[data-theme="dark"]{
   .er-app-shell{font-size:12px;background:#fff;color:#000}
   .er-app-shell :is(h1,h2,h3,h4){color:#000!important}
 }
+
+/* Sobaike public's keyboard skip-link behavior; no tab-trapping shortcuts. */
+.er-skip-link{position:fixed;top:12px;left:12px;z-index:150;transform:translateY(-150%);background:var(--ui-primary-action-bg);color:#fff;padding:10px 14px;border-radius:var(--radius-control);font-weight:600;text-decoration:none}
+.er-skip-link:focus-visible{transform:translateY(0)}
