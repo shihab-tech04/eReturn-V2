@@ -71,6 +71,9 @@ jobs:
         with:
           path: ./dist
   deploy:
+    # The legacy Jekyll job can be delayed by GitHub's environment queue for
+    # more than the previous six-minute polling budget.
+    timeout-minutes: 75
     runs-on: ubuntu-latest
     needs: build
     permissions:
@@ -115,7 +118,7 @@ jobs:
           if build_type == "workflow":
               print("PASS: Pages uses the custom Actions publisher; no legacy wait")
           elif build_type == "legacy" or (not build_type and site.get("source")):
-              for attempt in range(36):
+              for attempt in range(360):
                   runs = github("actions/runs?per_page=80").get("workflow_runs", [])
                   matching = [
                       run for run in runs
@@ -127,7 +130,7 @@ jobs:
                       result = matching[0].get("conclusion")
                       print(f"Legacy Jekyll run {matching[0]['id']} settled ({result}); Vite is final publisher")
                       break
-                  print(f"Legacy Jekyll deployment not settled for {target_sha}; check {attempt + 1}/36")
+                  print(f"Legacy Jekyll deployment not settled for {target_sha}; check {attempt + 1}/360")
                   time.sleep(10)
               else:
                   raise SystemExit("BLOCKED: matching legacy Jekyll deploy did not settle; refusing raced publication")
