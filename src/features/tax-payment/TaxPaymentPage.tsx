@@ -35,10 +35,10 @@ export const TaxPaymentPage: React.FC = () => {
       {/* Title */}
       <div>
         <div className="flex items-center gap-2">
-          <CreditCard className="w-5 h-5 text-emerald-700" />
-          <h2 className="text-xl font-bold text-gray-900">{t('taxPaymentTitle')}</h2>
+          <CreditCard className="w-5 h-5 text-ui-accent" />
+          <h2 className="text-xl font-bold text-ui-content-primary">{t('taxPaymentTitle')}</h2>
         </div>
-        <p className="text-xs text-gray-500 mt-1">{t('taxPaymentSubtitle')}</p>
+        <p className="text-xs text-ui-content-muted mt-1">{t('taxPaymentSubtitle')}</p>
       </div>
 
       {/* Scope Notice: Payment Execution Boundary */}
@@ -60,52 +60,52 @@ export const TaxPaymentPage: React.FC = () => {
       </div>
 
       {/* 1. Tax Computation Summary */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-xs p-6 space-y-4">
-        <div className="flex items-center justify-between border-b border-gray-100 pb-2">
-          <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wide">
+      <div className="bg-ui-surface rounded-xl border border-ui-stroke-subtle shadow-xs p-6 space-y-4">
+        <div className="flex items-center justify-between border-b border-ui-stroke-subtle pb-2">
+          <h3 className="text-sm font-bold text-ui-content-primary uppercase tracking-wide">
             1. {t('taxLiabilitySummary')}
           </h3>
-          <span className="text-xs font-mono text-gray-500">
+          <span className="text-xs font-mono text-ui-content-muted">
             Rules Engine: {RULES_ENGINE_GATE.status} · SQL: {sqlConnection === 'verified' ? 'CONNECTED' : sqlConnection === 'checking' ? 'CHECKING' : 'UNAVAILABLE'}
           </span>
         </div>
 
         <div className="space-y-3 font-mono text-xs">
           <div className="flex items-center justify-between py-1.5 border-b border-gray-50">
-            <span className="text-gray-600">{t('taxableIncomeSummary')}</span>
-            <span className="font-bold text-gray-900 text-sm">
+            <span className="text-ui-content-secondary">{t('taxableIncomeSummary')}</span>
+            <span className="font-bold text-ui-content-primary text-sm">
               {formatBDT(taxPayment.taxableIncome, language)}
             </span>
           </div>
 
           <div className="flex items-center justify-between py-1.5 border-b border-gray-50">
-            <span className="text-gray-600">{t('grossTax')}</span>
-            <span className="font-semibold text-gray-900">
+            <span className="text-ui-content-secondary">{t('grossTax')}</span>
+            <span className="font-semibold text-ui-content-primary">
               {notCalculated}
             </span>
           </div>
 
-          <div className="flex items-center justify-between py-1.5 border-b border-gray-50 text-emerald-700">
+          <div className="flex items-center justify-between py-1.5 border-b border-gray-50 text-ui-accent">
             <span>{t('rebateDeduction')} (Schedule 24D)</span>
             <span>- {notCalculated}</span>
           </div>
 
           <div className="flex items-center justify-between py-1.5 border-b border-gray-50">
-            <span className="text-gray-600">{t('minimumTax')} (Zone 04 Dhaka)</span>
-            <span className="text-gray-700">Min. {notCalculated}</span>
+            <span className="text-ui-content-secondary">{t('minimumTax')} (Zone 04 Dhaka)</span>
+            <span className="text-ui-content-secondary">Min. {notCalculated}</span>
           </div>
 
           <div className="flex items-center justify-between py-1.5 border-b border-gray-50">
-            <span className="text-gray-600">{t('surcharge')}</span>
-            <span className="text-gray-700">{notCalculated}</span>
+            <span className="text-ui-content-secondary">{t('surcharge')}</span>
+            <span className="text-ui-content-secondary">{notCalculated}</span>
           </div>
 
           <div className="flex items-center justify-between py-1.5 border-b border-gray-50">
-            <span className="text-gray-600">{t('penaltyDelay')}</span>
-            <span className="text-gray-700">{notCalculated}</span>
+            <span className="text-ui-content-secondary">{t('penaltyDelay')}</span>
+            <span className="text-ui-content-secondary">{notCalculated}</span>
           </div>
 
-          <div className="flex items-center justify-between py-2 bg-emerald-50 px-3 rounded-lg font-bold text-emerald-950 text-sm">
+          <div className="flex items-center justify-between py-2 bg-ui-accent-soft px-3 rounded-lg font-bold text-emerald-950 text-sm">
             <span>{t('totalPayable')} · {language === 'bn' ? 'অনুমোদিত নয়' : 'not calculated'}</span>
             <span>{notCalculated}</span>
           </div>
@@ -113,9 +113,9 @@ export const TaxPaymentPage: React.FC = () => {
       </div>
 
       {/* 2. Tax Deducted or Collected at Source (TDS/AIT) */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-xs p-6 space-y-4">
-        <div className="flex items-center justify-between border-b border-gray-100 pb-2">
-          <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wide">
+      <div className="bg-ui-surface rounded-xl border border-ui-stroke-subtle shadow-xs p-6 space-y-4">
+        <div className="flex items-center justify-between border-b border-ui-stroke-subtle pb-2">
+          <h3 className="text-sm font-bold text-ui-content-primary uppercase tracking-wide">
             2. {t('withholdingSection')}
           </h3>
           <span className="text-xs font-mono font-bold text-blue-700">
@@ -125,7 +125,7 @@ export const TaxPaymentPage: React.FC = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
           <div>
-            <label className="block text-gray-600 mb-1">{t('tdsSalary')}</label>
+            <label className="block text-ui-content-secondary mb-1">{t('tdsSalary')}</label>
             <AmountInput
               value={taxPayment.tdsSalary}
               onChange={(v) => handleUpdate('tdsSalary', v)}
@@ -133,7 +133,7 @@ export const TaxPaymentPage: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-gray-600 mb-1">{t('tdsBank')}</label>
+            <label className="block text-ui-content-secondary mb-1">{t('tdsBank')}</label>
             <AmountInput
               value={taxPayment.tdsBankAndFinancial}
               onChange={(v) => handleUpdate('tdsBankAndFinancial', v)}
@@ -141,7 +141,7 @@ export const TaxPaymentPage: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-gray-600 mb-1">{t('tdsContracts')}</label>
+            <label className="block text-ui-content-secondary mb-1">{t('tdsContracts')}</label>
             <AmountInput
               value={taxPayment.tdsContractAndSupplies}
               onChange={(v) => handleUpdate('tdsContractAndSupplies', v)}
@@ -149,7 +149,7 @@ export const TaxPaymentPage: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-gray-600 mb-1">{t('tdsRent')}</label>
+            <label className="block text-ui-content-secondary mb-1">{t('tdsRent')}</label>
             <AmountInput
               value={taxPayment.tdsRentAndOther}
               onChange={(v) => handleUpdate('tdsRentAndOther', v)}
@@ -159,14 +159,14 @@ export const TaxPaymentPage: React.FC = () => {
       </div>
 
       {/* 3. Advance Tax & Tax Paid with Return (Self-Assessment Challan) */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-xs p-6 space-y-4">
-        <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wide border-b border-gray-100 pb-2">
+      <div className="bg-ui-surface rounded-xl border border-ui-stroke-subtle shadow-xs p-6 space-y-4">
+        <h3 className="text-sm font-bold text-ui-content-primary uppercase tracking-wide border-b border-ui-stroke-subtle pb-2">
           3. Advance Tax & Treasury Challan Information
         </h3>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
           <div>
-            <label className="block text-gray-600 mb-1">{t('advanceTax')}</label>
+            <label className="block text-ui-content-secondary mb-1">{t('advanceTax')}</label>
             <AmountInput
               value={taxPayment.advanceTaxPaid}
               onChange={(v) => handleUpdate('advanceTaxPaid', v)}
@@ -174,7 +174,7 @@ export const TaxPaymentPage: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-gray-600 mb-1">{t('taxPaidReturn')}</label>
+            <label className="block text-ui-content-secondary mb-1">{t('taxPaidReturn')}</label>
             <AmountInput
               value={taxPayment.taxPaidWithReturn}
               onChange={(v) => handleUpdate('taxPaidWithReturn', v)}
@@ -183,41 +183,41 @@ export const TaxPaymentPage: React.FC = () => {
         </div>
 
         {/* Challan Particulars Entry */}
-        <div className="p-4 rounded-lg border border-gray-200 bg-gray-50/50 space-y-3 pt-3">
-          <span className="text-xs font-bold text-gray-800 block">
+        <div className="p-4 rounded-lg border border-ui-stroke-subtle bg-ui-surface-subtle/50 space-y-3 pt-3">
+          <span className="text-xs font-bold text-ui-content-primary block">
             Treasury Challan Particulars (For Section 173 Payment Matching)
           </span>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
             <div>
-              <label className="block text-gray-600 mb-1">Challan Number</label>
+              <label className="block text-ui-content-secondary mb-1">Challan Number</label>
               <input
                 type="text"
                 value={taxPayment.challanNumber}
                 onChange={(e) => handleUpdate('challanNumber', e.target.value)}
                 placeholder="e.g. TR-CH-2026-9921"
-                className="w-full rounded-md border border-gray-300 py-1.5 px-3 text-xs focus:border-emerald-600 focus:outline-none font-mono"
+                className="w-full rounded-md border border-ui-stroke-default py-1.5 px-3 text-xs focus:border-ui-focus focus:outline-none font-mono"
               />
             </div>
 
             <div>
-              <label className="block text-gray-600 mb-1">Challan Date</label>
+              <label className="block text-ui-content-secondary mb-1">Challan Date</label>
               <input
                 type="date"
                 value={taxPayment.challanDate}
                 onChange={(e) => handleUpdate('challanDate', e.target.value)}
-                className="w-full rounded-md border border-gray-300 py-1.5 px-3 text-xs focus:border-emerald-600 focus:outline-none"
+                className="w-full rounded-md border border-ui-stroke-default py-1.5 px-3 text-xs focus:border-ui-focus focus:outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-gray-600 mb-1">Bank & Branch</label>
+              <label className="block text-ui-content-secondary mb-1">Bank & Branch</label>
               <input
                 type="text"
                 value={taxPayment.bankName}
                 onChange={(e) => handleUpdate('bankName', e.target.value)}
                 placeholder="e.g. Sonali Bank PLC (Dhaka Main)"
-                className="w-full rounded-md border border-gray-300 py-1.5 px-3 text-xs focus:border-emerald-600 focus:outline-none"
+                className="w-full rounded-md border border-ui-stroke-default py-1.5 px-3 text-xs focus:border-ui-focus focus:outline-none"
               />
             </div>
           </div>

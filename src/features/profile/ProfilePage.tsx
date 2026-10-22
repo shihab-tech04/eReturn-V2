@@ -30,10 +30,10 @@ export const ProfilePage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <div className="flex items-center gap-2">
-            <UserCheck className="w-5 h-5 text-emerald-700" />
-            <h2 className="text-xl font-bold text-gray-900">{t('profileTitle')}</h2>
+            <UserCheck className="w-5 h-5 text-ui-accent" />
+            <h2 className="text-xl font-bold text-ui-content-primary">{t('profileTitle')}</h2>
           </div>
-          <p className="text-xs text-gray-500 mt-1">{t('profileSubtitle')}</p>
+          <p className="text-xs text-ui-content-muted mt-1">{t('profileSubtitle')}</p>
         </div>
 
         <button
@@ -55,196 +55,196 @@ export const ProfilePage: React.FC = () => {
       )}
 
       {showSavedToast && (
-        <div className="bg-emerald-50 border border-emerald-200 text-emerald-900 rounded-lg p-3 text-xs flex items-center gap-2 animate-in fade-in">
-          <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" />
+        <div className="bg-ui-accent-soft border border-ui-accent-border text-ui-content-primary rounded-lg p-3 text-xs flex items-center gap-2 animate-in fade-in">
+          <CheckCircle2 className="w-4 h-4 text-ui-accent shrink-0" />
           <span>Taxpayer profile saved successfully in local session.</span>
         </div>
       )}
 
       <form onSubmit={handleSave} className="space-y-6">
         {/* Identity & Statutory Parameters (Read Only from eTIN) */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-xs p-6 space-y-4">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-emerald-800 border-b border-gray-100 pb-2">
+        <div className="bg-ui-surface rounded-xl border border-ui-stroke-subtle shadow-xs p-6 space-y-4">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-ui-accent border-b border-ui-stroke-subtle pb-2">
             Taxpayer Identification & Legal Entity
           </h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs">
             <div>
-              <label className="block text-gray-500 mb-1">TIN (12-Digit)</label>
+              <label className="block text-ui-content-muted mb-1">TIN (12-Digit)</label>
               <input
                 type="text"
                 value={formData.tin}
                 disabled
-                className="w-full rounded-md border border-gray-200 bg-gray-50 py-1.5 px-3 font-mono font-bold text-gray-800"
+                className="w-full rounded-md border border-ui-stroke-subtle bg-ui-surface-subtle py-1.5 px-3 font-mono font-bold text-ui-content-primary"
               />
             </div>
 
             <div>
-              <label className="block text-gray-500 mb-1">National ID (NID)</label>
+              <label className="block text-ui-content-muted mb-1">National ID (NID)</label>
               <input
                 type="text"
                 value={formData.nid}
                 disabled
-                className="w-full rounded-md border border-gray-200 bg-gray-50 py-1.5 px-3 font-mono text-gray-800"
+                className="w-full rounded-md border border-ui-stroke-subtle bg-ui-surface-subtle py-1.5 px-3 font-mono text-ui-content-primary"
               />
             </div>
 
             <div>
-              <label className="block text-gray-500 mb-1">Taxpayer Status</label>
+              <label className="block text-ui-content-muted mb-1">Taxpayer Status</label>
               <input
                 type="text"
                 value={formData.status}
                 disabled
-                className="w-full rounded-md border border-gray-200 bg-gray-50 py-1.5 px-3 text-gray-800 font-semibold"
+                className="w-full rounded-md border border-ui-stroke-subtle bg-ui-surface-subtle py-1.5 px-3 text-ui-content-primary font-semibold"
               />
             </div>
 
             <div>
-              <label className="block text-gray-500 mb-1">Taxes Zone</label>
+              <label className="block text-ui-content-muted mb-1">Taxes Zone</label>
               <input
                 type="text"
                 value={formData.taxesZone}
                 disabled
-                className="w-full rounded-md border border-gray-200 bg-gray-50 py-1.5 px-3 text-gray-800"
+                className="w-full rounded-md border border-ui-stroke-subtle bg-ui-surface-subtle py-1.5 px-3 text-ui-content-primary"
               />
             </div>
 
             <div>
-              <label className="block text-gray-500 mb-1">Taxes Circle</label>
+              <label className="block text-ui-content-muted mb-1">Taxes Circle</label>
               <input
                 type="text"
                 value={formData.taxesCircle}
                 disabled
-                className="w-full rounded-md border border-gray-200 bg-gray-50 py-1.5 px-3 text-gray-800"
+                className="w-full rounded-md border border-ui-stroke-subtle bg-ui-surface-subtle py-1.5 px-3 text-ui-content-primary"
               />
             </div>
 
             <div>
-              <label className="block text-gray-500 mb-1">Date of Birth</label>
+              <label className="block text-ui-content-muted mb-1">Date of Birth</label>
               <input
                 type="text"
                 value={formData.dob}
                 disabled
-                className="w-full rounded-md border border-gray-200 bg-gray-50 py-1.5 px-3 text-gray-800 font-mono"
+                className="w-full rounded-md border border-ui-stroke-subtle bg-ui-surface-subtle py-1.5 px-3 text-ui-content-primary font-mono"
               />
             </div>
           </div>
         </div>
 
         {/* Personal & Family Particulars */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-xs p-6 space-y-4">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-gray-700 border-b border-gray-100 pb-2">
+        <div className="bg-ui-surface rounded-xl border border-ui-stroke-subtle shadow-xs p-6 space-y-4">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-ui-content-secondary border-b border-ui-stroke-subtle pb-2">
             Personal & Family Particulars
           </h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
             <div>
-              <label className="block font-semibold text-gray-700 mb-1">Full Name (English)</label>
+              <label className="block font-semibold text-ui-content-secondary mb-1">Full Name (English)</label>
               <input
                 type="text"
                 value={formData.name}
                 onChange={(e) => setFormData((p) => ({ ...p, name: e.target.value }))}
-                className="w-full rounded-md border border-gray-300 py-1.5 px-3 focus:border-emerald-600 focus:outline-none"
+                className="w-full rounded-md border border-ui-stroke-default py-1.5 px-3 focus:border-ui-focus focus:outline-none"
               />
             </div>
 
             <div>
-              <label className="block font-semibold text-gray-700 mb-1">পূর্ণ নাম (বাংলা)</label>
+              <label className="block font-semibold text-ui-content-secondary mb-1">পূর্ণ নাম (বাংলা)</label>
               <input
                 type="text"
                 value={formData.nameBn}
                 onChange={(e) => setFormData((p) => ({ ...p, nameBn: e.target.value }))}
-                className="w-full rounded-md border border-gray-300 py-1.5 px-3 focus:border-emerald-600 focus:outline-none"
+                className="w-full rounded-md border border-ui-stroke-default py-1.5 px-3 focus:border-ui-focus focus:outline-none"
               />
             </div>
 
             <div>
-              <label className="block font-semibold text-gray-700 mb-1">Father's Name</label>
+              <label className="block font-semibold text-ui-content-secondary mb-1">Father's Name</label>
               <input
                 type="text"
                 value={formData.fatherName}
                 onChange={(e) => setFormData((p) => ({ ...p, fatherName: e.target.value }))}
-                className="w-full rounded-md border border-gray-300 py-1.5 px-3 focus:border-emerald-600 focus:outline-none"
+                className="w-full rounded-md border border-ui-stroke-default py-1.5 px-3 focus:border-ui-focus focus:outline-none"
               />
             </div>
 
             <div>
-              <label className="block font-semibold text-gray-700 mb-1">Mother's Name</label>
+              <label className="block font-semibold text-ui-content-secondary mb-1">Mother's Name</label>
               <input
                 type="text"
                 value={formData.motherName}
                 onChange={(e) => setFormData((p) => ({ ...p, motherName: e.target.value }))}
-                className="w-full rounded-md border border-gray-300 py-1.5 px-3 focus:border-emerald-600 focus:outline-none"
+                className="w-full rounded-md border border-ui-stroke-default py-1.5 px-3 focus:border-ui-focus focus:outline-none"
               />
             </div>
 
             <div>
-              <label className="block font-semibold text-gray-700 mb-1">Spouse Name</label>
+              <label className="block font-semibold text-ui-content-secondary mb-1">Spouse Name</label>
               <input
                 type="text"
                 value={formData.spouseName}
                 onChange={(e) => setFormData((p) => ({ ...p, spouseName: e.target.value }))}
-                className="w-full rounded-md border border-gray-300 py-1.5 px-3 focus:border-emerald-600 focus:outline-none"
+                className="w-full rounded-md border border-ui-stroke-default py-1.5 px-3 focus:border-ui-focus focus:outline-none"
               />
             </div>
 
             <div>
-              <label className="block font-semibold text-gray-700 mb-1">Spouse TIN (if any)</label>
+              <label className="block font-semibold text-ui-content-secondary mb-1">Spouse TIN (if any)</label>
               <input
                 type="text"
                 value={formData.spouseTin}
                 onChange={(e) => setFormData((p) => ({ ...p, spouseTin: e.target.value }))}
                 placeholder="e.g. 5421-9876-3142"
-                className="w-full rounded-md border border-gray-300 py-1.5 px-3 font-mono focus:border-emerald-600 focus:outline-none"
+                className="w-full rounded-md border border-ui-stroke-default py-1.5 px-3 font-mono focus:border-ui-focus focus:outline-none"
               />
             </div>
           </div>
         </div>
 
         {/* Contact & Correspondence */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-xs p-6 space-y-4">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-gray-700 border-b border-gray-100 pb-2">
+        <div className="bg-ui-surface rounded-xl border border-ui-stroke-subtle shadow-xs p-6 space-y-4">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-ui-content-secondary border-b border-ui-stroke-subtle pb-2">
             Contact & Address Details
           </h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
             <div>
-              <label className="block font-semibold text-gray-700 mb-1">Mobile Number</label>
+              <label className="block font-semibold text-ui-content-secondary mb-1">Mobile Number</label>
               <input
                 type="text"
                 value={formData.mobile}
                 onChange={(e) => setFormData((p) => ({ ...p, mobile: e.target.value }))}
-                className="w-full rounded-md border border-gray-300 py-1.5 px-3 font-mono focus:border-emerald-600 focus:outline-none"
+                className="w-full rounded-md border border-ui-stroke-default py-1.5 px-3 font-mono focus:border-ui-focus focus:outline-none"
               />
             </div>
 
             <div>
-              <label className="block font-semibold text-gray-700 mb-1">Email Address</label>
+              <label className="block font-semibold text-ui-content-secondary mb-1">Email Address</label>
               <input
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData((p) => ({ ...p, email: e.target.value }))}
-                className="w-full rounded-md border border-gray-300 py-1.5 px-3 focus:border-emerald-600 focus:outline-none"
+                className="w-full rounded-md border border-ui-stroke-default py-1.5 px-3 focus:border-ui-focus focus:outline-none"
               />
             </div>
 
             <div className="sm:col-span-2">
-              <label className="block font-semibold text-gray-700 mb-1">Current Present Address</label>
+              <label className="block font-semibold text-ui-content-secondary mb-1">Current Present Address</label>
               <input
                 type="text"
                 value={formData.currentAddress}
                 onChange={(e) => setFormData((p) => ({ ...p, currentAddress: e.target.value }))}
-                className="w-full rounded-md border border-gray-300 py-1.5 px-3 focus:border-emerald-600 focus:outline-none"
+                className="w-full rounded-md border border-ui-stroke-default py-1.5 px-3 focus:border-ui-focus focus:outline-none"
               />
             </div>
 
             <div className="sm:col-span-2">
-              <label className="block font-semibold text-gray-700 mb-1">Permanent Address</label>
+              <label className="block font-semibold text-ui-content-secondary mb-1">Permanent Address</label>
               <input
                 type="text"
                 value={formData.permanentAddress}
                 onChange={(e) => setFormData((p) => ({ ...p, permanentAddress: e.target.value }))}
-                className="w-full rounded-md border border-gray-300 py-1.5 px-3 focus:border-emerald-600 focus:outline-none"
+                className="w-full rounded-md border border-ui-stroke-default py-1.5 px-3 focus:border-ui-focus focus:outline-none"
               />
             </div>
           </div>
@@ -252,7 +252,7 @@ export const ProfilePage: React.FC = () => {
           <div className="pt-2 flex justify-end">
             <button
               type="submit"
-              className="inline-flex items-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold py-2 px-4 rounded-md text-xs shadow-xs cursor-pointer"
+              className="inline-flex items-center gap-1.5 bg-ui-action-bg hover:bg-ui-action-hover text-white font-semibold py-2 px-4 rounded-md text-xs shadow-xs cursor-pointer"
             >
               <Save className="w-4 h-4" />
               <span>Save Changes</span>

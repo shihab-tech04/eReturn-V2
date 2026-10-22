@@ -17,8 +17,8 @@ export const CertificateStatusPage: React.FC = () => {
     switch (status) {
       case 'Approved':
         return (
-          <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full">
-            <CheckCircle2 className="w-3 h-3 text-emerald-700" /> Approved
+          <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-ui-accent bg-ui-accent-soft px-2 py-0.5 rounded-full">
+            <CheckCircle2 className="w-3 h-3 text-ui-accent" /> Approved
           </span>
         );
       case 'Pending':
@@ -44,30 +44,30 @@ export const CertificateStatusPage: React.FC = () => {
         <div>
           <div className="flex items-center gap-2">
             <FileClock className="w-5 h-5 text-blue-700" />
-            <h2 className="text-xl font-bold text-gray-900">{t('certStatusTitle')}</h2>
+            <h2 className="text-xl font-bold text-ui-content-primary">{t('certStatusTitle')}</h2>
           </div>
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="text-xs text-ui-content-muted mt-1">
             Tracking requests submitted under the Income Tax Act.
           </p>
         </div>
 
         <div className="relative w-64">
-          <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-gray-400" />
+          <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-ui-content-muted" />
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search AY, serial, certificate..."
-            className="w-full rounded-md border border-gray-300 py-1.5 pl-8 pr-3 text-xs focus:border-emerald-600 focus:outline-none"
+            className="w-full rounded-md border border-ui-stroke-default py-1.5 pl-8 pr-3 text-xs focus:border-ui-focus focus:outline-none"
           />
         </div>
       </div>
 
       {/* 13-Column Observed Table */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-xs overflow-hidden">
+      <div className="bg-ui-surface rounded-xl border border-ui-stroke-subtle shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200 text-xs font-mono">
-            <thead className="bg-gray-50 text-gray-700 font-semibold uppercase font-sans">
+            <thead className="bg-ui-surface-subtle text-ui-content-secondary font-semibold uppercase font-sans">
               <tr>
                 <th className="px-3 py-3 text-left whitespace-nowrap">TIN No.</th>
                 <th className="px-3 py-3 text-left whitespace-nowrap">AY</th>
@@ -84,35 +84,35 @@ export const CertificateStatusPage: React.FC = () => {
                 <th className="px-3 py-3 text-left whitespace-nowrap">Reject Reason</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200 bg-white">
+            <tbody className="divide-y divide-gray-200 bg-ui-surface">
               {filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={13} className="px-4 py-8 text-center text-xs text-gray-500 font-sans">
+                  <td colSpan={13} className="px-4 py-8 text-center text-xs text-ui-content-muted font-sans">
                     {t('noRecordsFound')}
                   </td>
                 </tr>
               ) : (
                 filtered.map((item) => (
-                  <tr key={item.returnRegisterSerial} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-3 py-2.5 font-bold text-gray-900 whitespace-nowrap">{item.tinNo}</td>
+                  <tr key={item.returnRegisterSerial} className="hover:bg-ui-surface-subtle transition-colors">
+                    <td className="px-3 py-2.5 font-bold text-ui-content-primary whitespace-nowrap">{item.tinNo}</td>
                     <td className="px-3 py-2.5 whitespace-nowrap">{item.assessmentYear}</td>
-                    <td className="px-3 py-2.5 whitespace-nowrap text-gray-700">{item.submissionDate}</td>
-                    <td className="px-3 py-2.5 whitespace-nowrap text-gray-700 font-sans">{item.submissionSection}</td>
-                    <td className="px-3 py-2.5 whitespace-nowrap text-emerald-900 font-bold">{item.returnRegisterSerial}</td>
-                    <td className="px-3 py-2.5 whitespace-nowrap text-gray-700 font-sans">{item.zoneName}</td>
-                    <td className="px-3 py-2.5 whitespace-nowrap text-gray-700 font-sans">{item.circleName}</td>
-                    <td className="px-3 py-2.5 text-right whitespace-nowrap font-bold text-gray-900">
+                    <td className="px-3 py-2.5 whitespace-nowrap text-ui-content-secondary">{item.submissionDate}</td>
+                    <td className="px-3 py-2.5 whitespace-nowrap text-ui-content-secondary font-sans">{item.submissionSection}</td>
+                    <td className="px-3 py-2.5 whitespace-nowrap text-ui-content-primary font-bold">{item.returnRegisterSerial}</td>
+                    <td className="px-3 py-2.5 whitespace-nowrap text-ui-content-secondary font-sans">{item.zoneName}</td>
+                    <td className="px-3 py-2.5 whitespace-nowrap text-ui-content-secondary font-sans">{item.circleName}</td>
+                    <td className="px-3 py-2.5 text-right whitespace-nowrap font-bold text-ui-content-primary">
                       {formatBDT(item.totalIncome, language)}
                     </td>
-                    <td className="px-3 py-2.5 text-right whitespace-nowrap text-gray-700">
+                    <td className="px-3 py-2.5 text-right whitespace-nowrap text-ui-content-secondary">
                       {formatBDT(item.netWealth, language)}
                     </td>
-                    <td className="px-3 py-2.5 text-right whitespace-nowrap text-emerald-800 font-bold">
+                    <td className="px-3 py-2.5 text-right whitespace-nowrap text-ui-accent font-bold">
                       {formatBDT(item.totalTaxPaid, language)}
                     </td>
-                    <td className="px-3 py-2.5 whitespace-nowrap text-gray-800 font-sans">{item.requestType}</td>
+                    <td className="px-3 py-2.5 whitespace-nowrap text-ui-content-primary font-sans">{item.requestType}</td>
                     <td className="px-3 py-2.5 text-center whitespace-nowrap font-sans">{getStatusBadge(item.requestStatus)}</td>
-                    <td className="px-3 py-2.5 whitespace-nowrap text-gray-500 font-sans">{item.rejectReason}</td>
+                    <td className="px-3 py-2.5 whitespace-nowrap text-ui-content-muted font-sans">{item.rejectReason}</td>
                   </tr>
                 ))
               )}

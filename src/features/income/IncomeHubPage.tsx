@@ -42,7 +42,7 @@ export const IncomeHubPage: React.FC = () => {
       id: 'employment',
       title: t('headEmployment'),
       route: '/user-panel/employment',
-      icon: <Briefcase className="w-5 h-5 text-emerald-700" />,
+      icon: <Briefcase className="w-5 h-5 text-ui-accent" />,
       isActive: assessment.heads.employment,
       entryCount: income.employmentEntries.length,
       netAmount: agg.employmentNet,
@@ -51,7 +51,7 @@ export const IncomeHubPage: React.FC = () => {
       id: 'rent',
       title: t('headRent'),
       route: '/user-panel/rent',
-      icon: <Home className="w-5 h-5 text-emerald-700" />,
+      icon: <Home className="w-5 h-5 text-ui-accent" />,
       isActive: assessment.heads.rent,
       entryCount: income.rentEntries.length,
       netAmount: agg.rentNet,
@@ -60,7 +60,7 @@ export const IncomeHubPage: React.FC = () => {
       id: 'agriculture',
       title: t('headAgriculture'),
       route: '/user-panel/agriculture',
-      icon: <Sprout className="w-5 h-5 text-emerald-700" />,
+      icon: <Sprout className="w-5 h-5 text-ui-accent" />,
       isActive: assessment.heads.agriculture,
       entryCount: income.agricultureEntries.length,
       netAmount: agg.agriNet,
@@ -69,7 +69,7 @@ export const IncomeHubPage: React.FC = () => {
       id: 'business',
       title: t('headBusiness'),
       route: '/user-panel/business',
-      icon: <Store className="w-5 h-5 text-emerald-700" />,
+      icon: <Store className="w-5 h-5 text-ui-accent" />,
       isActive: assessment.heads.business,
       entryCount: income.businessEntries.length,
       netAmount: agg.bizNet,
@@ -78,7 +78,7 @@ export const IncomeHubPage: React.FC = () => {
       id: 'capitalGain',
       title: t('headCapitalGain'),
       route: '/user-panel/capital-gain',
-      icon: <TrendingUp className="w-5 h-5 text-emerald-700" />,
+      icon: <TrendingUp className="w-5 h-5 text-ui-accent" />,
       isActive: assessment.heads.capitalGain,
       entryCount: income.capitalGainEntries.length,
       netAmount: agg.capGainNet,
@@ -87,7 +87,7 @@ export const IncomeHubPage: React.FC = () => {
       id: 'financialAssets',
       title: t('headFinancialAssets'),
       route: '/user-panel/financial-assets',
-      icon: <Landmark className="w-5 h-5 text-emerald-700" />,
+      icon: <Landmark className="w-5 h-5 text-ui-accent" />,
       isActive: assessment.heads.financialAssets,
       entryCount: income.financialAssetEntries.length,
       netAmount: agg.financialNet,
@@ -96,7 +96,7 @@ export const IncomeHubPage: React.FC = () => {
       id: 'otherSources',
       title: t('headOtherSources'),
       route: '/user-panel/income-from-other-sources',
-      icon: <Coins className="w-5 h-5 text-emerald-700" />,
+      icon: <Coins className="w-5 h-5 text-ui-accent" />,
       isActive: assessment.heads.otherSources,
       entryCount: income.otherIncomeEntries.length,
       netAmount: agg.otherNet,
@@ -166,20 +166,20 @@ export const IncomeHubPage: React.FC = () => {
     <div className="max-w-5xl mx-auto space-y-6">
       {/* Header */}
       <div>
-        <h2 className="text-xl font-bold text-gray-900">{t('incomeHubTitle')}</h2>
-        <p className="text-xs text-gray-500 mt-1">{t('incomeHubSubtitle')}</p>
+        <h2 className="text-xl font-bold text-ui-content-primary">{t('incomeHubTitle')}</h2>
+        <p className="text-xs text-ui-content-muted mt-1">{t('incomeHubSubtitle')}</p>
       </div>
 
       {/* Summary Box */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-xs p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-ui-surface rounded-xl border border-ui-stroke-subtle shadow-xs p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <span className="text-xs font-semibold uppercase tracking-wider text-emerald-800">
+          <span className="text-xs font-semibold uppercase tracking-wider text-ui-accent">
             {t('incomeSummary')}
           </span>
-          <div className="text-2xl font-bold text-gray-900 font-mono mt-1">
+          <div className="text-2xl font-bold text-ui-content-primary font-mono mt-1">
             {formatBDT(agg.totalTaxableIncome, language)}
           </div>
-          <p className="text-[11px] text-gray-500">
+          <p className="text-[11px] text-ui-content-muted">
             {language === 'bn'
               ? `সক্রিয় খাতের মোট সংখ্যা: ${activeHeads.length} টি`
               : `Total active income heads selected: ${activeHeads.length}`}
@@ -198,8 +198,8 @@ export const IncomeHubPage: React.FC = () => {
       {activeHeads.length === 0 && (
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-8 text-center space-y-3">
           <AlertCircle className="w-10 h-10 text-amber-600 mx-auto" />
-          <h3 className="text-base font-bold text-gray-900">{t('noHeadsSelected')}</h3>
-          <p className="text-xs text-gray-600 max-w-md mx-auto">
+          <h3 className="text-base font-bold text-ui-content-primary">{t('noHeadsSelected')}</h3>
+          <p className="text-xs text-ui-content-secondary max-w-md mx-auto">
             {language === 'bn'
               ? 'আপনার কর নির্ধারণ ধাপ হতে এক বা একাধিক আয়ের উৎস নির্বাচন করে এই ধাপে বিস্তারিত তথ্য এন্ট্রি করুন।'
               : 'Please check the relevant sources of income in the Assessment step to activate their entry forms.'}
@@ -207,7 +207,7 @@ export const IncomeHubPage: React.FC = () => {
           <button
             type="button"
             onClick={() => navigate('/user-panel/assessment')}
-            className="inline-flex items-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white font-medium px-4 py-2 rounded-md text-xs shadow-xs"
+            className="inline-flex items-center gap-2 bg-ui-action-bg hover:bg-ui-action-hover text-white font-medium px-4 py-2 rounded-md text-xs shadow-xs"
           >
             <span>{language === 'bn' ? 'কর নির্ধারণ ধাপে ফিরুন' : 'Return to Assessment'}</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -221,19 +221,19 @@ export const IncomeHubPage: React.FC = () => {
           {activeHeads.map((head) => (
             <div
               key={head.id}
-              className="bg-white rounded-xl border border-gray-200 shadow-xs hover:border-emerald-500 hover:shadow-sm transition-all p-5 flex flex-col justify-between"
+              className="bg-ui-surface rounded-xl border border-ui-stroke-subtle shadow-xs hover:border-ui-accent hover:shadow-sm transition-all p-5 flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2.5">
-                    <div className="p-2 rounded-lg bg-emerald-50 border border-emerald-100">
+                    <div className="p-2 rounded-lg bg-ui-accent-soft border border-emerald-100">
                       {head.icon}
                     </div>
-                    <h3 className="text-sm font-bold text-gray-900">{head.title}</h3>
+                    <h3 className="text-sm font-bold text-ui-content-primary">{head.title}</h3>
                   </div>
 
                   {head.entryCount > 0 ? (
-                    <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                    <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-ui-accent bg-ui-accent-soft px-2 py-0.5 rounded-full border border-ui-accent-border">
                       <CheckCircle2 className="w-3 h-3" />
                       {head.entryCount} {language === 'bn' ? 'টি এন্ট্রি' : 'items'}
                     </span>
@@ -244,11 +244,11 @@ export const IncomeHubPage: React.FC = () => {
                   )}
                 </div>
 
-                <div className="my-3 flex items-baseline justify-between border-t border-gray-100 pt-3">
-                  <span className="text-xs text-gray-500">
+                <div className="my-3 flex items-baseline justify-between border-t border-ui-stroke-subtle pt-3">
+                  <span className="text-xs text-ui-content-muted">
                     {language === 'bn' ? 'নিট হিসাবভুক্ত আয়:' : 'Net Taxable Value:'}
                   </span>
-                  <span className="text-sm font-bold font-mono text-gray-900">
+                  <span className="text-sm font-bold font-mono text-ui-content-primary">
                     {formatBDT(head.netAmount, language)}
                   </span>
                 </div>
@@ -258,7 +258,7 @@ export const IncomeHubPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => navigate(head.route)}
-                  className="w-full inline-flex items-center justify-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white font-medium py-2 px-3 rounded-md text-xs transition-colors cursor-pointer"
+                  className="w-full inline-flex items-center justify-center gap-2 bg-ui-action-bg hover:bg-ui-action-hover text-white font-medium py-2 px-3 rounded-md text-xs transition-colors cursor-pointer"
                 >
                   <span>{t('manageHead')}</span>
                   <ArrowRight className="w-3.5 h-3.5" />

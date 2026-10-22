@@ -35,9 +35,9 @@ export const RevisedReturnPage: React.FC = () => {
       <div>
         <div className="flex items-center gap-2">
           <RotateCcw className="w-5 h-5 text-purple-700" />
-          <h2 className="text-xl font-bold text-gray-900">{t('revisedTitle')}</h2>
+          <h2 className="text-xl font-bold text-ui-content-primary">{t('revisedTitle')}</h2>
         </div>
-        <p className="text-xs text-gray-500 mt-1">{t('revisedSubtitle')}</p>
+        <p className="text-xs text-ui-content-muted mt-1">{t('revisedSubtitle')}</p>
       </div>
 
       {/* Statutory Guidance */}
@@ -50,25 +50,25 @@ export const RevisedReturnPage: React.FC = () => {
       </div>
 
       {isSubmitted ? (
-        <div className="bg-white rounded-xl border border-emerald-300 shadow-md p-8 text-center space-y-4 animate-in zoom-in-95">
-          <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto">
+        <div className="bg-ui-surface rounded-xl border border-emerald-300 shadow-md p-8 text-center space-y-4 animate-in zoom-in-95">
+          <div className="w-12 h-12 rounded-full bg-ui-accent-soft text-ui-accent flex items-center justify-center mx-auto">
             <CheckCircle2 className="w-7 h-7" />
           </div>
-          <h3 className="text-base font-bold text-gray-900">Revised Return Draft Created Locally</h3>
-          <p className="text-xs text-gray-600 max-w-md mx-auto">
+          <h3 className="text-base font-bold text-ui-content-primary">Revised Return Draft Created Locally</h3>
+          <p className="text-xs text-ui-content-secondary max-w-md mx-auto">
             Revised return for AY <strong>{selectedAY}</strong> initiated under Lineage Token{' '}
-            <code className="font-mono font-bold text-emerald-800">REV-180-{selectedAY}-V2</code>.
+            <code className="font-mono font-bold text-ui-accent">REV-180-{selectedAY}-V2</code>.
           </p>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="bg-white rounded-xl border border-gray-200 shadow-xs p-6 space-y-5 text-xs">
+        <form onSubmit={handleSubmit} className="bg-ui-surface rounded-xl border border-ui-stroke-subtle shadow-xs p-6 space-y-5 text-xs">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block font-semibold text-gray-700 mb-1">{t('revisedSelectYear')} *</label>
+              <label className="block font-semibold text-ui-content-secondary mb-1">{t('revisedSelectYear')} *</label>
               <select
                 value={selectedAY}
                 onChange={(e) => setSelectedAY(e.target.value)}
-                className="w-full rounded-md border border-gray-300 py-2 px-3 text-xs focus:border-emerald-600 focus:outline-none"
+                className="w-full rounded-md border border-ui-stroke-default py-2 px-3 text-xs focus:border-ui-focus focus:outline-none"
               >
                 <option value="2025-2026">2025-2026 (Original Filed: 28 Nov 2025)</option>
                 <option value="2024-2025">2024-2025 (Original Filed: 20 Nov 2024)</option>
@@ -76,11 +76,11 @@ export const RevisedReturnPage: React.FC = () => {
             </div>
 
             <div>
-              <label className="block font-semibold text-gray-700 mb-1">Controlling Statutory Section *</label>
+              <label className="block font-semibold text-ui-content-secondary mb-1">Controlling Statutory Section *</label>
               <select
                 value={revisionSection}
                 onChange={(e) => setRevisionSection(e.target.value)}
-                className="w-full rounded-md border border-gray-300 py-2 px-3 text-xs focus:border-emerald-600 focus:outline-none"
+                className="w-full rounded-md border border-ui-stroke-default py-2 px-3 text-xs focus:border-ui-focus focus:outline-none"
               >
                 <option value="Section 180 (Self-Discovered Inadvertent Error)">
                   Section 180 (Self-Discovered Inadvertent Error)
@@ -92,63 +92,63 @@ export const RevisedReturnPage: React.FC = () => {
           </div>
 
           <div>
-            <label className="block font-semibold text-gray-700 mb-1">{t('revisedReason')} *</label>
+            <label className="block font-semibold text-ui-content-secondary mb-1">{t('revisedReason')} *</label>
             <textarea
               rows={3}
               value={revisionReason}
               onChange={(e) => setRevisionReason(e.target.value)}
               placeholder="Explain the omission or wrong statement discovered in the original return..."
-              className="w-full rounded-md border border-gray-300 py-2 px-3 text-xs focus:border-emerald-600 focus:outline-none"
+              className="w-full rounded-md border border-ui-stroke-default py-2 px-3 text-xs focus:border-ui-focus focus:outline-none"
             />
           </div>
 
           <div>
-            <label className="block font-semibold text-gray-700 mb-2">Affected Return Schedules / Fields</label>
+            <label className="block font-semibold text-ui-content-secondary mb-2">Affected Return Schedules / Fields</label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <label className="flex items-center gap-2 p-2 rounded border border-gray-200 cursor-pointer hover:bg-gray-50">
+              <label className="flex items-center gap-2 p-2 rounded border border-ui-stroke-subtle cursor-pointer hover:bg-ui-surface-subtle">
                 <input
                   type="checkbox"
                   checked={changedParticulars.incomeAdjustment}
                   onChange={(e) =>
                     setChangedParticulars((p) => ({ ...p, incomeAdjustment: e.target.checked }))
                   }
-                  className="text-emerald-700 rounded h-3.5 w-3.5"
+                  className="text-ui-accent rounded h-3.5 w-3.5"
                 />
                 <span>Particulars of Income / Omitted Heads</span>
               </label>
 
-              <label className="flex items-center gap-2 p-2 rounded border border-gray-200 cursor-pointer hover:bg-gray-50">
+              <label className="flex items-center gap-2 p-2 rounded border border-ui-stroke-subtle cursor-pointer hover:bg-ui-surface-subtle">
                 <input
                   type="checkbox"
                   checked={changedParticulars.rebateAdjustment}
                   onChange={(e) =>
                     setChangedParticulars((p) => ({ ...p, rebateAdjustment: e.target.checked }))
                   }
-                  className="text-emerald-700 rounded h-3.5 w-3.5"
+                  className="text-ui-accent rounded h-3.5 w-3.5"
                 />
                 <span>Schedule 24D Investment Rebate Adjustment</span>
               </label>
 
-              <label className="flex items-center gap-2 p-2 rounded border border-gray-200 cursor-pointer hover:bg-gray-50">
+              <label className="flex items-center gap-2 p-2 rounded border border-ui-stroke-subtle cursor-pointer hover:bg-ui-surface-subtle">
                 <input
                   type="checkbox"
                   checked={changedParticulars.assetOmissionCorrection}
                   onChange={(e) =>
                     setChangedParticulars((p) => ({ ...p, assetOmissionCorrection: e.target.checked }))
                   }
-                  className="text-emerald-700 rounded h-3.5 w-3.5"
+                  className="text-ui-accent rounded h-3.5 w-3.5"
                 />
                 <span>IT-10B Assets or Liability Valuation Correction</span>
               </label>
 
-              <label className="flex items-center gap-2 p-2 rounded border border-gray-200 cursor-pointer hover:bg-gray-50">
+              <label className="flex items-center gap-2 p-2 rounded border border-ui-stroke-subtle cursor-pointer hover:bg-ui-surface-subtle">
                 <input
                   type="checkbox"
                   checked={changedParticulars.tdsChallanCorrection}
                   onChange={(e) =>
                     setChangedParticulars((p) => ({ ...p, tdsChallanCorrection: e.target.checked }))
                   }
-                  className="text-emerald-700 rounded h-3.5 w-3.5"
+                  className="text-ui-accent rounded h-3.5 w-3.5"
                 />
                 <span>TDS Credit or Treasury Challan Discrepancy</span>
               </label>
@@ -156,12 +156,12 @@ export const RevisedReturnPage: React.FC = () => {
           </div>
 
           <div className="pt-2">
-            <label className="flex items-start gap-2.5 cursor-pointer text-xs text-gray-800 select-none">
+            <label className="flex items-start gap-2.5 cursor-pointer text-xs text-ui-content-primary select-none">
               <input
                 type="checkbox"
                 checked={isAffirmed}
                 onChange={(e) => setIsAffirmed(e.target.checked)}
-                className="h-4 w-4 text-emerald-700 rounded border-gray-300 mt-0.5 shrink-0"
+                className="h-4 w-4 text-ui-accent rounded border-ui-stroke-default mt-0.5 shrink-0"
               />
               <span className="leading-relaxed">
                 I solemnly affirm that the revision is sought genuinely to correct bona fide omissions or errors without fraudulent concealment.

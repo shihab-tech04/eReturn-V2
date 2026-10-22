@@ -109,10 +109,10 @@ export const ForeignIncomePage: React.FC = () => {
         <div>
           <div className="flex items-center gap-2">
             <Globe2 className="w-5 h-5 text-purple-700" />
-            <h2 className="text-xl font-bold text-gray-900">{t('catForeign')}</h2>
+            <h2 className="text-xl font-bold text-ui-content-primary">{t('catForeign')}</h2>
           </div>
-          <p className="text-xs text-gray-500 mt-1">
-            Reference route: <code className="font-mono bg-gray-100 px-1 py-0.5 rounded">#/user-panel/foreign-income</code>
+          <p className="text-xs text-ui-content-muted mt-1">
+            Reference route: <code className="font-mono bg-ui-surface-subtle px-1 py-0.5 rounded">#/user-panel/foreign-income</code>
           </p>
         </div>
 
@@ -120,7 +120,7 @@ export const ForeignIncomePage: React.FC = () => {
           <button
             type="button"
             onClick={handleOpenAdd}
-            className="inline-flex items-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold px-3 py-2 rounded-md shadow-xs cursor-pointer"
+            className="inline-flex items-center gap-1.5 bg-ui-action-bg hover:bg-ui-action-hover text-white text-xs font-semibold px-3 py-2 rounded-md shadow-xs cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             {language === 'bn' ? 'বৈদেশিক আয় যোগ করুন' : 'Add Foreign Income'}
@@ -129,12 +129,12 @@ export const ForeignIncomePage: React.FC = () => {
       </div>
 
       {isEditing && (
-        <div className="bg-white rounded-xl border border-emerald-300 shadow-md p-6 space-y-4 animate-in fade-in">
-          <div className="flex items-center justify-between border-b border-gray-100 pb-2">
-            <h3 className="text-sm font-bold text-gray-900">
+        <div className="bg-ui-surface rounded-xl border border-emerald-300 shadow-md p-6 space-y-4 animate-in fade-in">
+          <div className="flex items-center justify-between border-b border-ui-stroke-subtle pb-2">
+            <h3 className="text-sm font-bold text-ui-content-primary">
               {currentEntry.id ? 'Edit Foreign Income' : 'Add Foreign Income'}
             </h3>
-            <button type="button" onClick={() => setIsEditing(false)} className="text-gray-400 hover:text-gray-600">
+            <button type="button" onClick={() => setIsEditing(false)} className="text-ui-content-muted hover:text-ui-content-secondary">
               <X className="w-5 h-5" />
             </button>
           </div>
@@ -142,7 +142,7 @@ export const ForeignIncomePage: React.FC = () => {
           <div className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">Country of Source *</label>
+                <label className="block text-xs font-semibold text-ui-content-secondary mb-1">Country of Source *</label>
                 <SearchableSelect
                   options={STANDARD_COUNTRIES}
                   value={currentEntry.country}
@@ -151,20 +151,20 @@ export const ForeignIncomePage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">Nature of Income *</label>
+                <label className="block text-xs font-semibold text-ui-content-secondary mb-1">Nature of Income *</label>
                 <input
                   type="text"
                   value={currentEntry.natureOfIncome}
                   onChange={(e) => setCurrentEntry((p) => ({ ...p, natureOfIncome: e.target.value }))}
                   placeholder="e.g. Remote Software Consultancy / Overseas Dividends"
-                  className="w-full rounded-md border border-gray-300 py-1.5 px-3 text-xs focus:border-emerald-600 focus:outline-none"
+                  className="w-full rounded-md border border-ui-stroke-default py-1.5 px-3 text-xs focus:border-ui-focus focus:outline-none"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs text-gray-600 mb-1">Foreign Currency Amount</label>
+                <label className="block text-xs text-ui-content-secondary mb-1">Foreign Currency Amount</label>
                 <AmountInput
                   value={currentEntry.amountForeignCurrency}
                   onChange={(v) =>
@@ -179,7 +179,7 @@ export const ForeignIncomePage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs text-gray-600 mb-1">Exchange Rate to BDT</label>
+                <label className="block text-xs text-ui-content-secondary mb-1">Exchange Rate to BDT</label>
                 <input
                   type="number"
                   value={currentEntry.exchangeRate}
@@ -191,12 +191,12 @@ export const ForeignIncomePage: React.FC = () => {
                       amountInBDT: Math.round(p.amountForeignCurrency * rate),
                     }));
                   }}
-                  className="w-full rounded-md border border-gray-300 py-1.5 px-3 text-xs focus:border-emerald-600 focus:outline-none"
+                  className="w-full rounded-md border border-ui-stroke-default py-1.5 px-3 text-xs focus:border-ui-focus focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-xs text-gray-600 mb-1">Converted Amount in BDT</label>
+                <label className="block text-xs text-ui-content-secondary mb-1">Converted Amount in BDT</label>
                 <AmountInput
                   value={currentEntry.amountInBDT}
                   onChange={(v) => setCurrentEntry((p) => ({ ...p, amountInBDT: v }))}
@@ -206,7 +206,7 @@ export const ForeignIncomePage: React.FC = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
               <div>
-                <label className="block text-xs text-gray-600 mb-1">Tax Paid Abroad (in BDT)</label>
+                <label className="block text-xs text-ui-content-secondary mb-1">Tax Paid Abroad (in BDT)</label>
                 <AmountInput
                   value={currentEntry.taxPaidAbroadBDT}
                   onChange={(v) => setCurrentEntry((p) => ({ ...p, taxPaidAbroadBDT: v }))}
@@ -214,7 +214,7 @@ export const ForeignIncomePage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs text-gray-600 mb-1">Double Taxation Relief Claimed</label>
+                <label className="block text-xs text-ui-content-secondary mb-1">Double Taxation Relief Claimed</label>
                 <AmountInput
                   value={currentEntry.creditClaimed}
                   onChange={(v) => setCurrentEntry((p) => ({ ...p, creditClaimed: v }))}
@@ -222,18 +222,18 @@ export const ForeignIncomePage: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex justify-end gap-2 pt-3 border-t border-gray-100">
+            <div className="flex justify-end gap-2 pt-3 border-t border-ui-stroke-subtle">
               <button
                 type="button"
                 onClick={() => setIsEditing(false)}
-                className="px-3 py-1.5 border border-gray-300 rounded-md text-xs font-medium text-gray-700 hover:bg-gray-50"
+                className="px-3 py-1.5 border border-ui-stroke-default rounded-md text-xs font-medium text-ui-content-secondary hover:bg-ui-surface-subtle"
               >
                 {t('cancel')}
               </button>
               <button
                 type="button"
                 onClick={handleSave}
-                className="inline-flex items-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-1.5 rounded-md text-xs font-medium"
+                className="inline-flex items-center gap-1.5 bg-ui-action-bg hover:bg-ui-action-hover text-white px-4 py-1.5 rounded-md text-xs font-medium"
               >
                 <Check className="w-3.5 h-3.5" />
                 {t('confirm')}
@@ -244,36 +244,36 @@ export const ForeignIncomePage: React.FC = () => {
       )}
 
       {/* List */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-xs overflow-hidden">
-        <div className="p-4 border-b border-gray-100 flex items-center justify-between">
-          <h3 className="text-sm font-bold text-gray-900">
+      <div className="bg-ui-surface rounded-xl border border-ui-stroke-subtle shadow-xs overflow-hidden">
+        <div className="p-4 border-b border-ui-stroke-subtle flex items-center justify-between">
+          <h3 className="text-sm font-bold text-ui-content-primary">
             {language === 'bn' ? 'বৈদেশিক আয়ের তালিকা' : 'Declared Foreign Income Records'}
           </h3>
-          <span className="font-mono font-bold text-xs text-emerald-800">
+          <span className="font-mono font-bold text-xs text-ui-accent">
             {t('total')}: {formatBDT(totalNet, language)}
           </span>
         </div>
 
         {income.foreignIncomeEntries.length === 0 ? (
-          <div className="p-8 text-center text-xs text-gray-500">
+          <div className="p-8 text-center text-xs text-ui-content-muted">
             {t('noRecordsFound')}. Click "Add Foreign Income" to declare earnings outside Bangladesh.
           </div>
         ) : (
           <div className="divide-y divide-gray-100">
             {income.foreignIncomeEntries.map((entry) => (
-              <div key={entry.id} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-gray-50">
+              <div key={entry.id} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-ui-surface-subtle">
                 <div className="space-y-1">
-                  <div className="text-xs font-bold text-gray-900">{entry.country}</div>
-                  <div className="text-xs text-gray-600">{entry.natureOfIncome}</div>
-                  <div className="text-[11px] text-gray-400 font-mono">
+                  <div className="text-xs font-bold text-ui-content-primary">{entry.country}</div>
+                  <div className="text-xs text-ui-content-secondary">{entry.natureOfIncome}</div>
+                  <div className="text-[11px] text-ui-content-muted font-mono">
                     Foreign: {entry.amountForeignCurrency} @ {entry.exchangeRate} • Tax Paid Abroad: {formatBDT(entry.taxPaidAbroadBDT, language)}
                   </div>
                 </div>
 
                 <div className="flex items-center gap-3">
                   <div className="text-right">
-                    <span className="text-xs text-gray-500 block">Total BDT:</span>
-                    <span className="text-sm font-bold font-mono text-gray-900">
+                    <span className="text-xs text-ui-content-muted block">Total BDT:</span>
+                    <span className="text-sm font-bold font-mono text-ui-content-primary">
                       {formatBDT(entry.amountInBDT, language)}
                     </span>
                   </div>
@@ -282,14 +282,14 @@ export const ForeignIncomePage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => handleEdit(entry)}
-                      className="p-1.5 text-gray-500 hover:text-emerald-700 hover:bg-emerald-50 rounded"
+                      className="p-1.5 text-ui-content-muted hover:text-ui-accent hover:bg-ui-accent-soft rounded"
                     >
                       <Edit2 className="w-4 h-4" />
                     </button>
                     <button
                       type="button"
                       onClick={() => handleDelete(entry.id)}
-                      className="p-1.5 text-gray-500 hover:text-red-700 hover:bg-red-50 rounded"
+                      className="p-1.5 text-ui-content-muted hover:text-red-700 hover:bg-red-50 rounded"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>

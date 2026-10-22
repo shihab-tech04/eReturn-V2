@@ -60,7 +60,7 @@ export const ReturnStepper: React.FC = () => {
   if (activeIdx === -1) return null;
 
   return (
-    <div className="bg-white border-b border-gray-200 px-4 py-3 shadow-xs">
+    <div className="bg-ui-surface border-b border-ui-stroke-subtle px-4 py-3 shadow-xs">
       <div className="max-w-7xl mx-auto">
         <nav aria-label="Return Preparation Steps">
           <ol className="flex items-center justify-between overflow-x-auto gap-2 py-1 scrollbar-thin">
@@ -79,10 +79,10 @@ export const ReturnStepper: React.FC = () => {
                       <div
                         className={`w-7 h-7 mx-auto rounded-full flex items-center justify-center text-xs font-semibold transition-all ${
                           isActive
-                            ? 'bg-emerald-700 text-white ring-4 ring-emerald-100 shadow-sm'
+                            ? 'bg-ui-action-bg text-white ring-4 ring-emerald-100 shadow-sm'
                             : isPast
-                            ? 'bg-emerald-600 text-white'
-                            : 'bg-gray-100 text-gray-500 border border-gray-300 group-hover:border-gray-400'
+                            ? 'bg-ui-action-bg text-white'
+                            : 'bg-ui-surface-subtle text-ui-content-muted border border-ui-stroke-default group-hover:border-gray-400'
                         }`}
                       >
                         {isPast ? <Check className="w-3.5 h-3.5" /> : step.number}
@@ -91,10 +91,10 @@ export const ReturnStepper: React.FC = () => {
                     <span
                       className={`mt-1.5 text-xs font-medium truncate max-w-full px-1 ${
                         isActive
-                          ? 'text-emerald-800 font-bold'
+                          ? 'text-ui-accent font-bold'
                           : isPast
-                          ? 'text-gray-700'
-                          : 'text-gray-500 group-hover:text-gray-700'
+                          ? 'text-ui-content-secondary'
+                          : 'text-ui-content-muted group-hover:text-ui-content-secondary'
                       }`}
                     >
                       {t(step.labelKey)}
@@ -102,9 +102,9 @@ export const ReturnStepper: React.FC = () => {
                     <div
                       className={`h-0.5 w-full mt-2 rounded-full transition-all ${
                         isActive
-                          ? 'bg-emerald-700'
+                          ? 'bg-ui-action-bg'
                           : isPast
-                          ? 'bg-emerald-500'
+                          ? 'bg-ui-accent-soft0'
                           : 'bg-transparent'
                       }`}
                     />

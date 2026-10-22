@@ -93,10 +93,10 @@ export const VoluntaryDisclosurePage: React.FC = () => {
         <div>
           <div className="flex items-center gap-2">
             <AlertCircle className="w-5 h-5 text-amber-700" />
-            <h2 className="text-xl font-bold text-gray-900">{t('voluntaryDisclosureTitle')}</h2>
+            <h2 className="text-xl font-bold text-ui-content-primary">{t('voluntaryDisclosureTitle')}</h2>
           </div>
-          <p className="text-xs text-gray-500 mt-1">
-            Reference route: <code className="font-mono bg-gray-100 px-1 py-0.5 rounded">#/user-panel/voluntary-disclosure-income</code>
+          <p className="text-xs text-ui-content-muted mt-1">
+            Reference route: <code className="font-mono bg-ui-surface-subtle px-1 py-0.5 rounded">#/user-panel/voluntary-disclosure-income</code>
           </p>
         </div>
 
@@ -104,7 +104,7 @@ export const VoluntaryDisclosurePage: React.FC = () => {
           <button
             type="button"
             onClick={handleOpenAdd}
-            className="inline-flex items-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold px-3 py-2 rounded-md shadow-xs cursor-pointer"
+            className="inline-flex items-center gap-1.5 bg-ui-action-bg hover:bg-ui-action-hover text-white text-xs font-semibold px-3 py-2 rounded-md shadow-xs cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             {language === 'bn' ? 'অপ্রদর্শিত আয় যোগ করুন' : 'Add Disclosure Row'}
@@ -120,12 +120,12 @@ export const VoluntaryDisclosurePage: React.FC = () => {
       </div>
 
       {isEditing && (
-        <div className="bg-white rounded-xl border border-emerald-300 shadow-md p-6 space-y-4 animate-in fade-in">
-          <div className="flex items-center justify-between border-b border-gray-100 pb-2">
-            <h3 className="text-sm font-bold text-gray-900">
+        <div className="bg-ui-surface rounded-xl border border-emerald-300 shadow-md p-6 space-y-4 animate-in fade-in">
+          <div className="flex items-center justify-between border-b border-ui-stroke-subtle pb-2">
+            <h3 className="text-sm font-bold text-ui-content-primary">
               {currentEntry.id ? 'Edit Voluntary Disclosure' : 'Add Voluntary Disclosure Row'}
             </h3>
-            <button type="button" onClick={() => setIsEditing(false)} className="text-gray-400 hover:text-gray-600">
+            <button type="button" onClick={() => setIsEditing(false)} className="text-ui-content-muted hover:text-ui-content-secondary">
               <X className="w-5 h-5" />
             </button>
           </div>
@@ -133,11 +133,11 @@ export const VoluntaryDisclosurePage: React.FC = () => {
           <div className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">Income Head *</label>
+                <label className="block text-xs font-semibold text-ui-content-secondary mb-1">Income Head *</label>
                 <select
                   value={currentEntry.incomeHead}
                   onChange={(e) => setCurrentEntry((p) => ({ ...p, incomeHead: e.target.value }))}
-                  className="w-full rounded-md border border-gray-300 py-1.5 px-3 text-xs focus:border-emerald-600 focus:outline-none"
+                  className="w-full rounded-md border border-ui-stroke-default py-1.5 px-3 text-xs focus:border-ui-focus focus:outline-none"
                 >
                   {VOLUNTARY_HEADS.map((h) => (
                     <option key={h} value={h}>{h}</option>
@@ -146,31 +146,31 @@ export const VoluntaryDisclosurePage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">Assessment Year of Earning</label>
+                <label className="block text-xs font-semibold text-ui-content-secondary mb-1">Assessment Year of Earning</label>
                 <input
                   type="text"
                   value={currentEntry.assessmentYearOfEarning}
                   onChange={(e) => setCurrentEntry((p) => ({ ...p, assessmentYearOfEarning: e.target.value }))}
                   placeholder="e.g. 2024-2025"
-                  className="w-full rounded-md border border-gray-300 py-1.5 px-3 text-xs focus:border-emerald-600 focus:outline-none font-mono"
+                  className="w-full rounded-md border border-ui-stroke-default py-1.5 px-3 text-xs focus:border-ui-focus focus:outline-none font-mono"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">Particulars / Details *</label>
+              <label className="block text-xs font-semibold text-ui-content-secondary mb-1">Particulars / Details *</label>
               <input
                 type="text"
                 value={currentEntry.particulars}
                 onChange={(e) => setCurrentEntry((p) => ({ ...p, particulars: e.target.value }))}
                 placeholder="Particulars of undisclosed earnings or investments"
-                className="w-full rounded-md border border-gray-300 py-1.5 px-3 text-xs focus:border-emerald-600 focus:outline-none"
+                className="w-full rounded-md border border-ui-stroke-default py-1.5 px-3 text-xs focus:border-ui-focus focus:outline-none"
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs text-gray-600 mb-1">Declared Amount (BDT)</label>
+                <label className="block text-xs text-ui-content-secondary mb-1">Declared Amount (BDT)</label>
                 <AmountInput
                   value={currentEntry.declaredAmount}
                   onChange={(v) => setCurrentEntry((p) => ({ ...p, declaredAmount: v }))}
@@ -178,30 +178,30 @@ export const VoluntaryDisclosurePage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs text-gray-600 mb-1">Applicable Statutory Rate (%)</label>
+                <label className="block text-xs text-ui-content-secondary mb-1">Applicable Statutory Rate (%)</label>
                 <input
                   type="number"
                   value={currentEntry.applicableTaxRatePercentage}
                   onChange={(e) =>
                     setCurrentEntry((p) => ({ ...p, applicableTaxRatePercentage: parseFloat(e.target.value) || 0 }))
                   }
-                  className="w-full rounded-md border border-gray-300 py-1.5 px-3 text-xs focus:border-emerald-600 focus:outline-none"
+                  className="w-full rounded-md border border-ui-stroke-default py-1.5 px-3 text-xs focus:border-ui-focus focus:outline-none"
                 />
               </div>
             </div>
 
-            <div className="flex justify-end gap-2 pt-3 border-t border-gray-100">
+            <div className="flex justify-end gap-2 pt-3 border-t border-ui-stroke-subtle">
               <button
                 type="button"
                 onClick={() => setIsEditing(false)}
-                className="px-3 py-1.5 border border-gray-300 rounded-md text-xs font-medium text-gray-700 hover:bg-gray-50"
+                className="px-3 py-1.5 border border-ui-stroke-default rounded-md text-xs font-medium text-ui-content-secondary hover:bg-ui-surface-subtle"
               >
                 {t('cancel')}
               </button>
               <button
                 type="button"
                 onClick={handleSave}
-                className="inline-flex items-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-1.5 rounded-md text-xs font-medium"
+                className="inline-flex items-center gap-1.5 bg-ui-action-bg hover:bg-ui-action-hover text-white px-4 py-1.5 rounded-md text-xs font-medium"
               >
                 <Check className="w-3.5 h-3.5" />
                 {t('confirm')}
@@ -212,37 +212,37 @@ export const VoluntaryDisclosurePage: React.FC = () => {
       )}
 
       {/* List */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-xs overflow-hidden">
-        <div className="p-4 border-b border-gray-100 flex items-center justify-between">
-          <h3 className="text-sm font-bold text-gray-900">
+      <div className="bg-ui-surface rounded-xl border border-ui-stroke-subtle shadow-xs overflow-hidden">
+        <div className="p-4 border-b border-ui-stroke-subtle flex items-center justify-between">
+          <h3 className="text-sm font-bold text-ui-content-primary">
             {language === 'bn' ? 'স্বেচ্ছায় প্রকাশিত আয়ের তালিকা' : 'Voluntary Disclosure Records'}
           </h3>
           <div className="text-xs space-x-3">
-            <span className="text-gray-500 font-mono">Tax Payable: {formatBDT(totalTaxPayable, language)}</span>
+            <span className="text-ui-content-muted font-mono">Tax Payable: {formatBDT(totalTaxPayable, language)}</span>
             <span className="font-mono font-bold text-amber-800">{t('total')}: {formatBDT(totalDeclared, language)}</span>
           </div>
         </div>
 
         {income.voluntaryDisclosureEntries.length === 0 ? (
-          <div className="p-8 text-center text-xs text-gray-500">
+          <div className="p-8 text-center text-xs text-ui-content-muted">
             {t('noRecordsFound')}. Click "Add Disclosure Row" to record undisclosed earnings under First Schedule.
           </div>
         ) : (
           <div className="divide-y divide-gray-100">
             {income.voluntaryDisclosureEntries.map((entry) => (
-              <div key={entry.id} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-gray-50">
+              <div key={entry.id} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-ui-surface-subtle">
                 <div className="space-y-1">
-                  <div className="text-xs font-bold text-gray-900">{entry.incomeHead}</div>
-                  <div className="text-xs text-gray-600">{entry.particulars} (AY: {entry.assessmentYearOfEarning})</div>
-                  <div className="text-[11px] text-gray-400 font-mono">
+                  <div className="text-xs font-bold text-ui-content-primary">{entry.incomeHead}</div>
+                  <div className="text-xs text-ui-content-secondary">{entry.particulars} (AY: {entry.assessmentYearOfEarning})</div>
+                  <div className="text-[11px] text-ui-content-muted font-mono">
                     Statutory Rate: {entry.applicableTaxRatePercentage}% • Tax Payable: {formatBDT(entry.taxPayable, language)}
                   </div>
                 </div>
 
                 <div className="flex items-center gap-3">
                   <div className="text-right">
-                    <span className="text-xs text-gray-500 block">Declared Amount:</span>
-                    <span className="text-sm font-bold font-mono text-gray-900">
+                    <span className="text-xs text-ui-content-muted block">Declared Amount:</span>
+                    <span className="text-sm font-bold font-mono text-ui-content-primary">
                       {formatBDT(entry.declaredAmount, language)}
                     </span>
                   </div>
@@ -251,14 +251,14 @@ export const VoluntaryDisclosurePage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => handleEdit(entry)}
-                      className="p-1.5 text-gray-500 hover:text-emerald-700 hover:bg-emerald-50 rounded"
+                      className="p-1.5 text-ui-content-muted hover:text-ui-accent hover:bg-ui-accent-soft rounded"
                     >
                       <Edit2 className="w-4 h-4" />
                     </button>
                     <button
                       type="button"
                       onClick={() => handleDelete(entry.id)}
-                      className="p-1.5 text-gray-500 hover:text-red-700 hover:bg-red-50 rounded"
+                      className="p-1.5 text-ui-content-muted hover:text-red-700 hover:bg-red-50 rounded"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -271,13 +271,13 @@ export const VoluntaryDisclosurePage: React.FC = () => {
       </div>
 
       {/* Statutory Declaration Checkbox */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-xs p-5">
-        <label className="flex items-start gap-2.5 cursor-pointer text-xs text-gray-800 select-none">
+      <div className="bg-ui-surface rounded-xl border border-ui-stroke-subtle shadow-xs p-5">
+        <label className="flex items-start gap-2.5 cursor-pointer text-xs text-ui-content-primary select-none">
           <input
             type="checkbox"
             checked={income.voluntaryDisclosureAffirmed}
             onChange={(e) => setIncome((prev) => ({ ...prev, voluntaryDisclosureAffirmed: e.target.checked }))}
-            className="h-4 w-4 text-emerald-700 rounded border-gray-300 mt-0.5"
+            className="h-4 w-4 text-ui-accent rounded border-ui-stroke-default mt-0.5"
           />
           <span className="leading-relaxed">
             {language === 'bn'

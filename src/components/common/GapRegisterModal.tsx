@@ -24,7 +24,7 @@ export const GapRegisterModal: React.FC = () => {
     switch (status) {
       case 'MATCH':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-ui-success-bg text-ui-success-text">
             <CheckCircle2 className="w-3 h-3" /> MATCH
           </span>
         );
@@ -59,34 +59,34 @@ export const GapRegisterModal: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 flex items-center justify-center p-4">
-      <div className="relative w-full max-w-5xl max-h-[90vh] flex flex-col rounded-xl bg-white shadow-2xl border border-gray-200 animate-in fade-in">
+      <div className="relative w-full max-w-5xl max-h-[90vh] flex flex-col rounded-xl bg-ui-surface shadow-2xl border border-ui-stroke-subtle animate-in fade-in">
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-gray-200 bg-gray-50 rounded-t-xl">
+        <div className="flex items-center justify-between p-5 border-b border-ui-stroke-subtle bg-ui-surface-subtle rounded-t-xl">
           <div>
             <div className="flex items-center gap-2">
-              <span className="px-2 py-0.5 text-xs font-bold rounded bg-emerald-700 text-white">WORKSTREAM B</span>
-              <h2 className="text-lg font-bold text-gray-900">47-Item System Gap Register & Acceptance Backlog</h2>
+              <span className="px-2 py-0.5 text-xs font-bold rounded bg-ui-action-bg text-white">WORKSTREAM B</span>
+              <h2 className="text-lg font-bold text-ui-content-primary">47-Item System Gap Register & Acceptance Backlog</h2>
             </div>
-            <p className="text-xs text-gray-600 mt-1">
+            <p className="text-xs text-ui-content-secondary mt-1">
               Historical reference audit tracking 16 MATCH, 10 CONFLICT, 10 NOT VERIFIED, 9 PARTIAL, and 2 MISSING (R-002, T-004).
             </p>
           </div>
           <button
             type="button"
             onClick={() => setIsGapModalOpen(false)}
-            className="text-gray-400 hover:text-gray-600 p-1 rounded-md"
+            className="text-ui-content-muted hover:text-ui-content-secondary p-1 rounded-md"
           >
             <X className="w-6 h-6" />
           </button>
         </div>
 
         {/* Filter Bar */}
-        <div className="p-4 border-b border-gray-200 bg-white flex flex-wrap items-center justify-between gap-3">
+        <div className="p-4 border-b border-ui-stroke-subtle bg-ui-surface flex flex-wrap items-center justify-between gap-3">
           <div className="flex flex-wrap items-center gap-1.5 text-xs">
             <button
               onClick={() => setFilterStatus('ALL')}
               className={`px-3 py-1.5 rounded-md font-medium transition-colors ${
-                filterStatus === 'ALL' ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                filterStatus === 'ALL' ? 'bg-gray-900 text-white' : 'bg-ui-surface-subtle text-ui-content-secondary hover:bg-gray-200'
               }`}
             >
               All ({GAP_REGISTER_SUMMARY.total})
@@ -94,7 +94,7 @@ export const GapRegisterModal: React.FC = () => {
             <button
               onClick={() => setFilterStatus('MATCH')}
               className={`px-3 py-1.5 rounded-md font-medium transition-colors ${
-                filterStatus === 'MATCH' ? 'bg-emerald-700 text-white' : 'bg-emerald-50 text-emerald-800 hover:bg-emerald-100'
+                filterStatus === 'MATCH' ? 'bg-ui-action-bg text-white' : 'bg-ui-success-bg text-ui-success-text hover:bg-ui-success-bg'
               }`}
             >
               MATCH ({GAP_REGISTER_SUMMARY.match})
@@ -134,13 +134,13 @@ export const GapRegisterModal: React.FC = () => {
           </div>
 
           <div className="relative w-64">
-            <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-gray-400" />
+            <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-ui-content-muted" />
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search code, title, module..."
-              className="w-full rounded-md border border-gray-300 py-1.5 pl-8 pr-3 text-xs focus:border-emerald-600 focus:outline-none"
+              className="w-full rounded-md border border-ui-stroke-default py-1.5 pl-8 pr-3 text-xs focus:border-ui-focus focus:outline-none"
             />
           </div>
         </div>
@@ -148,7 +148,7 @@ export const GapRegisterModal: React.FC = () => {
         {/* Table Content */}
         <div className="overflow-y-auto flex-1 p-4">
           <table className="min-w-full divide-y divide-gray-200 text-xs">
-            <thead className="bg-gray-100 text-gray-700 uppercase font-semibold">
+            <thead className="bg-ui-surface-subtle text-ui-content-secondary uppercase font-semibold">
               <tr>
                 <th className="px-3 py-2 text-left w-20">Code</th>
                 <th className="px-3 py-2 text-left w-28">Status</th>
@@ -157,17 +157,17 @@ export const GapRegisterModal: React.FC = () => {
                 <th className="px-3 py-2 text-left">Frontend Resolution</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200 bg-white">
+            <tbody className="divide-y divide-gray-200 bg-ui-surface">
               {filteredItems.map((item) => (
-                <tr key={item.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-3 py-2.5 font-mono font-bold text-gray-800 whitespace-nowrap">{item.code}</td>
+                <tr key={item.id} className="hover:bg-ui-surface-subtle transition-colors">
+                  <td className="px-3 py-2.5 font-mono font-bold text-ui-content-primary whitespace-nowrap">{item.code}</td>
                   <td className="px-3 py-2.5 whitespace-nowrap">{getStatusBadge(item.status)}</td>
-                  <td className="px-3 py-2.5 text-gray-600 font-medium whitespace-nowrap">{item.category}</td>
+                  <td className="px-3 py-2.5 text-ui-content-secondary font-medium whitespace-nowrap">{item.category}</td>
                   <td className="px-3 py-2.5 space-y-1">
-                    <div className="font-semibold text-gray-900">{item.title}</div>
-                    <div className="text-gray-500 leading-relaxed">{item.referenceObservation}</div>
+                    <div className="font-semibold text-ui-content-primary">{item.title}</div>
+                    <div className="text-ui-content-muted leading-relaxed">{item.referenceObservation}</div>
                   </td>
-                  <td className="px-3 py-2.5 text-emerald-950 font-normal leading-relaxed bg-emerald-50/50 rounded">
+                  <td className="px-3 py-2.5 text-ui-success-text font-normal leading-relaxed bg-ui-success-bg/50 rounded">
                     {item.frontendResolution}
                   </td>
                 </tr>
@@ -177,7 +177,7 @@ export const GapRegisterModal: React.FC = () => {
         </div>
 
         {/* Footer */}
-        <div className="p-3 border-t border-gray-200 bg-gray-50 flex items-center justify-between text-xs text-gray-500 rounded-b-xl">
+        <div className="p-3 border-t border-ui-stroke-subtle bg-ui-surface-subtle flex items-center justify-between text-xs text-ui-content-muted rounded-b-xl">
           <span>Canonical Registry: FINAL_2026_09_30 (366 rules, SHA-256 verified)</span>
           <button
             type="button"

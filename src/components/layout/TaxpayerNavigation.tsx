@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { Bell, BookOpenCheck, ChevronDown, ClipboardList, FileText, Globe2, Home, Menu, Palette, UserRound, X } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
-import { useAppearance, type FontSizeId } from '../../appearance/AppearanceProvider';
-import { THEMES, THEME_ORDER, type ThemeId } from '../../appearance/themes';
+import { ThemeSelector } from '../sobaike-ui/ThemeSelector';
+import { TextSizeSelector } from '../sobaike-ui/TextSizeSelector';
 import { hasReturnDraft } from '../../features/workspace/draftStatus';
 
 type NavItem = { to: string; en: string; bn: string; Icon: React.ComponentType<{ size?: number; 'aria-hidden'?: boolean }> };
@@ -37,7 +37,6 @@ const navigationActive = (pathname: string, to: string) =>
 export function TaxpayerNavigation() {
   const location = useLocation();
   const { language, toggleLanguage, profile, income, rebate, expenditure, assetsLiabilities, taxPayment, assessment } = useApp();
-  const { themeId, setThemeId, fontSizeId, setFontSizeId } = useAppearance();
   const [menuOpen, setMenuOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
   const [appearanceOpen, setAppearanceOpen] = useState(false);
@@ -82,18 +81,9 @@ export function TaxpayerNavigation() {
   }, [menuOpen]);
 
   const appearance = (
-    <div className="er-nav-appearance" aria-label={t('Appearance preferences', 'প্রদর্শনের পছন্দ')}>
-      <label>{t('Theme', 'থিম')}
-        <select value={themeId} onChange={e => setThemeId(e.target.value as ThemeId)}>
-          {THEME_ORDER.map(id => <option value={id} key={id}>{THEMES[id].name}</option>)}
-        </select>
-      </label>
-      <label>{t('Text size', 'লেখার আকার')}
-        <select value={fontSizeId} onChange={e => setFontSizeId(e.target.value as FontSizeId)}>
-          <option value="standard">{t('Standard', 'সাধারণ')}</option>
-          <option value="large">{t('Large', 'বড়')}</option>
-        </select>
-      </label>
+    <div className="er-nav-appearance grid gap-3" aria-label={t('Appearance preferences', 'প্রদর্শনের পছন্দ')}>
+      <ThemeSelector variant="compact" />
+      <TextSizeSelector idPrefix="er-appearance" />
     </div>
   );
 

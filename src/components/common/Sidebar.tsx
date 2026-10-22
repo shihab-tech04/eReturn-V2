@@ -47,29 +47,29 @@ export const Sidebar: React.FC = () => {
   const navClass = ({ isActive }: { isActive: boolean }) =>
     `flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-medium transition-colors cursor-pointer ${
       isActive
-        ? 'bg-emerald-700 text-white font-semibold shadow-xs'
-        : 'text-gray-700 hover:bg-emerald-50 hover:text-emerald-900'
+        ? 'bg-ui-action-bg text-white font-semibold shadow-xs'
+        : 'text-ui-content-secondary hover:bg-ui-accent-soft hover:text-ui-content-primary'
     }`;
 
   return (
-    <aside className="w-64 bg-white border-r border-gray-200 flex flex-col shrink-0 min-h-[calc(100vh-4rem)]">
+    <aside className="w-64 bg-ui-surface border-r border-ui-stroke-subtle flex flex-col shrink-0 min-h-[calc(100vh-4rem)]">
       <div className="p-3 space-y-5 overflow-y-auto max-h-[calc(100vh-4rem)] scrollbar-thin">
         {/* Home */}
         <div>
           <NavLink to="/user-panel/home" className={navClass}>
-            <Home className="w-4 h-4 text-emerald-600" />
+            <Home className="w-4 h-4 text-ui-accent" />
             <span>{t('navHome')}</span>
           </NavLink>
         </div>
 
         {/* Return Preparation (7 Stages) */}
         <div className="space-y-1">
-          <div className="px-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+          <div className="px-3 text-[10px] font-bold text-ui-content-muted uppercase tracking-wider">
             {t('menuReturnPreparation')}
           </div>
 
           <NavLink to="/user-panel/assessment" className={navClass}>
-            <FileText className="w-4 h-4 text-emerald-600" />
+            <FileText className="w-4 h-4 text-ui-accent" />
             <span className="truncate">{t('navAssessment')}</span>
           </NavLink>
 
@@ -77,50 +77,50 @@ export const Sidebar: React.FC = () => {
             to="/user-panel/income"
             className={`flex items-center justify-between px-3 py-2 rounded-md text-xs font-medium transition-colors cursor-pointer ${
               isIncomeActive
-                ? 'bg-emerald-700 text-white font-semibold shadow-xs'
-                : 'text-gray-700 hover:bg-emerald-50 hover:text-emerald-900'
+                ? 'bg-ui-action-bg text-white font-semibold shadow-xs'
+                : 'text-ui-content-secondary hover:bg-ui-accent-soft hover:text-ui-content-primary'
             }`}
           >
             <div className="flex items-center gap-2.5 truncate">
-              <DollarSign className="w-4 h-4 text-emerald-600" />
+              <DollarSign className="w-4 h-4 text-ui-accent" />
               <span className="truncate">{t('navIncome')}</span>
             </div>
           </NavLink>
 
           <NavLink to="/user-panel/rebate" className={navClass}>
-            <TrendingDown className="w-4 h-4 text-emerald-600" />
+            <TrendingDown className="w-4 h-4 text-ui-accent" />
             <span className="truncate">{t('navRebate')}</span>
           </NavLink>
 
           <NavLink to="/user-panel/expenditure" className={navClass}>
-            <ShoppingBag className="w-4 h-4 text-emerald-600" />
+            <ShoppingBag className="w-4 h-4 text-ui-accent" />
             <span className="truncate">{t('navExpenditure')}</span>
           </NavLink>
 
           <NavLink to="/user-panel/assets-liabilities" className={navClass}>
-            <Building className="w-4 h-4 text-emerald-600" />
+            <Building className="w-4 h-4 text-ui-accent" />
             <span className="truncate">{t('navAssetsLiabilities')}</span>
           </NavLink>
 
           <NavLink to="/user-panel/tax-payment" className={navClass}>
-            <CreditCard className="w-4 h-4 text-emerald-600" />
+            <CreditCard className="w-4 h-4 text-ui-accent" />
             <span className="truncate">{t('navTaxPayment')}</span>
           </NavLink>
 
           <NavLink to="/user-panel/return-view" className={navClass}>
-            <Eye className="w-4 h-4 text-emerald-600" />
+            <Eye className="w-4 h-4 text-ui-accent" />
             <span className="truncate">{t('navReturnView')}</span>
           </NavLink>
 
           <NavLink to="/user-panel/submission" className={navClass}>
-            <Send className="w-4 h-4 text-emerald-600" />
+            <Send className="w-4 h-4 text-ui-accent" />
             <span className="truncate">{t('navSubmission')}</span>
           </NavLink>
         </div>
 
         {/* Tax Records */}
         <div className="space-y-1">
-          <div className="px-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+          <div className="px-3 text-[10px] font-bold text-ui-content-muted uppercase tracking-wider">
             {t('menuTaxRecords')}
           </div>
 
@@ -157,7 +157,7 @@ export const Sidebar: React.FC = () => {
 
         {/* Special Services */}
         <div className="space-y-1">
-          <div className="px-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+          <div className="px-3 text-[10px] font-bold text-ui-content-muted uppercase tracking-wider">
             {t('menuSpecialServices')}
           </div>
 
@@ -174,17 +174,17 @@ export const Sidebar: React.FC = () => {
 
         {/* Account & Profile */}
         <div className="space-y-1">
-          <div className="px-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+          <div className="px-3 text-[10px] font-bold text-ui-content-muted uppercase tracking-wider">
             {t('menuAccount')}
           </div>
 
           <NavLink to="/user-panel/profile" className={navClass}>
-            <UserCheck className="w-4 h-4 text-gray-600" />
+            <UserCheck className="w-4 h-4 text-ui-content-secondary" />
             <span className="truncate">{t('navProfile')}</span>
           </NavLink>
 
           <NavLink to="/user-panel/change-password" className={navClass}>
-            <Lock className="w-4 h-4 text-gray-600" />
+            <Lock className="w-4 h-4 text-ui-content-secondary" />
             <span className="truncate">{t('navChangePassword')}</span>
           </NavLink>
         </div>
