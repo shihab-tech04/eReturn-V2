@@ -30,6 +30,9 @@ export interface CorporateReportDraft {
   context: { companyName: string; financialPeriodEnd: string; comparativePeriodEnd: string; currency: string; scale: 'UNCONFIRMED' | 'UNITS' | 'THOUSANDS' | 'MILLIONS'; };
   lines: CorporateLine[];
   stage: 'REVIEW_ONLY';
+  /** Page text is evidentiary extraction, never authenticated auditor opinion. */
+  sourcePages?: SourcePage[];
+  metadataCandidates?: { kind: string; value: string; page: number; status: 'CANDIDATE' }[];
 }
 export interface ReconResult {
   check: string;
@@ -190,7 +193,9 @@ export function readReviewSnapshot(text:string, expectedSourceSha256:string):Cor
   const v=d as Partial<CorporateReportDraft>;
   if(v.schema!=='WS06_CORPORATE_INTAKE_V1'||v.stage!=='REVIEW_ONLY'||v.source?.sha256!==expectedSourceSha256||!Array.isArray(v.lines)||v.lines.length>10000)
     throw Error('REVIEW_SNAPSHOT_SOURCE_OR_SCHEMA_MISMATCH');
+  if(v.sourcePages && (!Array.isArray(v.sourcePages) || v.sourcePages.length!==v.source?.pageCount || v.sourcePages.some((p,i)=>p.page!==i+1 || typeof p.text!=='string')))throw Error('INVALID_SOURCE_PAGE_INDEX');
   if(v.lines.some(l=>!l||typeof l.id!=='string'||!['CANDIDATE','REVIEWED','REJECTED','AMBIGUOUS'].includes(l.status)||typeof l.locator?.page!=='number'))
     throw Error('INVALID_REVIEW_SNAPSHOT_ROWS');
+  if(v.lines.some(l=>l.locator.page<1 || l.locator.page>v.source!.pageCount))throw Error('INVALID_ROW_SOURCE_PAGE');
   return v as CorporateReportDraft;
 }
