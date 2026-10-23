@@ -47,7 +47,7 @@
 @media(min-width:1440px){
   .er-desktop-rail {width:240px}
   .er-main-region {margin-left:240px;width:calc(100% - 240px)}
-  .er-main-content:not(.er-main-content--wide){max-width:900px;padding:24px 0 40px}
+  .er-main-content:not(.er-main-content--wide){max-width:1400px;padding:24px clamp(20px,2.5vw,34px) 40px}
   .er-main-content--wide{max-width:1630px}
 }
 @media(min-width:1536px){.er-desktop-rail{width:250px}.er-main-region{margin-left:250px;width:calc(100% - 250px)}}
