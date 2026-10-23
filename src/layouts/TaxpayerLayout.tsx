@@ -9,7 +9,6 @@ import '../styles/sobaike-public-parity.css';
 import '../styles/sobaike-ereturn-form-adapter.css';
 import '../styles/sobaike-structural-parity.css';
 import '../styles/sobaike-shell-control-parity.css';
-import '../styles/ereturn-dashboard-responsive.css';
 
 export const TaxpayerLayout: React.FC = () => {
   const { language } = useApp();

@@ -29,7 +29,7 @@ for(const width of [375,768,1440,1920]){
       const feed=document.querySelector('#er-home-feed-section')!.getBoundingClientRect();
       const snapshot=document.querySelector('.er-tax-draft-snapshot')!.getBoundingClientRect();
       const root=getComputedStyle(document.documentElement);
-      return {main:main.width,hero:hero.width,card:card.width,feedLeft:feed.left,feedRight:feed.right,snapshotLeft:snapshot.left,snapshotTop:snapshot.top,feedTop:feed.top,chipRadius:getComputedStyle(chip).borderRadius,
+      return {main:main.width,hero:hero.width,card:card.width,feedLeft:feed.left,feedRight:feed.right,feedBottom:feed.bottom,snapshotLeft:snapshot.left,snapshotRight:snapshot.right,snapshotTop:snapshot.top,feedTop:feed.top,chipRadius:getComputedStyle(chip).borderRadius,
         font:getComputedStyle(document.body).fontFamily,
         bodySize:getComputedStyle(document.body).fontSize,
         bg:root.getPropertyValue('--ui-page').trim(),
@@ -56,14 +56,18 @@ for(const width of [375,768,1440,1920]){
       console.log('DASHBOARD_X_OVERFLOW',width,shape.overflow,JSON.stringify(offenders));
     }
     expect(shape.overflow).toBeLessThanOrEqual(2);
+    // Actual Sobaike source container: one centered 900px feed, not
+    // the previous custom 1460px / two-column admin-style dashboard.
     if(width>=1280){
-      expect(shape.main).toBeGreaterThan(1080);
-      expect(shape.main).toBeLessThanOrEqual(1461);
-      expect(shape.snapshotLeft).toBeGreaterThan(shape.feedRight);
-      expect(Math.abs(shape.snapshotTop-shape.feedTop)).toBeLessThanOrEqual(22);
+      expect(shape.main).toBeGreaterThanOrEqual(895);
+      expect(shape.main).toBeLessThanOrEqual(901);
     }else{
       expect(shape.main).toBeLessThanOrEqual(width);
     }
+    // The tax draft summary must follow the feed in normal document order.
+    expect(shape.snapshotTop).toBeGreaterThanOrEqual(shape.feedBottom);
+    expect(Math.abs(shape.snapshotLeft-shape.feedLeft)).toBeLessThanOrEqual(2);
+    expect(Math.abs(shape.snapshotRight-shape.feedRight)).toBeLessThanOrEqual(2);
     expect(shape.hero).toBeLessThanOrEqual(shape.main+2);
     expect(shape.card).toBeLessThanOrEqual(shape.main+2);
     expect(shape.chipRadius).toBe('9999px');
