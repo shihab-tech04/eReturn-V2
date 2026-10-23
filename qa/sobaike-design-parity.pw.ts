@@ -69,7 +69,12 @@ for(const width of [375,768,1280,1920]){
     expect(parseFloat(observations.heading)).toBeCloseTo(parseFloat(headingToken)*observations.scale,0);
     expect(parseFloat(observations.bodySize)).toBeCloseTo(parseFloat(observations.bodyToken)*observations.scale,0);
     expect(parseFloat(observations.smallSize)).toBeCloseTo(parseFloat(observations.metaToken)*observations.scale,0);
-    if(width===1920)expect(observations.mainWidth).toBeGreaterThan(1100);
+    // Source AppShell uses a centered 900px content column at desktop widths.
+    // The 70:30 return workspace intentionally uses a separate wide route.
+    if(width===1920) {
+      expect(observations.mainWidth).toBeGreaterThanOrEqual(895);
+      expect(observations.mainWidth).toBeLessThanOrEqual(901);
+    }
     expect(observations.documentWidth).toBeLessThanOrEqual(width);
   });
 }
@@ -85,3 +90,46 @@ test('Bengali typography inherits source Noto Sans Bengali preference',async ({p
   expect(fonts.token).toContain('Noto Sans Bengali');
   expect(fonts.body).toContain('Noto Sans Bengali');
 });
+
+for(const width of [375,768,1440,1920]){
+  test(`Sobaike source shell and feed geometry ${width}px`,async ({page})=>{
+    await page.setViewportSize({width,height:900});
+    await page.goto('/#/user-panel/home');
+    const v=await page.evaluate(()=>{
+      const main=document.querySelector('#er-main')!.getBoundingClientRect();
+      const feed=document.querySelector('.er-guided-home-columns')!;
+      const rail=document.querySelector('.er-desktop-rail')!.getBoundingClientRect();
+      const header=document.querySelector('.er-compact-header')!;
+      const mobileMenu=document.querySelector('.er-mobile-header-menu')!.getBoundingClientRect();
+      const brand=document.querySelector('.er-compact-brand')!.getBoundingClientRect();
+      return {
+        main:{x:main.x,width:main.width},
+        grid:getComputedStyle(feed).display,
+        direction:getComputedStyle(feed).flexDirection,
+        rail:{width:rail.width,shown:getComputedStyle(document.querySelector('.er-desktop-rail')!).display!=='none'},
+        headerShown:getComputedStyle(header).display!=='none',
+        mobileMenu:{x:mobileMenu.x,width:mobileMenu.width},
+        brandX:brand.x,
+        docWidth:document.documentElement.scrollWidth
+      };
+    });
+    expect(v.grid).toBe('flex');
+    expect(v.direction).toBe('column');
+    expect(v.main.width).toBeLessThanOrEqual(901);
+    expect(v.docWidth).toBeLessThanOrEqual(width);
+    if(width>=1440){
+      expect(v.rail.shown).toBe(true);
+      expect(v.rail.width).toBe(width>=1920?260:240);
+      expect(v.headerShown).toBe(false);
+      expect(v.main.width).toBeGreaterThanOrEqual(895);
+    }else{
+      expect(v.rail.shown).toBe(false);
+      expect(v.headerShown).toBe(true);
+    }
+    if(width<768){
+      expect(v.mobileMenu.width).toBeGreaterThanOrEqual(44);
+      expect(v.mobileMenu.x).toBeLessThan(v.brandX);
+    }
+    await page.screenshot({path:`test-results/sobaike-geometry/home-${width}.png`,fullPage:true,animations:'disabled'});
+  });
+}
