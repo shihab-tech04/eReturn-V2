@@ -50,7 +50,7 @@ test('carousel arrows and filter chips work without mutating tax records',async(
   const hero=page.getByRole('region',{name:'Tax service highlights hero banner'});
   await hero.focus();
   await page.keyboard.press('ArrowRight');
-  await expect(page.getByRole('link',{name:'Review assessment'})).toBeVisible();
+  await expect(hero.getByRole('link',{name:'Review assessment'}).first()).toBeVisible();
   await page.locator('#er-feed-records').click();
   await expect(page.locator('.er-guided-home-step-list>li')).toHaveCount(0);
   await expect(page.locator('.er-guided-home-records')).toBeVisible();
@@ -66,9 +66,9 @@ test('Bengali and dark theme preserve original Sobaike visual tokens',async({pag
   await expect(page.locator('html')).toHaveAttribute('lang','bn');
   await expect(page.getByRole('heading',{name:'পরবর্তী করণীয়'})).toBeVisible();
   await expect(page.getByRole('link',{name:'আমার রিটার্ন শুরু করুন'})).toBeVisible();
-  await page.getByRole('button',{name:'Appearance'}).click();
-  await page.getByRole('button',{name:'Select theme'}).click();
-  await page.getByRole('option',{name:'Dark'}).click();
+  await page.locator('.er-desktop-rail').getByRole('button',{name:'প্রদর্শন',exact:true}).click();
+  await page.getByRole('button',{name:'থিম নির্বাচন'}).click();
+  await page.getByRole('option',{name:'ডার্ক'}).click();
   await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
   const ui=await page.evaluate(()=>({
     family:getComputedStyle(document.body).fontFamily,
