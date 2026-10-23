@@ -71,11 +71,11 @@ for(const width of [375,768,1280,1920]){
     expect(parseFloat(observations.heading)).toBeCloseTo(parseFloat(headingToken)*observations.scale,0);
     expect(parseFloat(observations.bodySize)).toBeCloseTo(parseFloat(observations.bodyToken)*observations.scale,0);
     expect(parseFloat(observations.smallSize)).toBeCloseTo(parseFloat(observations.metaToken)*observations.scale,0);
-    // The reusable Sobaike tokens stay exact. eReturn deliberately widens only
-    // the taxpayer Dashboard; ordinary forms preserve the reference 900px width.
+    // Sobaike source PublicPageContainer keeps its centered 900px content width;
+    // the tax return editor has its own deliberately wide 70:30 workspace route.
     if(width===1920) {
-      expect(observations.mainWidth).toBeGreaterThanOrEqual(1200);
-      expect(observations.mainWidth).toBeLessThanOrEqual(1461);
+      expect(observations.mainWidth).toBeGreaterThanOrEqual(895);
+      expect(observations.mainWidth).toBeLessThanOrEqual(901);
       await page.goto('/#/user-panel/profile');
       const formWidth=await page.locator('#er-main').evaluate(e=>e.getBoundingClientRect().width);
       expect(formWidth).toBeLessThanOrEqual(901);
@@ -126,8 +126,8 @@ for(const width of [375,768,1440,1920]){
     expect(v.rowY[2]).toBeGreaterThan(v.rowY[1]);
     expect(v.rowY[3]).toBeGreaterThan(v.rowY[2]);
     if(width>=1440) {
-      expect(v.main.width).toBeGreaterThan(1080);
-      expect(v.main.width).toBeLessThanOrEqual(1461);
+      expect(v.main.width).toBeGreaterThanOrEqual(895);
+      expect(v.main.width).toBeLessThanOrEqual(901);
     }else{
       expect(v.main.width).toBeLessThanOrEqual(width);
     }
