@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { Bell, BookOpenCheck, ChevronDown, ClipboardList, FileText, Globe2, Home, Menu, Palette, UserRound, X } from 'lucide-react';
+import { Bell, ChevronDown, ClipboardList, FileText, Globe2, Home, Menu, Palette, UserRound, X } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { ThemeSelector } from '../sobaike-ui/ThemeSelector';
 import { TextSizeSelector } from '../sobaike-ui/TextSizeSelector';
 import { hasReturnDraft } from '../../features/workspace/draftStatus';
+import { EReturnBrandLogo } from './EReturnBrandLogo';
 
 type NavItem = { to: string; en: string; bn: string; Icon: React.ComponentType<{ size?: number; 'aria-hidden'?: boolean }> };
 const sections: NavItem[] = [
@@ -38,6 +39,8 @@ export function TaxpayerNavigation() {
   const location = useLocation();
   const { language, toggleLanguage, profile, income, rebate, expenditure, assetsLiabilities, taxPayment, assessment } = useApp();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [compact, setCompact] = useState(false);
+  const [textEntryFocused, setTextEntryFocused] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
   const [appearanceOpen, setAppearanceOpen] = useState(false);
   const [noticeOpen, setNoticeOpen] = useState(false);
@@ -53,6 +56,32 @@ export function TaxpayerNavigation() {
     setMenuOpen(false);
     setNoticeOpen(false);
   }, [location.pathname]);
+
+  // Match Sobaike Public's 56px -> 48px mobile header on down-scroll.
+  useEffect(() => {
+    let lastY=window.scrollY;
+    const onScroll=()=>{
+      const y=Math.max(0,window.scrollY),delta=y-lastY;
+      if(y<48)setCompact(false);
+      else if(delta>8)setCompact(true);
+      else if(delta< -8)setCompact(false);
+      if(Math.abs(delta)>8)lastY=y;
+    };
+    window.addEventListener('scroll',onScroll,{passive:true});
+    return()=>window.removeEventListener('scroll',onScroll);
+  },[]);
+
+  // Sobaike's mobile bottom navigation gets out of the way during text entry.
+  useEffect(()=>{
+    const isTextEntry=(target:EventTarget|null)=>
+      target instanceof HTMLElement&&target.matches(
+        'input:not([readonly]):not([type="checkbox"]):not([type="radio"]),textarea,[contenteditable="true"]');
+    const onFocus=(e:FocusEvent)=>setTextEntryFocused(isTextEntry(e.target));
+    const onBlur=(e:FocusEvent)=>setTextEntryFocused(isTextEntry(e.relatedTarget));
+    document.addEventListener('focusin',onFocus);
+    document.addEventListener('focusout',onBlur);
+    return()=>{document.removeEventListener('focusin',onFocus);document.removeEventListener('focusout',onBlur)};
+  },[]);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -120,18 +149,31 @@ export function TaxpayerNavigation() {
 
   return <>
     <aside className="er-desktop-rail" aria-label={t('Taxpayer desktop navigation', 'করদাতার ডেস্কটপ নেভিগেশন')}>
-      <Link className="er-rail-brand" to="/user-panel/home" aria-label={t('eReturn V2 Dashboard', 'ই-রিটার্ন ড্যাশবোর্ড')}>
-        <BookOpenCheck size={25} aria-hidden={true}/>
-        <span>eReturn <strong>V2</strong></span>
-      </Link>
+      <EReturnBrandLogo size="md" className="er-rail-brand" label={t('eReturn V2 Dashboard', 'ই-রিটার্ন ড্যাশবোর্ড')}/>
       <Link to="/user-panel/return-workspace" className="er-shell-cta"><FileText size={19} aria-hidden={true}/>{t('My Tax Return', 'আমার আয়কর রিটার্ন')}</Link>
       <nav className="er-rail-primary" aria-label={t('Primary navigation', 'প্রধান নেভিগেশন')}>{primaryLinks()}</nav>
-      <div className="er-rail-account">
-        <p className="er-rail-section">{t('Account', 'অ্যাকাউন্ট')}</p>{account}
+      <div className="er-rail-account er-rail-controls">
+        <ThemeSelector variant="compact" />
+        <TextSizeSelector idPrefix="er-rail" />
+        <button type="button" className="er-rail-language" aria-label={t('Language: English', 'ভাষা: বাংলা')}
+          onClick={toggleLanguage}>
+          <span>{t('Language', 'ভাষা')}</span><strong>{bn ? 'English' : 'বাংলা'}</strong>
+        </button>
+        <Link className="er-rail-secondary" to="/user-panel/profile">
+          <UserRound size={17} aria-hidden={true}/>{t('Profile', 'প্রোফাইল')}
+        </Link>
+        <button className="er-rail-secondary" type="button" aria-expanded={noticeOpen}
+          onClick={() => setNoticeOpen(v => !v)}>
+          <Bell size={17} aria-hidden={true}/>{t('Notifications', 'বিজ্ঞপ্তি')}
+        </button>
+        {noticeOpen && <p role="status" className="er-nav-note">
+          {t('No verified notification feed is connected.', 'যাচাইকৃত বিজ্ঞপ্তির কোনো ফিড সংযুক্ত নয়।')}
+        </p>}
+        <p className="er-rail-signature">{t('Taxpayer workspace', 'করদাতার ওয়ার্কস্পেস')}</p>
       </div>
     </aside>
 
-    <header className="er-compact-header">
+    <header className="er-compact-header" data-compact={compact?'true':'false'}>
       <div className="er-compact-brand-cluster">
         <button className="er-mobile-header-menu" type="button"
           aria-haspopup="dialog" aria-expanded={menuOpen}
@@ -139,7 +181,7 @@ export function TaxpayerNavigation() {
           onClick={() => setMenuOpen(true)}>
           <Menu size={21} aria-hidden={true}/>
         </button>
-        <Link to="/user-panel/home" className="er-compact-brand">eReturn <strong>V2</strong></Link>
+        <EReturnBrandLogo size="sm" className="er-compact-brand" label={t('eReturn V2 Dashboard', 'ই-রিটার্ন ড্যাশবোর্ড')}/>
       </div>
       <div className="er-compact-actions">
         <Link to="/user-panel/return-workspace" className="er-compact-cta">{t('My Tax Return', 'আমার আয়কর রিটার্ন')}</Link>
@@ -173,7 +215,7 @@ export function TaxpayerNavigation() {
       </div>
     </div>}
 
-    <nav className="er-mobile-bottom" aria-label={t('Mobile primary navigation', 'মোবাইল প্রধান নেভিগেশন')}>
+    <nav className="er-mobile-bottom" data-keyboard-active={textEntryFocused?'true':'false'} aria-label={t('Mobile primary navigation', 'মোবাইল প্রধান নেভিগেশন')}>
       <button type="button" className="er-nav-link" aria-label={t('Open menu', 'মেনু খুলুন')} aria-expanded={menuOpen} onClick={() => setMenuOpen(true)}>
         <Menu size={20} aria-hidden={true}/><span>{t('Menu','মেনু')}</span>
       </button>

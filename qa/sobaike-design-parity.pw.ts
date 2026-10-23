@@ -138,3 +138,54 @@ for(const width of [375,768,1440,1920]){
     await page.screenshot({path:`test-results/sobaike-geometry/home-${width}.png`,fullPage:true,animations:'disabled'});
   });
 }
+
+test('Sobaike source-style bilingual rail logo and always-visible appearance controls',async ({page})=>{
+  await page.setViewportSize({width:1920,height:900});
+  await page.goto('/#/user-panel/home');
+  const rail=page.locator('.er-desktop-rail');
+  const logo=rail.locator('.er-tax-brand-logo');
+  await expect(logo).toBeVisible();
+  await expect(logo.locator('[lang="bn"]')).toHaveText('ই-রিটার্ন');
+  await expect(logo.locator('[lang="en"]')).toHaveText('eReturn V2');
+  const mark=await logo.locator('.er-tax-brand-mark').boundingBox();
+  expect(mark?.width).toBe(36);
+  expect(mark?.height).toBe(36);
+  const fonts=await logo.evaluate(e=>{
+    const bn=e.querySelector<HTMLElement>('[lang=bn]')!;
+    const en=e.querySelector<HTMLElement>('[lang=en]')!;
+    return {bnFamily:getComputedStyle(bn).fontFamily,enFamily:getComputedStyle(en).fontFamily,
+      bnSize:getComputedStyle(bn).fontSize,enSize:getComputedStyle(en).fontSize};
+  });
+  expect(fonts.bnFamily).toContain('Noto Sans Bengali');
+  expect(fonts.enFamily).toContain('Noto Sans');
+  expect(fonts.bnSize).toBe('18px');
+  expect(fonts.enSize).toBe('14px');
+  await expect(rail.getByRole('button',{name:'Select theme'})).toBeVisible();
+  await expect(rail.getByRole('group',{name:'Text size'})).toBeVisible();
+  await expect(rail.getByRole('button',{name:'Language: English'})).toBeVisible();
+  await page.screenshot({path:'test-results/sobaike-geometry/rail-source-mark.png',fullPage:true,animations:'disabled'});
+});
+test('Sobaike mobile header compresses on scroll and bottom nav clears for text entry',async ({page})=>{
+  await page.setViewportSize({width:375,height:812});
+  await page.goto('/#/user-panel/home');
+  const header=page.locator('.er-compact-header');
+  await expect(header).toHaveAttribute('data-compact','false');
+  const menu=page.locator('.er-mobile-header-menu');
+  const logo=page.locator('.er-compact-header .er-tax-brand-logo');
+  await expect(menu).toBeVisible();
+  await expect(logo).toBeVisible();
+  const menuRect=await menu.boundingBox(), logoRect=await logo.boundingBox();
+  expect(menuRect!.x).toBeLessThan(logoRect!.x);
+  await page.evaluate(()=>window.scrollTo(0,180));
+  await expect(header).toHaveAttribute('data-compact','true');
+  await page.evaluate(()=>window.scrollTo(0,0));
+  await expect(header).toHaveAttribute('data-compact','false');
+  await page.goto('/#/user-panel/expenditure');
+  const field=page.locator('main input[type="text"]').first();
+  await field.focus();
+  await expect(page.locator('.er-mobile-bottom')).toHaveAttribute('data-keyboard-active','true');
+  await expect(page.locator('.er-mobile-bottom')).toBeHidden();
+  await field.evaluate(el=>(el as HTMLInputElement).blur());
+  await expect(page.locator('.er-mobile-bottom')).toHaveAttribute('data-keyboard-active','false');
+  await expect(page.locator('.er-mobile-bottom')).toBeVisible();
+});

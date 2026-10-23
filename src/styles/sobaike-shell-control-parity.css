@@ -1,0 +1,136 @@
+/*
+ * Sobaike Public navigation and branding layout adaptation for eReturn.
+ * Source reference: DesktopLeftRail, BrandLogo, Header, MobileHeader and Drawer.
+ * Tax-specific labels and routes stay under their original names.
+ */
+.er-app-shell .er-rail-brand.er-tax-brand-logo,
+.er-app-shell .er-compact-brand.er-tax-brand-logo {
+  display:inline-flex;
+  align-items:center;
+  gap:12px;
+  min-width:0;
+  width:max-content;
+  max-width:100%;
+  text-decoration:none;
+  padding:4px;
+  letter-spacing:normal;
+  line-height:normal;
+}
+.er-app-shell .er-rail-brand.er-tax-brand-logo{margin-bottom:16px}
+.er-app-shell .er-tax-brand-logo .er-tax-brand-mark{
+  display:grid;
+  place-items:center;
+  width:36px;
+  height:36px;
+  flex-shrink:0;
+  background:var(--ui-surface-subtle);
+  color:var(--ui-primary-action-bg);
+  border:1px solid var(--ui-border-subtle);
+  border-radius:var(--radius-control);
+  padding:0;
+}
+.er-app-shell .er-compact-brand.er-tax-brand-logo{margin:0}
+.er-app-shell .er-compact-brand .er-tax-brand-mark{width:32px;height:32px}
+.er-app-shell .er-tax-brand-logo [lang=bn]{
+  font-family:'Noto Sans Bengali','Noto Sans',sans-serif;
+}
+.er-app-shell .er-tax-brand-logo [lang=en]{
+  font-family:'Noto Sans','Noto Sans Bengali',sans-serif;
+}
+.er-app-shell .er-rail-controls{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  padding-top:16px;
+  border-top:1px solid var(--ui-border-subtle);
+  background:var(--ui-surface);
+}
+.er-app-shell .er-rail-controls>div,
+.er-app-shell .er-rail-controls>button,
+.er-app-shell .er-rail-controls>a{
+  width:100%;
+}
+.er-app-shell .er-rail-language{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  min-height:44px;
+  gap:10px;
+  width:100%;
+  padding:10px 14px;
+  background:var(--ui-surface);
+  color:var(--ui-text-secondary);
+  border:1px solid var(--ui-border-subtle);
+  border-radius:var(--radius-control);
+  cursor:pointer;
+  font-size:14px;
+  font-weight:500;
+}
+.er-app-shell .er-rail-language strong{
+  color:var(--ui-text-primary);
+  background:var(--ui-surface-subtle);
+  border:1px solid var(--ui-border-subtle);
+  border-radius:8px;
+  padding:4px 10px;
+  font-size:13px;
+  font-weight:600;
+}
+.er-app-shell .er-rail-secondary{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-height:44px;
+  padding:10px 14px;
+  width:100%;
+  text-align:left;
+  text-decoration:none;
+  border:1px solid var(--ui-border-subtle);
+  border-radius:var(--radius-control);
+  background:var(--ui-surface);
+  color:var(--ui-text-secondary);
+  font-size:14px;
+  font-weight:500;
+  cursor:pointer;
+}
+.er-app-shell .er-rail-language:hover,
+.er-app-shell .er-rail-secondary:hover{
+  background:var(--ui-surface-hover);
+  color:var(--ui-text-primary);
+}
+.er-app-shell .er-rail-signature{
+  padding:4px 8px 0;
+  margin:0;
+  font-size:13px;
+  font-weight:500;
+  line-height:18px;
+  color:var(--ui-text-muted);
+}
+.er-app-shell .er-nav-scrim{justify-content:flex-end}
+.er-app-shell .er-nav-drawer{
+  border-radius:var(--radius-modal) 0 0 var(--radius-modal);
+  box-shadow:-8px 0 32px rgba(0,0,0,.12);
+}
+.er-app-shell .er-compact-header[data-compact=true]{
+  min-height:48px;
+  height:48px;
+}
+.er-app-shell .er-compact-header[data-compact=true] .er-tax-brand-mark{
+  width:30px;height:30px;
+}
+.er-app-shell .er-compact-header[data-compact=true] .er-compact-cta{
+  min-height:40px;
+}
+@media(max-width:767px){
+  .er-app-shell .er-compact-header .er-compact-brand.er-tax-brand-logo{gap:6px;padding:0}
+  .er-app-shell .er-compact-header .er-tax-brand-logo [lang=bn]{
+    font-size:14px;
+    line-height:18px;
+  }
+  .er-app-shell .er-compact-header .er-tax-brand-logo [lang=en]{
+    font-size:11px;
+    line-height:14px;
+  }
+  .er-app-shell .er-mobile-bottom[data-keyboard-active=true]{
+    display:none!important;
+  }
+}

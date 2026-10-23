@@ -66,8 +66,8 @@ test('Bengali and dark theme preserve original Sobaike visual tokens',async({pag
   await expect(page.locator('html')).toHaveAttribute('lang','bn');
   await expect(page.getByRole('heading',{name:'পরবর্তী করণীয়'})).toBeVisible();
   await expect(page.getByRole('link',{name:'আমার রিটার্ন শুরু করুন'})).toBeVisible();
-  await page.locator('.er-desktop-rail').getByRole('button',{name:'প্রদর্শন',exact:true}).click();
-  await page.getByRole('button',{name:'থিম নির্বাচন'}).click();
+  // Source navigation exposes the Bengali theme selector directly.
+  await page.locator('.er-desktop-rail').getByRole('button',{name:'থিম নির্বাচন'}).click();
   await page.getByRole('option',{name:'ডার্ক'}).click();
   await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
   const ui=await page.evaluate(()=>({
