@@ -84,7 +84,7 @@ test('appearance uses exact Sobaike buttons and source-defined light/dark/system
   await page.goto('/#/user-panel/return-workspace');
   const rail=page.locator('.er-desktop-rail');
   await expect(rail).toBeVisible();
-  await rail.getByRole('button',{name:'Appearance'}).click();
+  // Sobaike Public keeps the theme control directly visible at rail bottom.
   const chooser=rail.getByRole('button',{name:'Select theme'});
   const colors:Record<string,string>={light:'rgb(240, 242, 245)',dark:'rgb(24, 25, 26)'};
   for(const theme of ['dark','light']) {
