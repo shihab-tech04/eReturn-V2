@@ -2,7 +2,7 @@
  * Reference: Sobaike-janao-public main cec3cef2 (layout, typography and visual shape).
  * Financial fields, forms, routes and law remain eReturn-specific.
  */
-.er-app-shell { min-height:100dvh; background:var(--er-background,#F7F8FC); color:var(--er-text-primary,#202338); font-family:var(--er-font-family,Inter,sans-serif); font-size:var(--er-font-size,16px); }
+.er-app-shell { min-height:100dvh; background:var(--ui-page); color:var(--ui-text-primary); font-family:var(--font-ui); font-size:calc(var(--type-body-size)*var(--reader-scale)); }
 .er-app-shell, .er-app-shell * { box-sizing:border-box; }
 .er-app-shell :is(.er-button, .er-shell-cta, .er-compact-cta, .er-nav-link, .er-quick-link, .er-account-expander) { border-radius:var(--radius-control,12px); }
 .er-app-shell :is(a,button,input,select,textarea,[role="button"]):focus-visible { outline:3px solid var(--er-secondary,#7C8BD6); outline-offset:2px; }
@@ -47,7 +47,7 @@
 .er-shell-footer-inner{display:flex;gap:14px;align-items:center;justify-content:space-between;max-width:1500px;margin:auto;flex-wrap:wrap;}
 .er-shell-footer p{margin:0;}
 .er-page-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:25px;}
-.er-page-heading h1{font-weight:750;font-size:clamp(1.45em,2.1vw,1.9em);letter-spacing:-.03em;color:var(--er-text-primary);margin:0;}
+.er-page-heading h1{font-weight:var(--type-h1-weight);letter-spacing:-.03em;color:var(--er-text-primary);margin:0;}
 .er-page-heading p{color:var(--er-text-secondary);font-size:.85em;margin:5px 0 0;}
 .er-page-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
 .er-quick-link{display:inline-flex;justify-content:center;align-items:center;gap:8px;padding:11px 16px;min-height:44px;text-decoration:none;color:var(--er-primary);border:1px solid var(--er-primary);font-size:.84em;font-weight:700;}
