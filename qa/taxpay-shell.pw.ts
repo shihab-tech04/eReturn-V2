@@ -21,7 +21,8 @@ for (const width of sizes) for (const lang of langs) {
       }
     }
     await expect(page.getByRole('heading',{name:longLabel(bn,'Taxpayer Dashboard','করদাতার ড্যাশবোর্ড')})).toBeVisible();
-    await expect(page.getByText(longLabel(bn,'No independently verified filed returns are available.','স্বাধীনভাবে যাচাইকৃত দাখিলকৃত রিটার্ন পাওয়া যায়নি।'),{exact:false})).toBeVisible();
+    await expect(page.getByText(longLabel(bn,'Find certificates, acknowledgements and payment records when verified records are available.','যাচাইকৃত রেকর্ড পাওয়া গেলে সনদ, প্রাপ্তিস্বীকার ও পরিশোধের তথ্য এখানে দেখুন।'),{exact:false})).toBeVisible();
+    await expect(page.getByText(longLabel(bn,'No official filing occurs on this page.','এই পৃষ্ঠায় সরকারি দাখিল হয় না।'),{exact:false})).toBeVisible();
     if(width>=1440) {
       await expect(page.locator('.er-desktop-rail')).toBeVisible();
       await expect(page.locator('.er-compact-header')).toBeHidden();
