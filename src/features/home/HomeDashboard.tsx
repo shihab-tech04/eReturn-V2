@@ -84,8 +84,8 @@ export const HomeDashboard: React.FC = () => {
       </section>
       <aside className="er-guided-home-summary" aria-labelledby="er-home-snapshot">
         <h2 id="er-home-snapshot">{t('Your draft at a glance','খসড়ার সারসংক্ষেপ')}</h2>
-        <p className="er-guided-home-summary-note">{t('These figures reflect what you entered, not an assessed return.',
-          'এগুলো আপনার দেওয়া তথ্য; কর নির্ধারণের ফল নয়।')}</p>
+        <small className="er-guided-home-summary-note">{t('These figures reflect what you entered, not an assessed return.'
+          'এগুলো আপনার দেওয়া তথ্য; কর নির্ধারণের ফল নয়।')}</small>
         <dl className="er-guided-home-facts">
           <div><dt>{t('Income entries','আয়ের এন্ট্রি')}</dt><dd>{enteredLines}</dd></div>
           <div><dt>{t('Investment entries','বিনিয়োগের এন্ট্রি')}</dt><dd>{rebate.entries.length}</dd></div>
