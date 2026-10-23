@@ -24,6 +24,12 @@
  .er-app-shell .er-main-content--home .er-service-hero{
    grid-column:1/-1;
  }
+ /* The source carousel intentionally places its 44px arrows 56px outside
+    the container. In a wider tax Dashboard that causes a 24px document
+    overflow at 1440px, so keep arrows within the hero without changing
+    the canonical shared component or token. */
+ .er-app-shell .er-main-content--home .hero-slider-arrow-prev{left:12px}
+ .er-app-shell .er-main-content--home .hero-slider-arrow-next{right:12px}
  .er-app-shell .er-main-content--home #er-home-feed-section{
    grid-column:1;
    min-width:0;
