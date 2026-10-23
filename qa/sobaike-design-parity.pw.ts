@@ -97,15 +97,17 @@ for(const width of [375,768,1440,1920]){
     await page.goto('/#/user-panel/home');
     const v=await page.evaluate(()=>{
       const main=document.querySelector('#er-main')!.getBoundingClientRect();
-      const feed=document.querySelector('.er-guided-home-columns')!;
+      const feed=document.querySelector('#er-home-feed-section')!;
+      const cards=Array.from(document.querySelectorAll<HTMLElement>('.er-tax-feed-card')).map(el=>el.getBoundingClientRect());
       const rail=document.querySelector('.er-desktop-rail')!.getBoundingClientRect();
       const header=document.querySelector('.er-compact-header')!;
       const mobileMenu=document.querySelector('.er-mobile-header-menu')!.getBoundingClientRect();
       const brand=document.querySelector('.er-compact-brand')!.getBoundingClientRect();
       return {
         main:{x:main.x,width:main.width},
-        grid:getComputedStyle(feed).display,
-        direction:getComputedStyle(feed).flexDirection,
+        feedDisplay:getComputedStyle(feed).display,
+        cards:cards.length,
+        rowY:cards.map(r=>r.top),
         rail:{width:rail.width,shown:getComputedStyle(document.querySelector('.er-desktop-rail')!).display!=='none'},
         headerShown:getComputedStyle(header).display!=='none',
         mobileMenu:{x:mobileMenu.x,width:mobileMenu.width},
@@ -113,8 +115,11 @@ for(const width of [375,768,1440,1920]){
         docWidth:document.documentElement.scrollWidth
       };
     });
-    expect(v.grid).toBe('flex');
-    expect(v.direction).toBe('column');
+    expect(v.feedDisplay).toBe('block');
+    expect(v.cards).toBe(4);
+    expect(v.rowY[1]).toBeGreaterThan(v.rowY[0]);
+    expect(v.rowY[2]).toBeGreaterThan(v.rowY[1]);
+    expect(v.rowY[3]).toBeGreaterThan(v.rowY[2]);
     expect(v.main.width).toBeLessThanOrEqual(901);
     expect(v.docWidth).toBeLessThanOrEqual(width);
     if(width>=1440){
