@@ -26,15 +26,44 @@ for(const width of [375,768,1440,1920]){
       const hero=document.querySelector('#er-home-service-carousel')!.getBoundingClientRect();
       const card=document.querySelector('.er-tax-feed-card')!.getBoundingClientRect();
       const chip=document.querySelector('.er-home-filters button')!;
+      const feed=document.querySelector('#er-home-feed-section')!.getBoundingClientRect();
+      const snapshot=document.querySelector('.er-tax-draft-snapshot')!.getBoundingClientRect();
       const root=getComputedStyle(document.documentElement);
-      return {main:main.width,hero:hero.width,card:card.width,chipRadius:getComputedStyle(chip).borderRadius,
+      return {main:main.width,hero:hero.width,card:card.width,feedLeft:feed.left,feedRight:feed.right,snapshotLeft:snapshot.left,snapshotTop:snapshot.top,feedTop:feed.top,chipRadius:getComputedStyle(chip).borderRadius,
         font:getComputedStyle(document.body).fontFamily,
         bodySize:getComputedStyle(document.body).fontSize,
         bg:root.getPropertyValue('--ui-page').trim(),
         overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth};
     });
+    if(shape.overflow>2) {
+      const offenders=await page.evaluate(()=>{
+        const viewport=window.innerWidth;
+        return [...document.querySelectorAll<HTMLElement>('body *')]
+          .filter(el=>{
+            const rect=el.getBoundingClientRect();
+            if(rect.width===0||rect.right<=viewport+2||rect.left>=viewport)return false;
+            for(let p=el.parentElement;p;p=p.parentElement){
+              const clip=getComputedStyle(p).overflowX;
+              if(clip==='hidden'||clip==='clip'||clip==='auto'||clip==='scroll')return false;
+            }
+            return true;
+          })
+          .slice(0,25).map(el=>{
+            const r=el.getBoundingClientRect();
+            return {tag:el.tagName,id:el.id,cls:String(el.className).slice(0,150),x:Math.round(r.x),right:Math.round(r.right),width:Math.round(r.width)};
+          });
+      });
+      console.log('DASHBOARD_X_OVERFLOW',width,shape.overflow,JSON.stringify(offenders));
+    }
     expect(shape.overflow).toBeLessThanOrEqual(2);
-    expect(shape.main).toBeLessThanOrEqual(902);
+    if(width>=1280){
+      expect(shape.main).toBeGreaterThan(1080);
+      expect(shape.main).toBeLessThanOrEqual(1461);
+      expect(shape.snapshotLeft).toBeGreaterThan(shape.feedRight);
+      expect(Math.abs(shape.snapshotTop-shape.feedTop)).toBeLessThanOrEqual(22);
+    }else{
+      expect(shape.main).toBeLessThanOrEqual(width);
+    }
     expect(shape.hero).toBeLessThanOrEqual(shape.main+2);
     expect(shape.card).toBeLessThanOrEqual(shape.main+2);
     expect(shape.chipRadius).toBe('9999px');

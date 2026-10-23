@@ -9,11 +9,13 @@ import '../styles/sobaike-public-parity.css';
 import '../styles/sobaike-ereturn-form-adapter.css';
 import '../styles/sobaike-structural-parity.css';
 import '../styles/sobaike-shell-control-parity.css';
+import '../styles/ereturn-dashboard-responsive.css';
 
 export const TaxpayerLayout: React.FC = () => {
   const { language } = useApp();
   const pathname = useLocation().pathname;
   const wide = pathname === '/user-panel/return-workspace';
+  const isHome = pathname === '/user-panel/home';
   const isLanding = pathname === '/user-panel/home' || wide || pathname === '/user-panel/tax-records';
   const returnDetail = isReturnDetailPath(pathname);
   const recordDetail = isTaxRecordPath(pathname);
@@ -22,7 +24,7 @@ export const TaxpayerLayout: React.FC = () => {
     <a className="er-skip-link" href="#er-main">{language === 'bn' ? 'মূল বিষয়বস্তুতে যান' : 'Skip to main content'}</a>
     <TaxpayerNavigation />
     <div className="er-main-region">
-      <main id="er-main" className={'er-main-content' + (wide ? ' er-main-content--wide' : '')}>
+      <main id="er-main" className={'er-main-content' + (wide ? ' er-main-content--wide' : '') + (isHome ? ' er-main-content--home' : '')}>
         {!isLanding && <Link className="er-back-link" to={returnDetail ? '/user-panel/return-workspace' : recordDetail ? '/user-panel/tax-records' : '/user-panel/home'}>
           {language === 'bn' ? '← ফিরে যান' : '← Back to ' + (returnDetail ? 'My Tax Return' : recordDetail ? 'Tax Records' : 'Dashboard')}
         </Link>}
