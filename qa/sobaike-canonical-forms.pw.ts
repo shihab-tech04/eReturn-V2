@@ -35,7 +35,8 @@ test('canonical Sobaike field and control colors follow Dark mode',async ({page}
   await page.setViewportSize({width:1440,height:900});
   await page.goto('/#/user-panel/expenditure');
   const rail=page.locator('.er-desktop-rail');
-  await rail.getByRole('button',{name:'Appearance'}).click();
+  // Sobaike Public keeps ThemeSelector visible in the desktop rail footer.
+  await expect(rail.getByRole('button',{name:'Select theme'})).toBeVisible();
   await rail.getByRole('button',{name:'Select theme'}).click();
   await rail.getByRole('option',{name:'Dark'}).click();
   await expect(page.locator('html')).toHaveAttribute('data-er-theme','dark');
