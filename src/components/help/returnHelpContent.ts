@@ -48,10 +48,77 @@ const guides:Record<string,Guide>={
   profile:g('Personal details','ব্যক্তিগত তথ্য','Review your taxpayer profile and contact details.','করদাতার প্রোফাইল ও যোগাযোগের তথ্য যাচাই করুন।'),
   'change-password':g('Account security','অ্যাকাউন্ট নিরাপত্তা','Password changes require a verified authenticated account service.','পাসওয়ার্ড পরিবর্তনের জন্য যাচাইকৃত অনুমোদিত অ্যাকাউন্ট সেবা প্রয়োজন।')
 };
+const routeSteps:Record<string,[HelpCopy,HelpCopy]>={
+  home:[
+    c('Start with My Tax Return, then review the assessment details and relevant income categories.','আমার আয়কর রিটার্ন খুলে কর নির্ধারণ ও প্রযোজ্য আয়ের তথ্য যাচাই করুন।'),
+    c('Review your draft and download a copy before leaving the browser.','ব্রাউজার ছাড়ার আগে খসড়া যাচাই করে কপি সংরক্ষণ করুন।')
+  ],
+  'return-workspace':[
+    c('Open Assessment, then select only income sections that apply to you.','কর নির্ধারণ খুলুন, তারপর কেবল প্রযোজ্য আয়ের বিভাগগুলো বাছুন।'),
+    c('Review investment, expenditure, assets and tax-payment entries before opening the draft preview.','খসড়া দেখার আগে বিনিয়োগ, ব্যয়, সম্পদ ও কর পরিশোধের তথ্য যাচাই করুন।')
+  ],
+  'tax-records':[
+    c('Choose Certificates, Return documents or Payment documents based on the record you need.','প্রয়োজনীয় নথি অনুযায়ী সনদ, রিটার্নের নথি বা পরিশোধের নথি খুলুন।'),
+    c('Verify any acknowledgement, challan or certificate with the official issuing service.','প্রাপ্তিস্বীকার, চালান বা সনদ সরকারি সেবার সঙ্গে যাচাই করুন।')
+  ],
+  assessment:[
+    c('Confirm the assessment year and income period shown before changing return selections.','রিটার্নের ধরন বদলানোর আগে করবর্ষ ও আয়কাল যাচাই করুন।'),
+    c('Use your own identity and residency records; do not guess any uncertain selection.','নিজের পরিচয় ও আবাসিক তথ্যের নথি ব্যবহার করুন; অনিশ্চিত কিছু অনুমান করবেন না।')
+  ],
+  income:[
+    c('Choose relevant income types, such as Employment, Rent or Business, one at a time.','চাকরি, ভাড়া বা ব্যবসার মতো প্রযোজ্য আয়ের ধরন একে একে খুলুন।'),
+    c('Check totals against your statements before moving to investments and expenses.','বিনিয়োগ ও ব্যয়ে যাওয়ার আগে বিবরণীর সঙ্গে মোট অঙ্ক মিলিয়ে নিন।')
+  ],
+  employment:[
+    c('Use employer statements and salary records to enter pay components.','নিয়োগকর্তার বিবরণী ও বেতনের নথি থেকে তথ্য লিখুন।'),
+    c('Review employer details and all entered amounts; tax treatment requires verified rules.','নিয়োগকর্তা ও অঙ্ক যাচাই করুন; কর ব্যবস্থাপনায় অনুমোদিত নিয়ম প্রয়োজন।')
+  ],
+  business:[
+    c('Use business records for receipts and costs, choosing the documented business category.','ব্যবসার আয়-ব্যয়ের নথি এবং প্রমাণিত ব্যবসার শ্রেণি ব্যবহার করুন।'),
+    c('Review the entered results and supporting statements before returning to the summary.','সারসংক্ষেপে ফেরার আগে দেওয়া অঙ্ক ও বিবরণী যাচাই করুন।')
+  ],
+  rebate:[
+    c('Record each investment only where you have its supporting document.','সমর্থনকারী নথি থাকলে তবেই বিনিয়োগের তথ্য দিন।'),
+    c('Review entries carefully; entering an investment does not confirm any rebate entitlement.','তথ্য যাচাই করুন; বিনিয়োগ লিখলেই রেয়াতের যোগ্যতা নিশ্চিত হয় না।')
+  ],
+  expenditure:[
+    c('Group household and personal expenditure by the form category and available records.','ফরমের বিভাগ ও নথি অনুযায়ী ব্যক্তিগত ও পারিবারিক ব্যয় দিন।'),
+    c('Recheck annual totals and avoid entering the same expense twice.','বার্ষিক মোট অঙ্ক মিলিয়ে একই ব্যয় দুবার দেওয়া এড়িয়ে চলুন।')
+  ],
+  'assets-liabilities':[
+    c('Gather asset ownership, debt and source-of-funds evidence before entering values.','অঙ্ক দেওয়ার আগে সম্পদ, ঋণ ও তহবিলের উৎসের প্রমাণ সংগ্রহ করুন।'),
+    c('Reconcile opening and closing balances where required; do not guess unknown amounts.','প্রয়োজনমতো শুরু ও শেষের স্থিতি মিলিয়ে নিন; অজানা অঙ্ক অনুমান করবেন না।')
+  ],
+  'tax-payment':[
+    c('Enter withholding and advance-payment facts using certificates, challans and dates.','সনদ, চালান ও তারিখ থেকে উৎসে কর ও অগ্রিম পরিশোধের তথ্য দিন।'),
+    c('Match year, ownership and any duplicate entry before assuming a payment credit.','কর ক্রেডিট ধরার আগে বছর, মালিকানা ও একই পরিশোধ দুবার দেওয়া হয়েছে কি না মিলিয়ে নিন।')
+  ],
+  'return-view':[
+    c('Review all entered sections and use Edit to correct anything inaccurate.','সব বিভাগ দেখুন এবং ভুল তথ্য সংশোধন করুন।'),
+    c('Download the draft if you need to keep a copy; this preview is not an official filing.','কপি রাখতে খসড়া ডাউনলোড করুন; এটি সরকারি দাখিল নয়।')
+  ],
+  'guided-submission':[
+    c('Check taxpayer details and income sections first, then review the payment evidence.','প্রথমে করদাতার তথ্য ও আয়ের বিভাগ, তারপর পরিশোধের প্রমাণ যাচাই করুন।'),
+    c('Read the declaration carefully. Actual filing remains disabled until the authorized service is verified.','ঘোষণা সতর্কভাবে পড়ুন। অনুমোদিত সেবা যাচাই না হওয়া পর্যন্ত দাখিল বন্ধ।')
+  ],
+  submission:[
+    c('Check each part of the draft and return to its editor when corrections are needed.','খসড়ার সব অংশ দেখুন; সংশোধন লাগলে সংশ্লিষ্ট ফরমে ফিরুন।'),
+    c('Do not treat a draft or review screen as a filed return or acknowledgement.','খসড়া বা পর্যালোচনাকে দাখিলকৃত রিটার্ন বা প্রাপ্তিস্বীকার ভাববেন না।')
+  ],
+  'revised-return':[
+    c('Check the earlier return and the reason for revision against your records.','আগের রিটার্ন ও সংশোধনের কারণ নথির সঙ্গে যাচাই করুন।'),
+    c('Eligibility and deadlines must be verified before any actual revised submission.','প্রকৃত সংশোধিত দাখিলের আগে যোগ্যতা ও সময়সীমা যাচাই প্রয়োজন।')
+  ],
+  'audited-accounts':[
+    c('Review audited financial statements and notes for the relevant period, if applicable.','প্রযোজ্য হলে সংশ্লিষ্ট সময়ের নিরীক্ষিত বিবরণী ও নোট দেখুন।'),
+    c('Keep original report references and verify proposed figures before using any imported data.','মূল প্রতিবেদনের সূত্র রাখুন এবং আমদানি করা প্রস্তাবিত অঙ্ক যাচাই করুন।')
+  ]
+};
 export const getGuide=(pathname:string):Guide=>{
   const tail=pathname.split('/').filter(Boolean);
-  if(tail.includes('guided-submission'))return guides['guided-submission'];
-  return guides[tail[tail.length-1]??'home']??guides['home'];
+  const key=tail.includes('guided-submission')?'guided-submission':tail[tail.length-1]??'home';
+  const base=guides[key]??guides['home'];
+  return routeSteps[key]?{...base,steps:routeSteps[key]}:base;
 };
 export const translate=(copy:HelpCopy,lang:HelpLanguage)=>copy[lang];
 export const guideKeys=Object.keys(guides);
