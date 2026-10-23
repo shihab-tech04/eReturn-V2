@@ -39,6 +39,8 @@ export function TaxpayerNavigation() {
   const location = useLocation();
   const { language, toggleLanguage, profile, income, rebate, expenditure, assetsLiabilities, taxPayment, assessment } = useApp();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [compact, setCompact] = useState(false);
+  const [textEntryFocused, setTextEntryFocused] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
   const [appearanceOpen, setAppearanceOpen] = useState(false);
   const [noticeOpen, setNoticeOpen] = useState(false);
@@ -54,6 +56,32 @@ export function TaxpayerNavigation() {
     setMenuOpen(false);
     setNoticeOpen(false);
   }, [location.pathname]);
+
+  // Match Sobaike Public's 56px -> 48px mobile header on down-scroll.
+  useEffect(() => {
+    let lastY=window.scrollY;
+    const onScroll=()=>{
+      const y=Math.max(0,window.scrollY),delta=y-lastY;
+      if(y<48)setCompact(false);
+      else if(delta>8)setCompact(true);
+      else if(delta< -8)setCompact(false);
+      if(Math.abs(delta)>8)lastY=y;
+    };
+    window.addEventListener('scroll',onScroll,{passive:true});
+    return()=>window.removeEventListener('scroll',onScroll);
+  },[]);
+
+  // Sobaike's mobile bottom navigation gets out of the way during text entry.
+  useEffect(()=>{
+    const isTextEntry=(target:EventTarget|null)=>
+      target instanceof HTMLElement&&target.matches(
+        'input:not([readonly]):not([type="checkbox"]):not([type="radio"]),textarea,[contenteditable="true"]');
+    const onFocus=(e:FocusEvent)=>setTextEntryFocused(isTextEntry(e.target));
+    const onBlur=(e:FocusEvent)=>setTextEntryFocused(isTextEntry(e.relatedTarget));
+    document.addEventListener('focusin',onFocus);
+    document.addEventListener('focusout',onBlur);
+    return()=>{document.removeEventListener('focusin',onFocus);document.removeEventListener('focusout',onBlur)};
+  },[]);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -145,7 +173,7 @@ export function TaxpayerNavigation() {
       </div>
     </aside>
 
-    <header className="er-compact-header">
+    <header className="er-compact-header" data-compact={compact?'true':'false'}>
       <div className="er-compact-brand-cluster">
         <button className="er-mobile-header-menu" type="button"
           aria-haspopup="dialog" aria-expanded={menuOpen}
@@ -187,7 +215,7 @@ export function TaxpayerNavigation() {
       </div>
     </div>}
 
-    <nav className="er-mobile-bottom" aria-label={t('Mobile primary navigation', 'মোবাইল প্রধান নেভিগেশন')}>
+    <nav className="er-mobile-bottom" data-keyboard-active={textEntryFocused?'true':'false'} aria-label={t('Mobile primary navigation', 'মোবাইল প্রধান নেভিগেশন')}>
       <button type="button" className="er-nav-link" aria-label={t('Open menu', 'মেনু খুলুন')} aria-expanded={menuOpen} onClick={() => setMenuOpen(true)}>
         <Menu size={20} aria-hidden={true}/><span>{t('Menu','মেনু')}</span>
       </button>
