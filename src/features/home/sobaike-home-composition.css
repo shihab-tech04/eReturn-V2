@@ -218,3 +218,30 @@
   .er-app-shell .er-sobaike-home .er-home-filters{overflow-x:auto}
   .er-app-shell .er-tax-slide .hero-slider-mobile-cta{margin-top:4px}
 }
+
+.er-app-shell .er-sobaike-home .er-home-feed-actions{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.er-app-shell .er-sobaike-home .er-home-review-link{
+  min-height:36px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:8px 10px;
+  border:1px solid var(--ui-border-subtle);
+  border-radius:var(--radius-control);
+  color:var(--ui-text-secondary);
+  background:var(--ui-surface);
+  font-size:13px;
+  font-weight:600;
+  text-decoration:none;
+}
+.er-app-shell .er-sobaike-home .er-home-review-link:hover{background:var(--ui-surface-hover)}
+@media(max-width:500px){
+  .er-app-shell .er-sobaike-home .er-sobaike-feed-head{flex-wrap:wrap}
+  .er-app-shell .er-sobaike-home .er-home-feed-actions{width:100%;justify-content:flex-start}
+}
