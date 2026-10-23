@@ -55,9 +55,11 @@ export const HomeDashboard:React.FC=()=>{
               'আপনার সুবিধামতো ক্রমে বিভাগগুলো পূরণ করুন।')}
           </p>
         </div>
-        <span className="er-home-ay-chip">
-          {t('AY','করবর্ষ')} {assessmentYear}
-        </span>
+        <div className="er-home-feed-actions">
+          <span className="er-home-ay-chip">{t('AY','করবর্ষ')} {assessmentYear}</span>
+          <Link to="/user-panel/guided-submission" data-entry="ereturn-submission"
+            className="er-home-review-link">{t('Submission review','দাখিল পর্যালোচনা')}</Link>
+        </div>
       </div>
       <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 no-scrollbar er-home-filters"
         role="group" aria-label={t('Dashboard content filters','ড্যাশবোর্ডের বিষয়বস্তু ফিল্টার')}>
