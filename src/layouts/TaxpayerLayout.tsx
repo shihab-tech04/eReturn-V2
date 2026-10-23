@@ -29,7 +29,7 @@ export const TaxpayerLayout: React.FC = () => {
       <footer className="er-shell-footer">
         <div className="er-shell-footer-inner">
           <p>{language === 'bn' ? 'eReturn V2 · করদাতার ওয়ার্কস্পেস' : 'eReturn V2 · Taxpayer Workspace'}</p>
-          <p>{language === 'bn' ? 'আইনগত কর হিসাব প্রত্যয়ন সাপেক্ষ · অনলাইনে দাখিল বন্ধ' : 'Statutory calculation not certified · Online filing unavailable'}</p>
+          <p>{language === 'bn' ? 'এই সংস্করণে রিটার্ন প্রস্তুত করা যায়; সরকারি দাখিল উপলব্ধ নয়' : 'Prepare and review your draft · Official filing is not available in this version'}</p>
         </div>
       </footer>
     </div>
