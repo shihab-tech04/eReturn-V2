@@ -41,7 +41,7 @@ export const HomeDashboard:React.FC=()=>{
       action:t('Review draft','খসড়া দেখুন')},
   ];
   return <div id="er-home-page-container"
-    className="er-dashboard er-guided-home er-sobaike-home w-full text-left px-4 py-4 md:px-6 md:py-5 lg:px-8 lg:py-6 min-[1440px]:px-0 min-[1440px]:py-6 space-y-5 md:space-y-6 min-[1440px]:space-y-7">
+    className="er-dashboard er-sobaike-home w-full text-left px-4 py-4 md:px-6 md:py-5 lg:px-8 lg:py-6 min-[1440px]:px-0 min-[1440px]:py-6 space-y-5 md:space-y-6 min-[1440px]:space-y-7">
     <h1 className="sr-only">{t('Taxpayer Dashboard','করদাতার ড্যাশবোর্ড')}</h1>
     <TaxServiceHeroCarousel language={language} hasDraft={draft} assessmentYear={assessmentYear}/>
     <section id="er-home-feed-section" className="space-y-4 pt-1" aria-labelledby="er-guided-steps">
