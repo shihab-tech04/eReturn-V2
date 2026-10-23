@@ -1,0 +1,339 @@
+/*
+ * Actual Sobaike Public AppShell / DesktopLeftRail / MobileHeader / HomePage
+ * geometry for eReturn, adapted only where eReturn needs a 70:30 return editor.
+ * Visual authority: Sobaike-janao-public main 4427ff19. No reporting logic.
+ */
+.er-app-shell {
+  min-height:100dvh;
+  display:flex;
+  flex-direction:column;
+  background:var(--ui-page);
+  color:var(--ui-text-primary);
+  font-family:var(--font-ui);
+  line-height:calc(var(--type-body-line) * var(--reader-scale));
+}
+.er-app-shell .er-main-region {flex:1;min-width:0}
+.er-app-shell .er-main-content:not(.er-main-content--wide){
+  width:100%;
+  max-width:900px;
+  margin-inline:auto;
+  padding:20px 24px 48px;
+}
+.er-app-shell .er-main-content--wide {
+  width:100%;
+  max-width:1630px;
+  padding:24px clamp(16px,2vw,32px) 48px;
+}
+/* Sobaike rail geometry and subtle, border-backed navigation cells. */
+.er-app-shell .er-desktop-rail{
+  padding:20px 16px;
+  gap:0;
+  background:var(--ui-surface);
+  border-right:1px solid var(--ui-border-subtle);
+  color:var(--ui-text-primary);
+}
+.er-app-shell .er-rail-brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:4px 4px 16px;
+  color:var(--ui-text-primary);
+  font-family:var(--font-ui);
+  font-size:20px;
+  font-weight:700;
+  letter-spacing:normal;
+}
+.er-app-shell .er-rail-brand svg {
+  width:32px;height:32px;
+  padding:6px;
+  background:var(--ui-surface-subtle);
+  color:var(--ui-primary-action-bg);
+  border:1px solid var(--ui-border-subtle);
+  border-radius:var(--radius-control);
+}
+.er-app-shell .er-shell-cta{
+  min-height:44px;
+  margin-bottom:20px;
+  padding:10px 16px;
+  font-family:var(--font-ui);
+  font-size:16px;
+  font-weight:600;
+  border-radius:var(--radius-control);
+  background:var(--ui-primary-action-bg);
+  color:var(--ui-primary-action-text);
+  box-shadow:var(--elevation-control);
+}
+.er-app-shell .er-rail-primary{
+  margin-top:0;
+  gap:4px;
+  padding-top:0;
+}
+.er-app-shell .er-nav-link{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-height:44px;
+  width:100%;
+  padding:10px 12px;
+  border:1px solid transparent !important;
+  border-radius:var(--radius-control);
+  color:var(--ui-text-secondary);
+  background:transparent;
+  font-size:16px;
+  font-weight:500;
+  line-height:24px;
+  text-align:left;
+}
+.er-app-shell .er-nav-link.er-nav-selected{
+  background:var(--ui-surface-elevated) !important;
+  border:1px solid var(--ui-border) !important;
+  color:var(--ui-text-primary) !important;
+  font-weight:600;
+}
+.er-app-shell .er-nav-link:hover{background:var(--ui-surface-hover)}
+.er-app-shell .er-rail-account {
+  margin-top:auto;
+  padding-top:16px;
+  border-top:1px solid var(--ui-border-subtle);
+}
+.er-app-shell .er-rail-section {
+  padding:0 10px;
+  margin:0 0 10px;
+  font-size:14px;
+  letter-spacing:0;
+  text-transform:none;
+  color:var(--ui-text-muted);
+  font-weight:600;
+}
+.er-app-shell .er-nav-utilities {gap:6px}
+.er-app-shell .er-nav-utilities>.er-nav-link{
+  padding:10px 12px;
+  font-size:14px;
+  border:1px solid var(--ui-border-subtle) !important;
+  background:var(--ui-surface);
+}
+.er-app-shell .er-nav-appearance {
+  padding:12px;
+  border:1px solid var(--ui-border-subtle);
+  border-radius:var(--radius-control);
+  background:var(--ui-surface);
+}
+/* Source layout uses a single centered content column, not an admin grid. */
+.er-app-shell .er-guided-home{
+  display:flex;
+  flex-direction:column;
+  width:100%;
+  max-width:900px;
+  margin:0 auto;
+  gap:16px;
+}
+.er-app-shell .er-guided-home-intro{
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  gap:18px;
+  padding:24px;
+  background:var(--ui-surface);
+  border:1px solid var(--ui-border-subtle);
+  border-radius:var(--radius-card);
+  box-shadow:var(--elevation-card);
+}
+.er-app-shell .er-guided-home-title{max-width:none}
+.er-app-shell .er-guided-home-title h1{
+  margin:6px 0 10px;
+  line-height:calc(var(--type-h1-line-mobile)*var(--reader-scale));
+  font-weight:var(--type-h1-weight);
+}
+.er-app-shell .er-guided-home-title>p:last-child{max-width:680px}
+.er-app-shell .er-guided-home-actions{
+  max-width:none;
+  justify-content:flex-start;
+  gap:10px;
+}
+.er-app-shell .er-guided-home-actions>.er-quick-link{
+  padding:10px 16px;
+  font-size:16px;
+  font-weight:600;
+  border-radius:var(--radius-control);
+  min-height:44px;
+}
+.er-app-shell .er-guided-home-columns{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+.er-app-shell .er-guided-home-steps,
+.er-app-shell .er-guided-home-summary{
+  width:100%;
+  padding:20px 22px;
+  border-radius:var(--radius-card);
+  box-shadow:var(--elevation-card);
+  background:var(--ui-surface);
+}
+.er-app-shell .er-guided-home-section-head{
+  padding-bottom:14px;
+  border-bottom:1px solid var(--ui-border-subtle);
+}
+.er-app-shell .er-guided-home-section-head h2,
+.er-app-shell .er-guided-home-summary h2,
+.er-app-shell .er-guided-home-records h2{
+  font-size:calc(var(--type-h2-size-mobile)*var(--reader-scale));
+  line-height:calc(var(--type-h2-line-mobile)*var(--reader-scale));
+  font-weight:var(--type-h2-weight);
+  margin:0 0 6px;
+}
+.er-app-shell .er-guided-home-step-list{
+  gap:0;
+  margin:0;
+}
+.er-app-shell .er-guided-home-step-list li{
+  display:grid;
+  grid-template-columns:44px minmax(0,1fr) auto;
+  gap:14px;
+  align-items:center;
+  padding:18px 0;
+  border:0;
+  border-bottom:1px solid var(--ui-border-subtle);
+  border-radius:0;
+  background:var(--ui-surface);
+}
+.er-app-shell .er-guided-home-step-list li:last-child{border-bottom:0}
+.er-app-shell .er-guided-home-step-number{
+  width:44px;height:44px;
+  border-radius:var(--radius-control);
+  font-size:14px;
+  background:var(--ui-surface-subtle);
+}
+.er-app-shell .er-guided-home-step-text h3{
+  font-size:calc(var(--type-h3-size-mobile)*var(--reader-scale));
+  line-height:calc(var(--type-h3-line-mobile)*var(--reader-scale));
+  font-weight:600;
+}
+.er-app-shell .er-guided-home-step-action{
+  font-size:14px;
+  color:var(--ui-text-primary);
+  background:var(--ui-surface);
+  border:1px solid var(--ui-border);
+  box-shadow:var(--elevation-control);
+}
+.er-app-shell .er-guided-home-summary{order:2}
+.er-app-shell .er-guided-home-summary .er-guided-home-facts{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+  margin-top:16px;
+}
+.er-app-shell .er-guided-home-facts>div{
+  flex-direction:column;
+  padding:16px;
+  border:1px solid var(--ui-border-subtle);
+  border-radius:var(--radius-control);
+  background:var(--ui-surface-subtle);
+  gap:10px;
+}
+.er-app-shell .er-guided-home-facts dd{text-align:left;font-size:18px}
+.er-app-shell .er-guided-home-records {
+  padding:22px;
+  border-radius:var(--radius-card);
+  border-color:var(--ui-border-subtle);
+}
+.er-app-shell .er-guided-home-endnote{
+  padding:0 4px;
+  font-size:14px;
+}
+.er-app-shell .er-compact-header{
+  min-height:64px;
+  padding:0 24px;
+  border-bottom:1px solid var(--ui-border-subtle);
+  background:var(--ui-surface);
+}
+.er-app-shell .er-compact-brand-cluster{display:flex;align-items:center;gap:12px;min-width:0}
+.er-app-shell .er-compact-brand{font-size:17px;font-weight:700;color:var(--ui-text-primary)}
+.er-app-shell .er-compact-actions{gap:12px}
+.er-app-shell .er-compact-actions>.er-compact-cta{min-height:44px;padding:10px 16px}
+.er-app-shell .er-mobile-header-menu{display:none}
+.er-app-shell .er-nav-drawer{
+  border-radius:0 var(--radius-modal) var(--radius-modal) 0;
+  padding:20px;
+}
+.er-app-shell .er-mobile-bottom{border-color:var(--ui-border-subtle)}
+.er-app-shell .er-mobile-bottom .er-nav-link{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  color:var(--ui-text-muted);
+  border:0!important;
+  border-radius:var(--radius-control);
+  background:transparent!important;
+  font-weight:500;
+}
+.er-app-shell .er-mobile-bottom .er-nav-link.er-nav-selected{
+  color:var(--ui-text-primary)!important;
+  border:0!important;
+  font-weight:700;
+}
+@media(min-width:768px){
+  .er-app-shell .er-guided-home-section-head h2,
+  .er-app-shell .er-guided-home-summary h2,
+  .er-app-shell .er-guided-home-records h2{
+    font-size:calc(var(--type-h2-size-tablet)*var(--reader-scale));
+    line-height:calc(var(--type-h2-line-tablet)*var(--reader-scale));
+  }
+  .er-app-shell .er-guided-home-step-text h3{
+    font-size:calc(var(--type-h3-size-tablet)*var(--reader-scale));
+    line-height:calc(var(--type-h3-line-tablet)*var(--reader-scale));
+  }
+  .er-app-shell .er-guided-home-title h1{
+    line-height:calc(var(--type-h1-line-tablet)*var(--reader-scale));
+  }
+}
+@media(min-width:1440px){
+  .er-app-shell .er-main-content:not(.er-main-content--wide){max-width:900px;padding:24px 0 48px}
+  .er-app-shell .er-desktop-rail{padding:20px 16px}
+  .er-app-shell .er-guided-home-title h1{line-height:calc(var(--type-h1-line-desktop)*var(--reader-scale))}
+}
+@media(min-width:1536px){
+  .er-app-shell .er-desktop-rail{padding-inline:16px}
+}
+@media(min-width:1920px){
+  .er-app-shell .er-desktop-rail{padding-inline:20px}
+}
+@media(max-width:767px){
+  .er-app-shell .er-main-content:not(.er-main-content--wide){padding:16px 16px 32px}
+  .er-app-shell .er-compact-header{
+    height:56px;
+    min-height:56px;
+    padding:0 12px;
+    gap:8px;
+  }
+  .er-app-shell .er-mobile-header-menu{
+    display:grid;place-items:center;
+    min-width:44px;min-height:44px;
+    border:1px solid var(--ui-border-subtle);
+    border-radius:var(--radius-control);
+    background:var(--ui-surface);
+    color:var(--ui-text-primary);
+  }
+  .er-app-shell .er-compact-actions>.er-tablet-menu{display:none}
+  .er-app-shell .er-compact-cta{font-size:13px;white-space:nowrap;padding:9px 10px}
+  .er-app-shell .er-guided-home-intro{padding:20px;gap:16px}
+  .er-app-shell .er-guided-home-steps,.er-app-shell .er-guided-home-summary,
+  .er-app-shell .er-guided-home-records{padding:16px}
+  .er-app-shell .er-guided-home-facts{grid-template-columns:1fr!important}
+  .er-app-shell .er-guided-home-step-list li{grid-template-columns:40px minmax(0,1fr);gap:10px}
+  .er-app-shell .er-guided-home-step-action{grid-column:2;width:max-content;max-width:100%;justify-content:flex-start}
+  .er-app-shell .er-guided-home-records{flex-direction:column;align-items:flex-start}
+  .er-app-shell .er-guided-home-actions>.er-quick-link{flex:1 1 auto}
+  .er-app-shell .er-mobile-bottom{padding:6px 8px env(safe-area-inset-bottom);min-height:64px}
+  .er-app-shell .er-mobile-bottom .er-nav-link{
+    min-height:52px;
+    border:0!important;
+    padding:4px;
+    font-size:12px;
+    line-height:1.2;
+  }
+}
+@media print{
+  .er-app-shell .er-main-content:not(.er-main-content--wide){max-width:none}
+  .er-app-shell .er-guided-home{max-width:none}
+}
