@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, FileText, ClipboardCheck, ReceiptText } from 'lucide-react';
-import { Button } from '../../components/sobaike-ui/Button';
 import { IconButton } from '../../components/sobaike-ui/IconButton';
 
 /**
@@ -15,14 +14,13 @@ export function TaxServiceHeroCarousel({
   language, hasDraft, assessmentYear,
 }: {language:'en' | 'bn';hasDraft:boolean;assessmentYear:string}) {
   const bn=language==='bn';
-  const navigate=useNavigate();
   const slides=[
     {
       id:'start',
       title:bn?'আপনার আয়কর রিটার্ন প্রস্তুত করুন':'Prepare your tax return',
       short:bn?'এক জায়গায় আপনার রিটার্নের তথ্য পূরণ ও পর্যালোচনা করুন।':'Enter and review your return information in one place.',
       description:bn?'ধাপে ধাপে রিটার্ন প্রস্তুত করুন। প্রযোজ্য আয়ের খাত ও অন্যান্য বিবরণ পূরণ করুন।':'Prepare your draft step by step. Complete the income and other sections that apply to you.',
-      cta:hasDraft?(bn?'রিটার্ন চালিয়ে যান':'Continue return'):(bn?'রিটার্ন শুরু করুন':'Start return'),
+      cta:hasDraft?(bn?'আমার রিটার্ন চালিয়ে যান':'Continue My Tax Return'):(bn?'আমার রিটার্ন শুরু করুন':'Start My Tax Return'),
       path:'/user-panel/return-workspace',
       icon:FileText,
       tint:'var(--ui-surface-subtle)',
@@ -70,7 +68,6 @@ export function TaxServiceHeroCarousel({
     if(!paused&&visible&&!reduced)timer.current=window.setTimeout(next,15000);
     return()=>{if(timer.current!==null)window.clearTimeout(timer.current)};
   },[index,paused,visible,reduced,next]);
-  const navigateSlide=(path:string)=>navigate(path);
   return <div className="relative group w-full er-service-hero" onPointerEnter={e=>{if(e.pointerType==='mouse')setPaused(true)}}
     onPointerLeave={e=>{if(e.pointerType==='mouse')setPaused(false)}} onFocusCapture={()=>setPaused(true)}
     onBlurCapture={e=>{if(!e.currentTarget.contains(e.relatedTarget as Node))setPaused(false)}}>
@@ -94,10 +91,7 @@ export function TaxServiceHeroCarousel({
                 <p className="block md:hidden type-body text-center max-w-md mx-auto text-ui-content-secondary">{slide.short}</p>
                 <p className="hidden md:block type-body max-w-xl text-left text-ui-content-secondary">{slide.description}</p>
                 <div className="hero-slider-cta-row">
-                  <Button variant="outline" size="md" tabIndex={active?0:-1}
-                    onClick={()=>navigateSlide(slide.path)} className="shadow-none btn-hero-cta">
-                    {slide.cta}
-                  </Button>
+                  <Link to={slide.path} tabIndex={active?0:-1} className="btn-hero-cta shadow-none">{slide.cta}</Link>
                 </div>
               </div>
               <div className="hero-slider-media">
@@ -111,8 +105,7 @@ export function TaxServiceHeroCarousel({
                 </div>
               </div>
               <div className="hero-slider-mobile-cta">
-                <Button variant="outline" size="md" fullWidth tabIndex={active?0:-1}
-                  onClick={()=>navigateSlide(slide.path)} className="shadow-none btn-hero-cta">{slide.cta}</Button>
+                <Link to={slide.path} tabIndex={active?0:-1} className="btn-hero-cta w-full shadow-none">{slide.cta}</Link>
               </div>
             </div>
           </div>;
