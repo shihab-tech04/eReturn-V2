@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { Bell, BookOpenCheck, ChevronDown, ClipboardList, FileText, Globe2, Home, Menu, Palette, UserRound, X } from 'lucide-react';
+import { Bell, ChevronDown, ClipboardList, FileText, Globe2, Home, Menu, Palette, UserRound, X } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { ThemeSelector } from '../sobaike-ui/ThemeSelector';
 import { TextSizeSelector } from '../sobaike-ui/TextSizeSelector';
 import { hasReturnDraft } from '../../features/workspace/draftStatus';
+import { EReturnBrandLogo } from './EReturnBrandLogo';
 
 type NavItem = { to: string; en: string; bn: string; Icon: React.ComponentType<{ size?: number; 'aria-hidden'?: boolean }> };
 const sections: NavItem[] = [
@@ -120,14 +121,27 @@ export function TaxpayerNavigation() {
 
   return <>
     <aside className="er-desktop-rail" aria-label={t('Taxpayer desktop navigation', 'করদাতার ডেস্কটপ নেভিগেশন')}>
-      <Link className="er-rail-brand" to="/user-panel/home" aria-label={t('eReturn V2 Dashboard', 'ই-রিটার্ন ড্যাশবোর্ড')}>
-        <BookOpenCheck size={25} aria-hidden={true}/>
-        <span>eReturn <strong>V2</strong></span>
-      </Link>
+      <EReturnBrandLogo size="md" className="er-rail-brand" label={t('eReturn V2 Dashboard', 'ই-রিটার্ন ড্যাশবোর্ড')}/>
       <Link to="/user-panel/return-workspace" className="er-shell-cta"><FileText size={19} aria-hidden={true}/>{t('My Tax Return', 'আমার আয়কর রিটার্ন')}</Link>
       <nav className="er-rail-primary" aria-label={t('Primary navigation', 'প্রধান নেভিগেশন')}>{primaryLinks()}</nav>
-      <div className="er-rail-account">
-        <p className="er-rail-section">{t('Account', 'অ্যাকাউন্ট')}</p>{account}
+      <div className="er-rail-account er-rail-controls">
+        <ThemeSelector variant="compact" />
+        <TextSizeSelector idPrefix="er-rail" />
+        <button type="button" className="er-rail-language" aria-label={t('Language: English', 'ভাষা: বাংলা')}
+          onClick={toggleLanguage}>
+          <span>{t('Language', 'ভাষা')}</span><strong>{bn ? 'English' : 'বাংলা'}</strong>
+        </button>
+        <Link className="er-rail-secondary" to="/user-panel/profile">
+          <UserRound size={17} aria-hidden={true}/>{t('Profile', 'প্রোফাইল')}
+        </Link>
+        <button className="er-rail-secondary" type="button" aria-expanded={noticeOpen}
+          onClick={() => setNoticeOpen(v => !v)}>
+          <Bell size={17} aria-hidden={true}/>{t('Notifications', 'বিজ্ঞপ্তি')}
+        </button>
+        {noticeOpen && <p role="status" className="er-nav-note">
+          {t('No verified notification feed is connected.', 'যাচাইকৃত বিজ্ঞপ্তির কোনো ফিড সংযুক্ত নয়।')}
+        </p>}
+        <p className="er-rail-signature">{t('Taxpayer workspace', 'করদাতার ওয়ার্কস্পেস')}</p>
       </div>
     </aside>
 
@@ -139,7 +153,7 @@ export function TaxpayerNavigation() {
           onClick={() => setMenuOpen(true)}>
           <Menu size={21} aria-hidden={true}/>
         </button>
-        <Link to="/user-panel/home" className="er-compact-brand">eReturn <strong>V2</strong></Link>
+        <EReturnBrandLogo size="sm" className="er-compact-brand" label={t('eReturn V2 Dashboard', 'ই-রিটার্ন ড্যাশবোর্ড')}/>
       </div>
       <div className="er-compact-actions">
         <Link to="/user-panel/return-workspace" className="er-compact-cta">{t('My Tax Return', 'আমার আয়কর রিটার্ন')}</Link>
