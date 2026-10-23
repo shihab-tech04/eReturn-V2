@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Sun, Moon, Monitor, ChevronDown, Check } from 'lucide-react';
-import { useAppearance } from '../../appearance/AppearanceProvider';
-import type { ThemeId as ThemePreference } from '../../appearance/themes';
+import { useTheme, ThemePreference } from '../../context/ThemeContext';
 import { useApp } from '../../context/AppContext';
 
 interface ThemeSelectorProps {
@@ -10,8 +9,7 @@ interface ThemeSelectorProps {
 }
 
 export const ThemeSelector: React.FC<ThemeSelectorProps> = ({ variant = 'segmented', className = '' }) => {
-  const { themeId: themePreference, setThemeId: setThemePreference } = useAppearance();
-  const resolvedTheme = typeof window !== 'undefined' && (document.documentElement.dataset.theme === 'dark' || (themePreference === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) ? 'dark' : 'light';
+  const { themePreference, setThemePreference, resolvedTheme } = useTheme();
   const { language } = useApp();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
