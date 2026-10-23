@@ -10,6 +10,8 @@ const components: Record<string, string> = {
   'Button.tsx':'e110c62366933019752a91f8520d8b4c52fac258',
   'Checkbox.tsx':'ec58c044abc8815cbe762f7a0f1c3e6c84927454',
   'Drawer.tsx':'b1d8269f4421a5c301057c75ea87866aa1f54e2d',
+  'FilterChip.tsx':'53d85b925517553bb05d3edbbaa8dbe99fb4cc5c',
+  'LoadingSkeleton.tsx':'2a9d7212cfe45c20f6ef95146d8e8302cf1acb87',
   'EmptyState.tsx':'95f328345c5122fece3ffe81bf61e62a4b3c42e0',
   'IconButton.tsx':'c17778a9c4d5e1ea94c033c12a06d682e5a7218a',
   'Modal.tsx':'32b3ff32b75883d0b322cf8db2a37d109a6eb18b',
@@ -20,7 +22,7 @@ const components: Record<string, string> = {
   'ThemeSelector.tsx':'0f39154f97c6d622c29de8689d3721c0c00ebe44',
   'Toggle.tsx':'c24b9eb5193c7af267e998433cf8a3a7ccd1cde0',
 };
-test('all 13 canonical Sobaike UI components have original source blob identity', () => {
+test('all 15 relevant Sobaike UI components have original source blob identity', () => {
   for(const [filename,expectedSha] of Object.entries(components)){
     const contents=readFileSync(join(process.cwd(),'src/components/sobaike-ui',filename));
     const prefix=Buffer.concat([Buffer.from('blob '+contents.length,'utf8'),Buffer.from([0])]);
