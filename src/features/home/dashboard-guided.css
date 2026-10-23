@@ -37,7 +37,7 @@
   text-decoration:none
 }
 .er-guided-home-step-action:hover,.er-guided-home-step-action:focus-visible{background:var(--ui-surface-subtle)}
-.er-guided-home-summary-note{margin-bottom:18px}
+.er-guided-home-summary-note{display:block;margin-bottom:18px}
 .er-guided-home-facts{display:grid;margin:0}
 .er-guided-home-facts div{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:14px 0;border-bottom:1px solid var(--ui-border-subtle)}
 .er-guided-home-facts dt{color:var(--ui-text-secondary)}
