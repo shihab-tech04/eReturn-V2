@@ -69,7 +69,12 @@ for(const width of [375,768,1280,1920]){
     expect(parseFloat(observations.heading)).toBeCloseTo(parseFloat(headingToken)*observations.scale,0);
     expect(parseFloat(observations.bodySize)).toBeCloseTo(parseFloat(observations.bodyToken)*observations.scale,0);
     expect(parseFloat(observations.smallSize)).toBeCloseTo(parseFloat(observations.metaToken)*observations.scale,0);
-    if(width===1920)expect(observations.mainWidth).toBeGreaterThan(1100);
+    // Source AppShell uses a centered 900px content column at desktop widths.
+    // The 70:30 return workspace intentionally uses a separate wide route.
+    if(width===1920) {
+      expect(observations.mainWidth).toBeGreaterThanOrEqual(895);
+      expect(observations.mainWidth).toBeLessThanOrEqual(901);
+    }
     expect(observations.documentWidth).toBeLessThanOrEqual(width);
   });
 }
