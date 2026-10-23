@@ -23,7 +23,7 @@ const components: Record<string, string> = {
 test('all 13 canonical Sobaike UI components have original source blob identity', () => {
   for(const [filename,expectedSha] of Object.entries(components)){
     const contents=readFileSync(join(process.cwd(),'src/components/sobaike-ui',filename));
-    const prefix=Buffer.from('blob '+contents.length+'\\0','utf8');
+    const prefix=Buffer.concat([Buffer.from('blob '+contents.length+' ','utf8'),Buffer.from([0])]);
     const sha=createHash('sha1').update(prefix).update(contents).digest('hex');
     expect(sha, filename).toBe(expectedSha);
   }
