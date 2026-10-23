@@ -132,11 +132,21 @@ export function TaxpayerNavigation() {
     </aside>
 
     <header className="er-compact-header">
-      <Link to="/user-panel/home" className="er-compact-brand">eReturn <strong>V2</strong></Link>
+      <div className="er-compact-brand-cluster">
+        <button className="er-mobile-header-menu" type="button"
+          aria-haspopup="dialog" aria-expanded={menuOpen}
+          aria-label={t('Open navigation menu', 'নেভিগেশন মেনু খুলুন')}
+          onClick={() => setMenuOpen(true)}>
+          <Menu size={21} aria-hidden={true}/>
+        </button>
+        <Link to="/user-panel/home" className="er-compact-brand">eReturn <strong>V2</strong></Link>
+      </div>
       <div className="er-compact-actions">
         <Link to="/user-panel/return-workspace" className="er-compact-cta">{t('My Tax Return', 'আমার আয়কর রিটার্ন')}</Link>
-        <button ref={menuTriggerRef} type="button" aria-haspopup="dialog" aria-expanded={menuOpen}
-          aria-label={t('Open navigation menu', 'নেভিগেশন মেনু খুলুন')} onClick={() => setMenuOpen(true)}>
+        <button className="er-tablet-menu" ref={menuTriggerRef} type="button"
+          aria-haspopup="dialog" aria-expanded={menuOpen}
+          aria-label={t('Open navigation menu', 'নেভিগেশন মেনু খুলুন')}
+          onClick={() => setMenuOpen(true)}>
           <Menu size={23} aria-hidden={true}/>
         </button>
       </div>
