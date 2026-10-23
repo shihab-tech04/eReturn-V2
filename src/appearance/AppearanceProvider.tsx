@@ -70,11 +70,8 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
       }
     }
     root.style.setProperty('--er-on-primary', '#FFFFFF');
-    root.style.setProperty('--er-font-size', '16px');
-    root.style.setProperty('--er-font-family',
-      language === 'bn'
-        ? "'Noto Sans Bengali', 'Noto Sans', sans-serif"
-        : "'Noto Sans', 'Noto Sans Bengali', sans-serif");
+    root.style.setProperty('--er-font-size', 'calc(var(--type-body-size) * var(--reader-scale))');
+    root.style.setProperty('--er-font-family', 'var(--font-ui)');
     try { window.localStorage.setItem(STORAGE_KEY, JSON.stringify(prefs)); }
     catch { /* Appearance preference storage is optional; never save tax data here. */ }
   }, [prefs, language, systemDark]);

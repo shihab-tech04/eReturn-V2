@@ -1,12 +1,12 @@
 /* Context help uses existing eReturn tokens; it does not replace the approved shell. */
-.er-help-launcher{position:fixed;right:20px;bottom:20px;z-index:75;display:inline-flex;align-items:center;gap:9px;padding:11px 15px;min-height:48px;border:1px solid var(--er-primary,#4b5694);border-radius:999px;background:var(--er-primary,#4b5694);color:var(--er-on-primary,#fff);font:inherit;font-size:13px;font-weight:700;box-shadow:0 6px 20px rgba(20,30,65,.2);cursor:pointer}
+.er-help-launcher{position:fixed;right:20px;bottom:20px;z-index:75;display:inline-flex;align-items:center;gap:9px;padding:11px 15px;min-height:48px;border:1px solid var(--er-primary,#4b5694);border-radius:999px;background:var(--er-primary,#4b5694);color:var(--er-on-primary,#fff);font:inherit;font-size:calc(var(--type-action-size)*var(--reader-scale));font-weight:var(--type-action-weight);box-shadow:0 6px 20px rgba(20,30,65,.2);cursor:pointer}
 .er-help-launcher:hover{background:var(--er-primary-dark,#343d73)}
 .er-help-launcher:focus-visible,.er-help-inline:focus-visible,.er-help-drawer button:focus-visible,.er-help-drawer textarea:focus-visible{outline:3px solid var(--er-secondary,#7c8bd6);outline-offset:2px}
 .er-help-inline{display:inline-flex;justify-content:center;align-items:center;vertical-align:middle;flex:none;width:44px;height:44px;padding:0;border:0;border-radius:10px;background:transparent;color:var(--er-primary,#4b5694);cursor:pointer}
 .er-help-inline:hover{background:var(--er-primary-light,#eef0fa)}
 .er-help-inline--compact{width:36px;height:36px}
 .er-help-backdrop{position:fixed;inset:0;z-index:140;background:rgba(12,18,36,.54);display:flex;justify-content:flex-end}
-.er-help-drawer{width:min(100%,460px);height:100dvh;overflow:hidden;display:flex;flex-direction:column;min-width:0;box-shadow:-14px 0 38px rgba(10,25,55,.18);background:var(--er-surface,#fff);color:var(--er-text-primary,#202338);font-family:var(--er-font-family,Inter,sans-serif);font-size:var(--er-font-size,16px)}
+.er-help-drawer{width:min(100%,460px);height:100dvh;overflow:hidden;display:flex;flex-direction:column;min-width:0;box-shadow:-14px 0 38px rgba(10,25,55,.18);background:var(--er-surface,#fff);color:var(--er-text-primary,#202338);font-family:var(--font-ui);font-size:calc(var(--type-body-size)*var(--reader-scale))}
 .er-help-drawer *{box-sizing:border-box}
 .er-help-header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:17px 18px;border-bottom:1px solid var(--er-border,#e2e5f0)}
 .er-help-heading{display:flex;align-items:center;gap:12px;min-width:0;color:var(--er-primary,#4b5694)}

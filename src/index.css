@@ -6,7 +6,7 @@
     @apply antialiased;
     color: var(--ui-text-primary, #050505);
     background: var(--ui-page, #F0F2F5);
-    font-family: "Noto Sans", "Noto Sans Bengali", system-ui, sans-serif;
+    /* Font family is owned by Sobaike's --font-ui for EN/BN. */
   }
 }
 

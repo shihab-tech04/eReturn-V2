@@ -1,0 +1,87 @@
+import { test, expect } from '@playwright/test';
+import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+
+// Source of truth: Sobaike-janao-public main b647e864655a29abe6f0910e620185d3ebe43329.
+// git blob SHA (not display names) ensures every shared component is byte-identical.
+const components: Record<string, string> = {
+  'Accordion.tsx':'5c9b4dea8938d9d2cbf9c1bcac82d9fde154ba78',
+  'Button.tsx':'e110c62366933019752a91f8520d8b4c52fac258',
+  'Checkbox.tsx':'ec58c044abc8815cbe762f7a0f1c3e6c84927454',
+  'Drawer.tsx':'b1d8269f4421a5c301057c75ea87866aa1f54e2d',
+  'EmptyState.tsx':'95f328345c5122fece3ffe81bf61e62a4b3c42e0',
+  'IconButton.tsx':'c17778a9c4d5e1ea94c033c12a06d682e5a7218a',
+  'Modal.tsx':'32b3ff32b75883d0b322cf8db2a37d109a6eb18b',
+  'SearchInput.tsx':'c5b31dded9b93f82343c62d2c2317db3705ae74b',
+  'SearchableSelect.tsx':'ef52f3dac643b26e103fad92d53c6ddd0e89d4cf',
+  'Select.tsx':'a5cc1066b0401c60516d9e59e19653cfa70d6a7f',
+  'TextSizeSelector.tsx':'6583bc86633e5e9b4f46e01c69e1ce39d7135805',
+  'ThemeSelector.tsx':'0f39154f97c6d622c29de8689d3721c0c00ebe44',
+  'Toggle.tsx':'c24b9eb5193c7af267e998433cf8a3a7ccd1cde0',
+};
+test('all 13 canonical Sobaike UI components have original source blob identity', () => {
+  for(const [filename,expectedSha] of Object.entries(components)){
+    const contents=readFileSync(join(process.cwd(),'src/components/sobaike-ui',filename));
+    const prefix=Buffer.concat([Buffer.from('blob '+contents.length,'utf8'),Buffer.from([0])]);
+    const sha=createHash('sha1').update(prefix).update(contents).digest('hex');
+    expect(sha, filename).toBe(expectedSha);
+  }
+});
+test('canonical Sobaike text tokens and single Tailwind import remain present',()=>{
+  const index=readFileSync(join(process.cwd(),'src/index.css'),'utf8');
+  const canonical=readFileSync(join(process.cwd(),'src/styles/sobaike-canonical.css'),'utf8');
+  expect(index).toContain('@import "tailwindcss";');
+  expect(canonical).not.toContain('@import "tailwindcss";');
+  for(const token of ['--font-ui:','--type-body-size:','--type-h1-size-desktop:','--type-h2-size-tablet:','--type-label-size:','--radius-control:','--ui-primary-action-bg:']){
+    expect(canonical,token).toContain(token);
+  }
+  expect(index).not.toContain('font-family: "Noto Sans", "Noto Sans Bengali"');
+});
+for(const width of [375,768,1280,1920]){
+  test(`canonical typography and responsive content ${width}px`,async ({page})=>{
+    await page.setViewportSize({width,height:900});
+    await page.goto('/#/user-panel/home');
+    const observations=await page.evaluate(()=>{
+      const root=getComputedStyle(document.documentElement);
+      const read=(key:string)=>root.getPropertyValue(key).trim();
+      const h1=document.querySelector('main h1')!;
+      const small=document.querySelector('main small');
+      const main=document.querySelector('main#er-main')!;
+      return {
+        language:document.documentElement.lang,
+        bodyFamily:getComputedStyle(document.body).fontFamily,
+        heading:getComputedStyle(h1).fontSize,
+        bodySize:getComputedStyle(document.body).fontSize,
+        smallSize:small?getComputedStyle(small).fontSize:'',
+        h1Mobile:read('--type-h1-size-mobile'),
+        h1Tablet:read('--type-h1-size-tablet'),
+        h1Desktop:read('--type-h1-size-desktop'),
+        bodyToken:read('--type-body-size'),
+        metaToken:read('--type-meta-size'),
+        scale:parseFloat(read('--reader-scale'))||1,
+        mainWidth:main.getBoundingClientRect().width,
+        documentWidth:document.documentElement.scrollWidth
+      };
+    });
+    expect(observations.bodyFamily).toContain('Noto Sans');
+    const headingToken=width>=1440?observations.h1Desktop:width>=768?observations.h1Tablet:observations.h1Mobile;
+    expect(parseFloat(observations.heading)).toBeCloseTo(parseFloat(headingToken)*observations.scale,0);
+    expect(parseFloat(observations.bodySize)).toBeCloseTo(parseFloat(observations.bodyToken)*observations.scale,0);
+    expect(parseFloat(observations.smallSize)).toBeCloseTo(parseFloat(observations.metaToken)*observations.scale,0);
+    if(width===1920)expect(observations.mainWidth).toBeGreaterThan(1100);
+    expect(observations.documentWidth).toBeLessThanOrEqual(width);
+  });
+}
+test('Bengali typography inherits source Noto Sans Bengali preference',async ({page})=>{
+  await page.setViewportSize({width:1920,height:900});
+  await page.goto('/#/user-panel/home');
+  await page.getByRole('button',{name:'Language: English'}).click();
+  await expect(page.locator('html')).toHaveAttribute('lang','bn');
+  const fonts=await page.evaluate(()=>({
+    token:getComputedStyle(document.documentElement).getPropertyValue('--font-ui').trim(),
+    body:getComputedStyle(document.body).fontFamily
+  }));
+  expect(fonts.token).toContain('Noto Sans Bengali');
+  expect(fonts.body).toContain('Noto Sans Bengali');
+});

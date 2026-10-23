@@ -1,11 +1,11 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
-import { useAppearance } from '../../appearance/AppearanceProvider';
+import { useTheme } from '../../context/ThemeContext';
 
 /** Reading preference scales semantic text tokens without changing site layout breakpoints. */
 export const TextSizeSelector: React.FC<{ idPrefix?: string }> = ({ idPrefix = 'drawer' }) => {
   const { language } = useApp();
-  const { fontSizeId: textSizePreference, setFontSizeId: setTextSizePreference } = useAppearance();
+  const { textSizePreference, setTextSizePreference } = useTheme();
 
   return (
     <div
