@@ -30,6 +30,7 @@
  }
  .er-app-shell .er-main-content--home .er-tax-draft-snapshot{
    grid-column:2;
+   order:0; /* Sobaike's one-column source sets order:2; reset in two-column tax dashboard. */
    align-self:start;
    min-width:0;
    margin:0;
