@@ -1,0 +1,220 @@
+/*
+ * Sobaike Public HomePage composition:
+ * PublicPageContainer > ServiceHeroCarousel > feed header / FilterChip >
+ * compact ReportCard > footer metadata. Only tax domain copy/routes differ.
+ * Source main: 97d232970e3db3c032e005e6ebedff968b372e69.
+ */
+.er-app-shell .er-sobaike-home{
+  display:block;
+  width:100%;
+  max-width:900px;
+  margin-inline:auto;
+  padding:16px 16px 32px;
+}
+.er-app-shell .er-sobaike-home > *+*{margin-top:20px}
+.er-app-shell .er-sobaike-home .er-service-hero{margin-top:0}
+.er-app-shell .er-sobaike-home #er-home-service-carousel{
+  background:var(--ui-surface-subtle);
+  border:1px solid var(--ui-border-subtle);
+  box-shadow:var(--elevation-card);
+  border-radius:var(--radius-card);
+}
+.er-app-shell .er-tax-slide{
+  min-height:300px;
+  background:var(--ui-surface-subtle);
+}
+.er-app-shell .er-tax-slide .hero-slider-grid{min-height:300px}
+.er-app-shell .er-tax-slide .hero-slider-content{padding-block:24px}
+.er-app-shell .er-tax-slide .hero-slider-content h2{max-width:540px}
+.er-app-shell .er-tax-hero-kicker{
+  color:var(--ui-text-secondary);
+  font-size:12px;
+  line-height:18px;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  margin-bottom:6px;
+}
+.er-app-shell .er-tax-hero-illustration{
+  position:relative;
+  width:min(78%,310px);
+  height:200px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.er-app-shell .er-tax-hero-illustration-back{
+  position:absolute;
+  width:70%;
+  height:78%;
+  border-radius:var(--radius-card);
+  background:var(--ui-surface);
+  border:1px solid var(--ui-border-subtle);
+  transform:rotate(10deg) translate(12px,-6px);
+  box-shadow:var(--elevation-card);
+  opacity:.65;
+}
+.er-app-shell .er-tax-hero-illustration-front{
+  position:relative;
+  z-index:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:7px;
+  width:70%;
+  min-height:78%;
+  padding:20px;
+  border-radius:var(--radius-card);
+  border:1px solid var(--ui-border-subtle);
+  background:var(--ui-surface);
+  color:var(--ui-primary-action-bg);
+  box-shadow:var(--elevation-card);
+  transform:rotate(-4deg);
+}
+.er-app-shell .er-tax-hero-illustration-line{
+  width:72%;
+  height:5px;
+  background:var(--ui-border-strong);
+  border-radius:999px;
+  opacity:.7;
+}
+.er-app-shell .er-tax-hero-illustration-line.short{width:50%}
+.er-app-shell .er-tax-slide .btn-hero-cta{
+  min-height:44px;
+  padding:10px 18px;
+  background:var(--ui-surface);
+  color:var(--ui-text-primary);
+  border:1px solid var(--ui-border-strong);
+  border-radius:var(--radius-control);
+  box-shadow:var(--elevation-control);
+  font-size:calc(var(--type-action-size)*var(--reader-scale));
+  font-weight:600;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+.er-app-shell .er-tax-slide .btn-hero-cta:hover{background:var(--ui-surface-hover)}
+.er-app-shell .er-sobaike-home .er-home-ay-chip{
+  display:inline-flex;
+  align-items:center;
+  white-space:nowrap;
+  border:1px solid var(--ui-border-subtle);
+  background:var(--ui-surface);
+  color:var(--ui-text-secondary);
+  padding:8px 10px;
+  border-radius:var(--radius-control);
+  font-size:13px;
+  font-weight:600;
+  min-height:36px;
+}
+.er-app-shell .er-sobaike-home .er-home-filters{margin-top:12px;margin-bottom:12px;scrollbar-width:none}
+.er-app-shell .er-sobaike-home .er-home-filters::-webkit-scrollbar{display:none}
+.er-app-shell .er-sobaike-home .er-guided-home-step-list{
+  list-style:none;
+  display:grid;
+  gap:12px;
+  padding:0;
+  margin:0;
+}
+.er-app-shell .er-sobaike-home .er-guided-home-step-list>li{
+  display:block!important;
+  border:0!important;
+  background:transparent!important;
+  padding:0!important;
+  margin:0;
+  border-radius:0!important;
+}
+.er-app-shell .er-sobaike-home .er-guided-home-step-list .er-tax-feed-card{
+  padding:14px 16px 16px;
+  border:1px solid var(--ui-border-subtle);
+  border-radius:var(--radius-card);
+  background:var(--ui-surface);
+  box-shadow:var(--elevation-low);
+}
+.er-app-shell .er-sobaike-home .er-tax-feed-category{
+  display:inline-flex;
+  align-items:center;
+  background:var(--ui-surface-subtle);
+  border:1px solid var(--ui-border-subtle);
+  border-radius:8px;
+  color:var(--ui-text-secondary);
+  padding:4px 9px;
+  font-size:12px;
+  font-weight:600;
+  min-height:24px;
+}
+.er-app-shell .er-sobaike-home .er-tax-feed-card:hover{box-shadow:var(--elevation-card)}
+.er-app-shell .er-sobaike-home .er-tax-feed-card>div:last-child a:hover{text-decoration:underline}
+.er-app-shell .er-sobaike-home .er-guided-home-records{
+  padding:16px;
+  margin-top:12px;
+  border-radius:var(--radius-card);
+  box-shadow:var(--elevation-low);
+}
+.er-app-shell .er-sobaike-home .er-guided-home-records h2{
+  font-size:calc(var(--type-h2-size-mobile)*var(--reader-scale));
+  font-weight:var(--type-h2-weight);
+}
+.er-app-shell .er-sobaike-home .er-tax-draft-snapshot{
+  padding:20px;
+  margin-top:20px;
+  width:100%;
+  border-radius:var(--radius-card);
+  background:var(--ui-surface);
+  border:1px solid var(--ui-border-subtle);
+  box-shadow:var(--elevation-low);
+}
+.er-app-shell .er-sobaike-home .er-tax-draft-snapshot h2{margin-bottom:6px}
+.er-app-shell .er-sobaike-home .er-guided-home-facts{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+  margin:14px 0 0;
+}
+.er-app-shell .er-sobaike-home .er-guided-home-facts>div{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin:0;
+  padding:14px;
+  border:1px solid var(--ui-border-subtle);
+  border-radius:var(--radius-control);
+  background:var(--ui-surface-subtle);
+}
+.er-app-shell .er-sobaike-home .er-guided-home-facts dd{font-size:16px;font-weight:700}
+.er-app-shell .er-sobaike-home .er-guided-home-endnote{
+  color:var(--ui-text-secondary);
+  font-size:14px;
+}
+@media(min-width:768px){
+  .er-app-shell .er-sobaike-home{padding:20px 24px 40px}
+  .er-app-shell .er-tax-slide,.er-app-shell .er-tax-slide .hero-slider-grid{min-height:290px}
+  .er-app-shell .er-tax-slide .hero-slider-media{height:180px}
+  .er-app-shell .er-sobaike-home .er-guided-home-step-list .er-tax-feed-card{padding:24px}
+  .er-app-shell .er-sobaike-home .er-guided-home-records{padding:24px}
+}
+@media(min-width:1024px){
+  .er-app-shell .er-tax-slide,.er-app-shell .er-tax-slide .hero-slider-grid{min-height:310px}
+  .er-app-shell .er-tax-slide .hero-slider-media{height:auto}
+  .er-app-shell .er-tax-hero-illustration{height:230px}
+  .er-app-shell .er-sobaike-home .er-guided-home-facts{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(min-width:1440px){
+  .er-app-shell .er-sobaike-home{padding:24px 0 40px}
+  .er-app-shell .er-tax-slide,.er-app-shell .er-tax-slide .hero-slider-grid{min-height:320px}
+}
+@media(max-width:767px){
+  .er-app-shell .er-sobaike-home{padding:16px 0 28px}
+  .er-app-shell .er-tax-slide,.er-app-shell .er-tax-slide .hero-slider-grid{min-height:380px}
+  .er-app-shell .er-tax-slide .hero-slider-content{padding:0}
+  .er-app-shell .er-tax-hero-illustration{height:130px}
+  .er-app-shell .er-tax-hero-illustration-front{padding:12px}
+  .er-app-shell .er-tax-hero-illustration-front svg{width:45px;height:45px}
+  .er-app-shell .er-tax-slide .hero-slider-media{height:130px}
+  .er-app-shell .er-sobaike-home .er-guided-home-facts{grid-template-columns:1fr}
+  .er-app-shell .er-sobaike-home .er-home-filters{overflow-x:auto}
+  .er-app-shell .er-tax-slide .hero-slider-mobile-cta{margin-top:4px}
+}
