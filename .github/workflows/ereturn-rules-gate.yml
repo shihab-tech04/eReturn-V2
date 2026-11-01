@@ -43,6 +43,26 @@ jobs:
           print('PASS replacement SQL read-only runtime contract and CORS')
           PY
 
+      - name: Verify canonical Office/Citizen SQL tax-year endpoint and browser origin
+        run: |
+          python3 - <<'PY'
+          import json
+          from urllib.request import Request, urlopen
+          origin = 'https://shihab-tech04.github.io'
+          url = 'https://gtorruuhvohafapctxym.supabase.co/functions/v1/nbr-rules-office-gateway/public/years'
+          with urlopen(Request(url, headers={'Origin':origin, 'Accept':'application/json'}), timeout=25) as response:
+              assert response.status == 200
+              assert response.headers.get('Access-Control-Allow-Origin') == origin
+              payload = json.load(response)
+          years = payload['years']
+          assert isinstance(years, list) and years
+          ids = [item['assessmentYear'] for item in years]
+          assert len(ids) == len(set(ids)), 'Duplicate tax-year identity'
+          assert any(y['assessmentYear'] == '2026-27' and y['incomeYear'] == '2025-26' for y in years)
+          assert all(isinstance(y['executable'], bool) for y in years)
+          print('PASS: same canonical public Rules SQL year route as Office; statutory execution remains gated')
+          PY
+
   off-github-backup-source:
     runs-on: ubuntu-latest
     timeout-minutes: 10
