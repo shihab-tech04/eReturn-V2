@@ -40,7 +40,14 @@ jobs:
           assert payload.get('unhandledRuleCount') == 0
           assert payload.get('runtimeBindingCount') == 366
           assert payload.get('activeYear') == '2026-27'
-          print('PASS replacement SQL read-only runtime contract and CORS')
+          assert payload.get('incomeYear') == '2025-26'
+          assert payload.get('missingRuntimeBindingCount') == 0
+          assert payload.get('allRuleNodesMapped') is True
+          assert payload.get('sourceRegistryVersion') == 'FINAL_2026_09_30'
+          import re
+          assert re.fullmatch(r'[0-9a-f]{64}',payload.get('syncFingerprint',''))
+          print('PASS: canonical NBR SQL runtime fingerprint, rules/bindings parity and CORS; NO legal certification')
+
           PY
 
       - name: Verify canonical Office/Citizen SQL tax-year endpoint and browser origin
