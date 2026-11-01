@@ -5,11 +5,17 @@ import {
 } from '../../adapters/rulesPublicYears';
 import { useApp } from '../../context/AppContext';
 import { RULES_ENGINE_GATE } from '../../adapters/calculationAdapter';
+import {
+  readNbrRulesRuntimeStatus, classifyNbrRuntimeIdentity,
+  type NbrRulesRuntimeObservation,
+} from '../../adapters/nbrRulesRuntimeStatus';
 
 export function CalculationStatusPanel() {
   const { language, assessment, income, assessmentYear } = useApp();
   const [yearStatus, setYearStatus] = useState<'loading' | 'matched' | 'missing' | 'conflict' | 'unavailable'>('loading');
   const [sqlYear, setSqlYear] = useState<CanonicalRuleYear | null>(null);
+  const [runtime, setRuntime] = useState<NbrRulesRuntimeObservation | null>(null);
+  const [runtimeError, setRuntimeError] = useState(false);
   useEffect(() => {
     let active = true;
     setYearStatus('loading');
@@ -30,6 +36,15 @@ export function CalculationStatusPanel() {
     });
     return () => { active = false; };
   }, [assessmentYear, assessment.assessmentYear]);
+  useEffect(() => {
+    let active = true;
+    void readNbrRulesRuntimeStatus().then(data => {
+      if (active) setRuntime(data);
+    }).catch(() => {
+      if (active) setRuntimeError(true);
+    });
+    return () => { active = false; };
+  }, []);
   const bn = language === 'bn';
   const t = (en: string, bangla: string) => bn ? bangla : en;
   const pendingFacts = [
@@ -53,6 +68,18 @@ export function CalculationStatusPanel() {
       : yearStatus === 'unavailable'
         ? t('NBR SQL year read-back unavailable. Calculations remain blocked.', 'এনবিআর SQL করবর্ষ যাচাই পাওয়া যায়নি। হিসাব বন্ধ রয়েছে।')
       : t('Checking canonical NBR SQL tax-year identity…', 'মূল এনবিআর SQL করবর্ষ যাচাই চলছে…')}</p>
+    <p role="status">{runtimeError
+      ? t('NBR SQL engine revision and binding read-back unavailable. Tax calculation remains blocked.', 'এনবিআর SQL ইঞ্জিনের সংস্করণ ও বাইন্ডিং যাচাই পাওয়া যায়নি। কর গণনা বন্ধ রয়েছে।')
+      : runtime && yearStatus === 'matched' && sqlYear
+        ? (classifyNbrRuntimeIdentity(runtime, sqlYear.assessmentYear, sqlYear.incomeYear) === 'matched'
+            ? t('NBR SQL engine revision and binding identities match', 'এনবিআর SQL ইঞ্জিনের সংস্করণ ও বাইন্ডিং পরিচয় মিলেছে')
+            : t('Selected year or Rules SQL engine identity differs — review required', 'নির্বাচিত করবর্ষ অথবা বিধি SQL ইঞ্জিন পরিচয় ভিন্ন — যাচাই প্রয়োজন')) +
+          ': ' + runtime.ruleCount + ' ' + t('rules', 'বিধি') +
+          ' / ' + runtime.runtimeBindingCount + ' ' + t('bindings', 'বাইন্ডিং') +
+          ' · ' + runtime.engineVersion + ' · ' + runtime.syncFingerprint.slice(0, 16) + '…'
+        : yearStatus === 'conflict' || yearStatus === 'missing' || yearStatus === 'unavailable'
+          ? t('Runtime parity cannot be certified until the assessment-year mismatch is resolved.', 'করবর্ষের অমিল ঠিক না হলে রানটাইম সামঞ্জস্য যাচাই সম্ভব নয়।')
+          : t('Checking live NBR SQL rules runtime…', 'লাইভ এনবিআর SQL বিধির রানটাইম যাচাই হচ্ছে…')}</p>
     <dl>
       {[
         [t('Taxable base', 'করযোগ্য ভিত্তি'), '—'],
