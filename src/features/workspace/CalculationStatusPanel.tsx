@@ -8,22 +8,28 @@ import { RULES_ENGINE_GATE } from '../../adapters/calculationAdapter';
 
 export function CalculationStatusPanel() {
   const { language, assessment, income, assessmentYear } = useApp();
-  const [yearStatus, setYearStatus] = useState<'loading' | 'matched' | 'missing' | 'unavailable'>('loading');
+  const [yearStatus, setYearStatus] = useState<'loading' | 'matched' | 'missing' | 'conflict' | 'unavailable'>('loading');
   const [sqlYear, setSqlYear] = useState<CanonicalRuleYear | null>(null);
   useEffect(() => {
     let active = true;
     setYearStatus('loading');
     setSqlYear(null);
+    // Return-form year and app-shell year are independent in imported drafts.
+    // Never display an identity match when the two disagree.
+    if (assessment.assessmentYear !== assessmentYear) {
+      setYearStatus('conflict');
+      return () => { active = false; };
+    }
     void readCanonicalRuleYears().then(years => {
       if (!active) return;
-      const matched = matchSelectedRuleYear(years, assessmentYear);
+      const matched = matchSelectedRuleYear(years, assessment.assessmentYear);
       setSqlYear(matched);
       setYearStatus(matched ? 'matched' : 'missing');
     }).catch(() => {
       if (active) setYearStatus('unavailable');
     });
     return () => { active = false; };
-  }, [assessmentYear]);
+  }, [assessmentYear, assessment.assessmentYear]);
   const bn = language === 'bn';
   const t = (en: string, bangla: string) => bn ? bangla : en;
   const pendingFacts = [
@@ -40,6 +46,8 @@ export function CalculationStatusPanel() {
       ? t('NBR SQL tax-year identity matched', 'এনবিআর SQL করবর্ষের পরিচয় মিলেছে') +
         ': AY ' + sqlYear.assessmentYear + ' / IY ' + sqlYear.incomeYear +
         '. ' + t('Statutory calculation still blocked.', 'আইনগত হিসাব এখনও বন্ধ।')
+      : yearStatus === 'conflict'
+        ? t('The return form and workspace select different assessment years. Reconcile them before calculating.', 'রিটার্ন ফর্ম ও কর্মক্ষেত্রে ভিন্ন করবর্ষ নির্বাচিত। হিসাবের আগে করবর্ষ মিলিয়ে নিন।')
       : yearStatus === 'missing'
         ? t('The selected assessment year is not in the canonical NBR SQL catalogue. Calculations remain blocked.', 'নির্বাচিত করবর্ষ মূল এনবিআর SQL তালিকায় নেই। হিসাব বন্ধ রয়েছে।')
       : yearStatus === 'unavailable'
