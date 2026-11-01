@@ -1,9 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import {
+  readCanonicalRuleYears, matchSelectedRuleYear,
+  type CanonicalRuleYear,
+} from '../../adapters/rulesPublicYears';
 import { useApp } from '../../context/AppContext';
 import { RULES_ENGINE_GATE } from '../../adapters/calculationAdapter';
 
 export function CalculationStatusPanel() {
-  const { language, assessment, income } = useApp();
+  const { language, assessment, income, assessmentYear } = useApp();
+  const [yearStatus, setYearStatus] = useState<'loading' | 'matched' | 'missing' | 'unavailable'>('loading');
+  const [sqlYear, setSqlYear] = useState<CanonicalRuleYear | null>(null);
+  useEffect(() => {
+    let active = true;
+    setYearStatus('loading');
+    setSqlYear(null);
+    void readCanonicalRuleYears().then(years => {
+      if (!active) return;
+      const matched = matchSelectedRuleYear(years, assessmentYear);
+      setSqlYear(matched);
+      setYearStatus(matched ? 'matched' : 'missing');
+    }).catch(() => {
+      if (active) setYearStatus('unavailable');
+    });
+    return () => { active = false; };
+  }, [assessmentYear]);
   const bn = language === 'bn';
   const t = (en: string, bangla: string) => bn ? bangla : en;
   const pendingFacts = [
@@ -16,6 +36,15 @@ export function CalculationStatusPanel() {
   return <section className="er-calculation-panel" aria-labelledby="er-calculation-panel-title">
     <h2 id="er-calculation-panel-title" tabIndex={-1}>{t('Calculation & verification', 'হিসাব ও যাচাইকরণ')}</h2>
     <p className="er-calculation-state" role="status">{t('Awaiting certified Rules Engine', 'প্রত্যয়িত রুলস ইঞ্জিন অপেক্ষমাণ')}</p>
+    <p aria-live="polite">{yearStatus === 'matched' && sqlYear
+      ? t('NBR SQL tax-year identity matched', 'এনবিআর SQL করবর্ষের পরিচয় মিলেছে') +
+        ': AY ' + sqlYear.assessmentYear + ' / IY ' + sqlYear.incomeYear +
+        '. ' + t('Statutory calculation still blocked.', 'আইনগত হিসাব এখনও বন্ধ।')
+      : yearStatus === 'missing'
+        ? t('The selected assessment year is not in the canonical NBR SQL catalogue. Calculations remain blocked.', 'নির্বাচিত করবর্ষ মূল এনবিআর SQL তালিকায় নেই। হিসাব বন্ধ রয়েছে।')
+      : yearStatus === 'unavailable'
+        ? t('NBR SQL year read-back unavailable. Calculations remain blocked.', 'এনবিআর SQL করবর্ষ যাচাই পাওয়া যায়নি। হিসাব বন্ধ রয়েছে।')
+      : t('Checking canonical NBR SQL tax-year identity…', 'মূল এনবিআর SQL করবর্ষ যাচাই চলছে…')}</p>
     <dl>
       {[
         [t('Taxable base', 'করযোগ্য ভিত্তি'), '—'],
